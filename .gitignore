@@ -1,0 +1,16 @@
+.cproject
+.project
+/.settings/
+
+/build/
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.txt
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+/Debug/
+/bin/
