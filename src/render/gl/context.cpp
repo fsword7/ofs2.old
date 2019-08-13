@@ -17,7 +17,7 @@ void Context::resize(int w, int h)
 {
 	width  = w;
 	height = h;
-	aspect = double(width)/double(height);
+	aspect = float(width)/float(height);
 
 	glViewport(0, 0, w, h);
 

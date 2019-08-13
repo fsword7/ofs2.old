@@ -37,7 +37,7 @@ public:
 private:
 	int   width  = 1;
 	int   height = 1;
-	float aspect = width/height;
+	float aspect = float(width)/float(height);
 
 	unsigned int vao = 0;
 	unsigned int vbo = 0;
