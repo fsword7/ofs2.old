@@ -8,12 +8,6 @@
 #include "main/core.h"
 #include "render/render.h"
 
-	float vertices[] = {
-		-0.5f, -0.5f,  0.0f,
-		 0.5f, -0.5f,  0.0f,
-		 0.0f,  0.5f,  0.0f
-	};
-
 void Scene::init(int w, int h)
 {
 	int success;
@@ -75,6 +69,11 @@ void Scene::init(int w, int h)
 
 	// **********************************************************
 
+	float vertices[] = {
+		-0.5f, -0.5f,  0.0f,
+		 0.5f, -0.5f,  0.0f,
+		 0.0f,  0.5f,  0.0f
+	};
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
