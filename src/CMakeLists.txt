@@ -1,5 +1,6 @@
 set(ofs_cpp_SRCS
 	main/coreapp.cpp
+	render/gl/context.cpp
 	render/render.cpp
 )
 

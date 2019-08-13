@@ -10,18 +10,12 @@
 
 void Scene::init(int w, int h)
 {
-	resize(w, h);
+	gl.init(w, h);
 }
 
 void Scene::resize(int w, int h)
 {
-	width  = w;
-	height = h;
-	aspect = double(width)/double(height);
-
-	glViewport(0, 0, w, h);
-
-	cout << "Width: " << w << " Height: " << h << " Aspect: " << aspect << endl;
+	gl.resize(w, h);
 }
 
 void Scene::render()

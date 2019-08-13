@@ -22,7 +22,4 @@ public:
 
 private:
 	Context gl;
-
-	int width = 0, height = 0;
-	float aspect;
 };
