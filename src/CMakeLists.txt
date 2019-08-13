@@ -1,5 +1,5 @@
 set(ofs_cpp_SRCS
-	main/main.cpp
+	main/coreapp.cpp
 	render/render.cpp
 )
 
@@ -10,13 +10,14 @@ set(ofs_cpp_SRCS
 #	main/qt/ofswidget.cpp
 #)
 
-#set(ofs_sdl2_cpp_SRCS
-#	main/sdl2/coreapp.cpp
-#	main/sdl2/glmain.cpp
-#)
+set(ofs_sdl2_cpp_SRCS
+	main/sdl2/coreapp.cpp
+	main/sdl2/main.cpp
+)
 
 set(ofs_h_SRCS
 	main/core.h
+	main/coreapp.h
 	main/math.h
 	render/gl/context.h
 	render/gl/shader.h
@@ -30,9 +31,9 @@ set(ofs_h_SRCS
 #	main/qt/ofswidget.h
 #)
 
-#set(ofs_sdl2_h_SRCS
-#	main/sdl2/coreapp.h
-#)
+set(ofs_sdl2_h_SRCS
+	main/sdl2/coreapp.h
+)
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(

@@ -9,14 +9,20 @@
 
 #include "render/gl/context.h"
 
-class Render
+class Scene
 {
 public:
-	Render() = default;
-	~Render() = default;
+	Scene() = default;
+	~Scene() = default;
 
-	void init();
+	void init(int width, int height);
+	void resize(int width, int height);
+
+	void render();
 
 private:
 	Context gl;
+
+	int width = 0, height = 0;
+	float aspect;
 };
