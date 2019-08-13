@@ -1,4 +1,5 @@
 set(ofs_cpp_SRCS
+	main/main.cpp
 )
 
 #set(ofs_qt_cpp_SECS
