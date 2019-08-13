@@ -1,5 +1,6 @@
 set(ofs_cpp_SRCS
 	main/main.cpp
+	render/render.cpp
 )
 
 #set(ofs_qt_cpp_SECS
@@ -19,6 +20,7 @@ set(ofs_h_SRCS
 	main/math.h
 	render/gl/context.h
 	render/gl/shader.h
+	render/render.h
 	util/color.h
 )
 
