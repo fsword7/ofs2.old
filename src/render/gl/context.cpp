@@ -24,4 +24,12 @@ void Context::resize(int w, int h)
 	cout << "Width: " << w << " Height: " << h << " Aspect: " << aspect << endl;
 }
 
+void Context::start()
+{
 
+}
+
+void Context::finish()
+{
+
+}

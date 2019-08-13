@@ -22,4 +22,7 @@ public:
 
 private:
 	Context gl;
+
+	uint32_t vao, vbo;
+	uint32_t shProgram;
 };
