@@ -40,7 +40,7 @@ public:
 
 private:
 	ShaderType type = ShaderType::shrUnknown;
-	GLuint id = -1;
+	GLuint id = 0;
 };
 
 class ShaderProgram
@@ -58,7 +58,7 @@ public:
 	ShaderStatus link(ostream &out);
 
 private:
-	GLuint id = -1;
+	GLuint id = 0;
 };
 
 class ShaderManager
