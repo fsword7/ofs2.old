@@ -26,10 +26,17 @@ enum ShaderStatus {
 class ShaderSource
 {
 public:
-	ShaderSource() = default;
-	~ShaderSource() = default;
+	ShaderSource(ShaderType type);
+	~ShaderSource();
 
-	void compile(const string &name);
+	inline int getID() const { return id; }
+
+	const string getLogInfo();
+
+	ShaderStatus compile(const vector<string> &source);
+
+	static ShaderStatus create(ostream &out, ShaderType type,
+		const vector<string>& source, ShaderSource **shader);
 
 private:
 	ShaderType type = ShaderType::shrUnknown;
@@ -39,21 +46,19 @@ private:
 class ShaderProgram
 {
 public:
-	ShaderProgram() = default;
-	~ShaderProgram() = default;
+	ShaderProgram();
+	~ShaderProgram();
 
 	inline int getID() const { return id; }
+	inline void use() const { glUseProgram(id); }
+
+	void attach(const ShaderSource &shader);
+
+	const string getLogInfo();
+	ShaderStatus link(ostream &out);
 
 private:
-	int id = -1;
-};
-
-class ShaderPackage
-{
-public:
-	ShaderPackage() = default;
-	~ShaderPackage() = default;
-
+	GLuint id = -1;
 };
 
 class ShaderManager
