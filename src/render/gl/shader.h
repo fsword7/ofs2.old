@@ -31,6 +31,7 @@ public:
 
 	inline int getID() const { return id; }
 
+	void dump(ostream &out, const std::string &source);
 	const string getLogInfo();
 
 	ShaderStatus compile(const vector<string> &source);
