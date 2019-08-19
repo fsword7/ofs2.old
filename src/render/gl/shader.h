@@ -68,4 +68,7 @@ public:
 	ShaderManager() = default;
 	~ShaderManager() = default;
 
+	ShaderStatus createProgram(ostream &out, const string &vsSource, const string &fsSource, ShaderProgram **pgm);
+	ShaderProgram *buildPrograms(const string &vsSource, const string &fsSource);
+	ShaderProgram *createShader(const string &name);
 };

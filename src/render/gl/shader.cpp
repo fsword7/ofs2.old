@@ -8,6 +8,10 @@
 #include "main/core.h"
 #include "render/gl/shader.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 ShaderSource::ShaderSource(ShaderType type)
 : type(type)
 {
@@ -30,7 +34,7 @@ ShaderSource::~ShaderSource()
 	glDeleteShader(id);
 }
 
-void ShaderSource::dump(ostream &out, const std::string &source)
+void ShaderSource::dump(ostream &out, const string &source)
 {
 	bool newLine = true;
 	int lineNumber = 0;
@@ -46,6 +50,7 @@ void ShaderSource::dump(ostream &out, const std::string &source)
 		if (source[idx] == '\n')
 			newLine = true;
 	}
+	out << endl;
 
 	out.flush();
 }
@@ -131,6 +136,9 @@ ShaderStatus ShaderSource::create(ostream &out, ShaderType type,
 	if (newShader == nullptr)
 		return ShaderStatus::shrOutOfMemory;
 
+	for (unsigned int idx = 0; idx < source.size(); idx++)
+		newShader->dump(out, source[idx]);
+
 	status = newShader->compile(source);
 	if (status != ShaderStatus::shrSuccessful) {
 		log = newShader->getLogInfo();
@@ -202,3 +210,79 @@ ShaderStatus ShaderProgram::link(ostream &out)
 	return ShaderStatus::shrSuccessful;
 }
 
+ShaderStatus ShaderManager::createProgram(ostream &out, const string &vsSource, const string &fsSource, ShaderProgram **pgm)
+{
+	vector<string> vsSourcev;
+	vector<string> fsSourcev;
+	ShaderSource *vsShader, *fsShader;
+	ShaderStatus st;
+
+	vsSourcev.push_back(vsSource);
+	fsSourcev.push_back(fsSource);
+
+	st = ShaderSource::create(out, shrVertexProcessor, vsSourcev, &vsShader);
+	st = ShaderSource::create(out, shrFragmentProcessor, fsSourcev, &fsShader);
+
+	ShaderProgram *npgm = new ShaderProgram();
+	npgm->attach(*vsShader);
+	npgm->attach(*fsShader);
+
+	st = npgm->link(out);
+	if (st == shrSuccessful)
+		*pgm = npgm;
+
+	return shrSuccessful;
+}
+
+ShaderProgram *ShaderManager::buildPrograms(const string &vsSource, const string &fsSource)
+{
+	ShaderProgram *pgm;
+	ShaderStatus st;
+
+	st = createProgram(cout, vsSource, fsSource, &pgm);
+	if (st != ShaderStatus::shrSuccessful || pgm == nullptr)
+		return nullptr;
+	return pgm;
+}
+
+ShaderProgram *ShaderManager::createShader(const string &name)
+{
+	string vsSource, fsSource;
+
+	auto vsName = fmt::sprintf("shaders/%s-vs.glsl", name);
+	auto fsName = fmt::sprintf("shaders/%s-fs.glsl", name);
+
+	struct stat st;
+
+	if (!stat(vsName.c_str(), &st))
+	{
+		auto vsSize = st.st_size;
+		ifstream vsFile(vsName);
+		if (!vsFile.good()) {
+			fmt::fprintf(cerr, "Failed to open '%s' file: %s\n",
+				vsName, strerror(errno));
+			return nullptr;
+		}
+
+		vsSource = string(vsSize, '\0');
+		vsFile.read(&vsSource[0], vsSize);
+		vsFile.close();
+	}
+
+	if (!stat(fsName.c_str(), &st))
+	{
+		auto fsSize = st.st_size;
+		ifstream fsFile(fsName);
+		if (!fsFile.good()) {
+			fmt::fprintf(cerr, "Failed to open '%s' file: %s\n",
+				fsName, strerror(errno));
+			return nullptr;
+		}
+
+		fsSource = string(fsSize, '\0');
+		fsFile.read(&fsSource[0], fsSize);
+		fsFile.close();
+	}
+
+	return buildPrograms(vsSource, fsSource);
+}

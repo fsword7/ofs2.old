@@ -8,6 +8,7 @@
 #pragma once
 
 #include "render/gl/context.h"
+#include "render/gl/shader.h"
 
 class Scene
 {
@@ -23,7 +24,9 @@ public:
 private:
 	Context gl;
 
+	ShaderManager smgr;
+	ShaderProgram *demo = nullptr;
+
 	uint32_t vao, vbo, ebo;
-	uint32_t shProgram;
 	uint32_t myColor;
 };
