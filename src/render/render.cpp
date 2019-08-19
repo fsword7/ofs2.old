@@ -18,61 +18,6 @@ void Scene::init(int w, int h)
 
 	gl.init(w, h);
 
-
-	// const char *vsSource =
-	// 		"#version 330 core\n"
-	// 		"layout (location = 0) in vec3 aPos;\n"
-	// 		"layout (location = 1) in vec3 aColor;\n"
-	// 		"out vec3 vColor;\n"
-	// 		"\n"
-	// 		"void main()\n"
-	// 		"{\n"
-	// 		"   gl_Position = vec4(aPos, 1.0);\n"
-	// 		"   vColor = aColor;\n"
-	// 		"}\n";
-
-	// const char *fsSource =
-	// 		"#version 330 core\n"
-	// 		"out vec4 fragColor;\n"
-	// 		"in vec3 vColor;\n"
-	// 		"\n"
-	// 		"void main()\n"
-	// 		"{\n"
-	// 		"   fragColor = vec4(vColor, 1.0);\n"
-	// 		"}\n";
-
-	// uint32_t vsShader = glCreateShader(GL_VERTEX_SHADER);
-	// glShaderSource(vsShader, 1, &vsSource, nullptr);
-	// glCompileShader(vsShader);
-	// glGetShaderiv(vsShader, GL_COMPILE_STATUS, &success);
-	// if (!success) {
-	// 	glGetShaderInfoLog(vsShader, 512, nullptr, infoLog);
-	// 	cout << "Vertex Shader errors:\n" << infoLog << endl;
-	// }
-
-	// uint32_t fsShader = glCreateShader(GL_FRAGMENT_SHADER);
-	// glShaderSource(fsShader, 1, &fsSource, nullptr);
-	// glCompileShader(fsShader);
-	// glGetShaderiv(fsShader, GL_COMPILE_STATUS, &success);
-	// if (!success) {
-	// 	glGetShaderInfoLog(fsShader, 512, nullptr, infoLog);
-	// 	cout << "Fragment Shader errors:\n" << infoLog << endl;
-	// }
-
-	// shProgram = glCreateProgram();
-	// glAttachShader(shProgram, vsShader);
-	// glAttachShader(shProgram, fsShader);
-	// glLinkProgram(shProgram);
-
-	// glGetProgramiv(shProgram, GL_LINK_STATUS, &success);
-	// if (!success) {
-	// 	glGetProgramInfoLog(shProgram, 512, nullptr, infoLog);
-	// 	cout << "Linking program errors:\n" << infoLog << endl;
-	// }
-
-	// glDeleteShader(vsShader);
-	// glDeleteShader(fsShader);
-
 	demo = smgr.createShader("demo1");
 
 //	myColor = glGetUniformLocation(shProgram, "myColor");

@@ -214,7 +214,8 @@ ShaderStatus ShaderManager::createProgram(ostream &out, const string &vsSource, 
 {
 	vector<string> vsSourcev;
 	vector<string> fsSourcev;
-	ShaderSource *vsShader, *fsShader;
+	ShaderSource *vsShader = nullptr;
+	ShaderSource *fsShader = nullptr;
 	ShaderStatus st;
 
 	vsSourcev.push_back(vsSource);
@@ -224,8 +225,10 @@ ShaderStatus ShaderManager::createProgram(ostream &out, const string &vsSource, 
 	st = ShaderSource::create(out, shrFragmentProcessor, fsSourcev, &fsShader);
 
 	ShaderProgram *npgm = new ShaderProgram();
-	npgm->attach(*vsShader);
-	npgm->attach(*fsShader);
+	if (vsShader != nullptr)
+		npgm->attach(*vsShader);
+	if (fsShader != nullptr)
+		npgm->attach(*fsShader);
 
 	st = npgm->link(out);
 	if (st == shrSuccessful)
