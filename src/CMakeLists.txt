@@ -27,6 +27,7 @@ set(ofs_h_SRCS
 	render/mesh.h
 	render/render.h
 	util/color.h
+	util/stb_image.h
 )
 
 #set(ofs_qt_h_SRCS
