@@ -29,4 +29,6 @@ private:
 
 	uint32_t vao, vbo, ebo;
 	uint32_t myColor;
+	uint32_t texture1, texture2;
+
 };
