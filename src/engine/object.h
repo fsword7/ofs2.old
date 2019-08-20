@@ -7,12 +7,23 @@
 
 #pragma once
 
+enum ObjectType {
+    objUnknown = 0,
+    objCelestialBody,
+    objCelestialStar
+};
+
 class Object
 {
 public:
-    Object() = default;
-    virtual ~Object() = default;
+    Object(ObjectType type);
+    Object(ObjectType type, const string &name);
+    virtual ~Object();
+
+private:
+    ObjectType objType = objUnknown;
 
 protected:
+    vector<string> objNames;
 
 };
