@@ -20,7 +20,7 @@ private:
     vec3f_t camPosition;
     quatf_t camRotation;
     float   fov; 
-}
+};
 
 class Player
 {
