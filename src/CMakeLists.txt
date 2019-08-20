@@ -2,6 +2,7 @@ set(ofs_cpp_SRCS
 	main/coreapp.cpp
 	render/gl/context.cpp
 	render/gl/shader.cpp
+	render/mesh.cpp
 	render/render.cpp
 )
 
@@ -23,6 +24,7 @@ set(ofs_h_SRCS
 	main/math.h
 	render/gl/context.h
 	render/gl/shader.h
+	render/mesh.h
 	render/render.h
 	util/color.h
 )
