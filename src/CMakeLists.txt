@@ -1,4 +1,6 @@
 set(ofs_cpp_SRCS
+	engine/object.cpp
+	engine/player.cpp
 	main/coreapp.cpp
 	render/gl/context.cpp
 	render/gl/shader.cpp
@@ -19,6 +21,8 @@ set(ofs_sdl2_cpp_SRCS
 )
 
 set(ofs_h_SRCS
+	engine/object.h
+	engine/player.h
 	main/core.h
 	main/coreapp.h
 	main/math.h
