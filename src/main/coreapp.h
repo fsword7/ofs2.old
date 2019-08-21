@@ -10,7 +10,7 @@
 //class Engine;
 //class Universe;
 //class Scene;
-//class Player;
+class Player;
 class Scene;
 
 #define OFS_KEY_UP		0
@@ -80,7 +80,7 @@ namespace ofs {
 		int width, height;
 
 	private:
-//		Player   *player;
+		Player   *player;
 //		Engine   *engine;
 //		Universe *universe;
 		Scene *scene = nullptr;

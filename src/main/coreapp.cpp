@@ -7,7 +7,7 @@
 
 #include "main/core.h"
 //#include "engine/engine.h"
-//#include "engine/player.h"
+#include "engine/player.h"
 //#include "universe/universe.h"
 #include "render/render.h"
 #include "main/coreapp.h"
@@ -37,8 +37,8 @@ CoreApp::~CoreApp()
 //		delete universe;
 //	if (engine != nullptr)
 //		delete engine;
-//	if (player != nullptr)
-//		delete player;
+	if (player != nullptr)
+		delete player;
 }
 
 void CoreApp::initRenderer()
@@ -54,7 +54,7 @@ void CoreApp::initRenderer()
 void CoreApp::initEngine()
 {
 
-//	player = new Player();
+	player = new Player();
 //	universe = new Universe();
 //	engine = new Engine(universe, player);
 //
@@ -75,48 +75,49 @@ void CoreApp::start()
 void CoreApp::tick()
 {
 //	Date *jdate = engine->getRealTime();
-//
-//	double  dt;
-//	vec3d_t av, tv;
-//
+
+	double  dt;
+	vec3f_t av, tv;
+
 //	dt = jdate->update();
-//	av = player->getAngularVelocity();
-//	tv = player->getTravelVelocity();
-//
-//	// Keyboard rotation and travel control
-//	// X-axis rotation control
-//	if (stateKey[keyPad8] || stateKey[keyUp])
-//		av += vec3d_t(dt * keyRotationAccel, 0, 0);
-//	if (stateKey[keyPad2] || stateKey[keyDown])
-//		av += vec3d_t(dt * -keyRotationAccel, 0, 0);
-//
-//	// Y-axis rotation control
-//	if (stateKey[keyPad4] || stateKey[keyLeft])
-//		av += vec3d_t(0, dt * keyRotationAccel, 0);
-//	if (stateKey[keyPad6] || stateKey[keyRight])
-//		av += vec3d_t(0, dt * -keyRotationAccel, 0);
-//
-//	// Z-axis rotation control
-//	if (stateKey[keyPad7])
-//		av += vec3d_t(0, 0, dt * -keyRotationAccel);
-//	if (stateKey[keyPad9])
-//		av += vec3d_t(0, 0, dt * keyRotationAccel);
-//
-//	// Travel velocity control
-//	if (stateKey[keyPad1])
-//		tv.z -= dt /* * 1000.0 */;
-//	if (stateKey[keyPad3])
-//		tv.z += dt /* * 1000.0 */;
-//
-//	// Braking velocity control
-//	if (stateKey[keyPad5])
-//	{
-//		av *= exp(-dt * keyRotationAccel);
-//		tv *= exp(-dt * keyTravelAccel);
-//	}
-//
-//	player->setAngularVelocity(av);
-//	player->setTravelVelocity(tv);
+	av = player->getAngularVelocity();
+	tv = player->getTravelVelocity();
+
+	// Keyboard rotation and travel control
+	// X-axis rotation control
+	if (stateKey[keyPad8] || stateKey[keyUp])
+		av += vec3f_t(dt * keyRotationAccel, 0, 0);
+	if (stateKey[keyPad2] || stateKey[keyDown])
+		av += vec3f_t(dt * -keyRotationAccel, 0, 0);
+
+	// Y-axis rotation control
+	if (stateKey[keyPad4] || stateKey[keyLeft])
+		av += vec3f_t(0, dt * keyRotationAccel, 0);
+	if (stateKey[keyPad6] || stateKey[keyRight])
+		av += vec3f_t(0, dt * -keyRotationAccel, 0);
+
+	// Z-axis rotation control
+	if (stateKey[keyPad7])
+		av += vec3f_t(0, 0, dt * -keyRotationAccel);
+	if (stateKey[keyPad9])
+		av += vec3f_t(0, 0, dt * keyRotationAccel);
+
+	// Travel velocity control
+	if (stateKey[keyPad1])
+		tv.z -= dt /* * 1000.0 */;
+	if (stateKey[keyPad3])
+		tv.z += dt /* * 1000.0 */;
+
+	// Braking velocity control
+	if (stateKey[keyPad5])
+	{
+		av *= exp(-dt * keyRotationAccel);
+		tv *= exp(-dt * keyTravelAccel);
+	}
+
+	player->setAngularVelocity(av);
+	player->setTravelVelocity(tv);
+	player->update(dt, 1.0f);
 //	engine->update(dt);
 }
 

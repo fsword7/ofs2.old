@@ -19,6 +19,9 @@ public:
     Object(ObjectType type);
     Object(ObjectType type, const string &name);
     virtual ~Object();
+	
+    vec3f_t getPosition(float dt = 0) const;
+	quatf_t getRotation(float dt = 0) const;
 
 private:
     ObjectType objType = objUnknown;
@@ -26,4 +29,11 @@ private:
 protected:
     vector<string> objNames;
 
+	double  objRadius;		// Object radius
+	vec3f_t objSemiAxes;	// Object semi-axes
+	double  objMass;		// Object mass
+	double  objAlbedo;		// Object albedo
+
+	vec3f_t objPosition;	// Object current position
+	quatf_t objRotation;	// Object orientation
 };
