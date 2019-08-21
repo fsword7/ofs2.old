@@ -44,9 +44,6 @@ CoreApp::~CoreApp()
 void CoreApp::initRenderer()
 {
 	// Initialize OpenGL-based Renderer
-//	scene = new glScene();
-//
-//	scene->init(width, height);
 	scene = new Scene();
 	scene->init(width, height);
 }
