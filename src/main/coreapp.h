@@ -7,9 +7,8 @@
 
 #pragma once
 
-//class Engine;
+class Engine;
 //class Universe;
-//class Scene;
 class Player;
 class Scene;
 
@@ -81,7 +80,7 @@ namespace ofs {
 
 	private:
 		Player   *player;
-//		Engine   *engine;
+		Engine   *engine;
 //		Universe *universe;
 		Scene *scene = nullptr;
 

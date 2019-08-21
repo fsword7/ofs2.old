@@ -6,7 +6,8 @@
  */
 
 #include "main/core.h"
-//#include "engine/engine.h"
+#include "main/date.h"
+#include "engine/engine.h"
 #include "engine/player.h"
 //#include "universe/universe.h"
 #include "render/render.h"
@@ -31,8 +32,8 @@ CoreApp::CoreApp()
 
 CoreApp::~CoreApp()
 {
-//	if (scene != nullptr)
-//		delete scene;
+	if (scene != nullptr)
+		delete scene;
 //	if (universe != nullptr)
 //		delete universe;
 //	if (engine != nullptr)
@@ -53,7 +54,7 @@ void CoreApp::initEngine()
 
 	player = new Player();
 //	universe = new Universe();
-//	engine = new Engine(universe, player);
+	engine = new Engine(player);
 //
 //	universe->init();
 }
@@ -65,13 +66,13 @@ void CoreApp::pressKey(keyCode code, bool down)
 
 void CoreApp::start()
 {
-//	if (engine != nullptr)
-//		engine->start();
+	if (engine != nullptr)
+		engine->start();
 }
 
 void CoreApp::tick()
 {
-//	Date *jdate = engine->getRealTime();
+	Date *jdate = engine->getRealTime();
 
 	double  dt;
 	vec3f_t av, tv;
@@ -114,8 +115,7 @@ void CoreApp::tick()
 
 	player->setAngularVelocity(av);
 	player->setTravelVelocity(tv);
-	player->update(dt, 1.0f);
-//	engine->update(dt);
+	engine->update(dt);
 }
 
 void CoreApp::render()
