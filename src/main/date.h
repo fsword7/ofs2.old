@@ -17,22 +17,22 @@ class Date {
 public:
 	Date();
 	Date(int y, int m, int d);
-	Date(float);
+	Date(double);
 	~Date();
 
-	float  getJulian() const;
+	double getJulian() const;
 	string getString() const;
 
 	inline operator float() const { return getJulian(); }
 
 	void   reset();
 	void   now();
-	float  update();
+	double update();
 
 private:
-	float lastTime;
-	float sysTime;
-	float jdTime;
+	double lastTime;
+	double sysTime;
+	double jdTime;
 
 	int    year;
 	int    month;
@@ -40,7 +40,7 @@ private:
 
 	int    hour;
 	int    minute;
-	float  second;
+	double second;
 
 	int    wday;
 

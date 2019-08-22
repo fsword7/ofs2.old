@@ -28,7 +28,7 @@ Date::Date(int y, int m, int d)
 {
 }
 
-Date::Date(float jd)
+Date::Date(double jd)
 {
 	int64_t a = (int64_t)floor(jd + 0.5);
 	wday = (a + 1) % 7;
@@ -67,7 +67,7 @@ Date::~Date()
 {
 }
 
-float Date::getJulian() const
+double Date::getJulian() const
 {
 	int y, m, ly = 0;
 
@@ -103,19 +103,19 @@ void Date::reset()
 	struct timeval now;
 
 	gettimeofday(&now, nullptr);
-	sysTime  = double(now.tv_sec) + (double(now.tv_usec) / 1000000.0);
+	sysTime  = double(now.tv_sec) + (double(now.tv_usec) / 1000000.0f);
 	lastTime = sysTime;
 
 	this->now();
 }
 
-float Date::update()
+double Date::update()
 {
 	struct timeval now;
 	float  dt;
 
 	gettimeofday(&now, nullptr);
-	sysTime  = float(now.tv_sec) + (float(now.tv_usec) / 1000000.0);
+	sysTime  = double(now.tv_sec) + (double(now.tv_usec) / 1000000.0f);
 	dt       = sysTime - lastTime;
 	lastTime = sysTime;
 
