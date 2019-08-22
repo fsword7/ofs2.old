@@ -9,6 +9,10 @@ set(ofs_cpp_SRCS
 	render/gl/shader.cpp
 	render/mesh.cpp
 	render/render.cpp
+	render/object.cpp
+	render/planet.cpp
+	render/terrain.cpp
+	util/tree.cpp
 )
 
 #set(ofs_qt_cpp_SECS
@@ -36,8 +40,12 @@ set(ofs_h_SRCS
 	render/gl/shader.h
 	render/mesh.h
 	render/render.h
+	render/object.h
+	render/planet.h
+	render/terrain.h
 	util/color.h
 	util/stb_image.h
+	util/tree.h
 )
 
 #set(ofs_qt_h_SRCS

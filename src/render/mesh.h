@@ -3,6 +3,10 @@
 // Created on: August 19, 2019
 //     Author: Tim Stark
 
+#pragma once
+
+class Context;
+
 template <typename T>
 struct Vertex {
     T vx, vy, vz;
