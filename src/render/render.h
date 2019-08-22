@@ -20,7 +20,7 @@ public:
 	void init(int width, int height);
 	void resize(int width, int height);
 
-	void render();
+	void render(const Player &player);
 
 private:
 	Context gl;

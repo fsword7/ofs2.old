@@ -6,6 +6,7 @@
  */
 
 #include "main/core.h"
+#include "engine/player.h"
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
 #include "render/render.h"
@@ -140,7 +141,7 @@ void Scene::resize(int w, int h)
 	gl.resize(w, h);
 }
 
-void Scene::render()
+void Scene::render(const Player &player)
 {
 	gl.start();
 
