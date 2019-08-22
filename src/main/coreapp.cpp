@@ -53,8 +53,11 @@ void CoreApp::initEngine()
 {
 
 	player = new Player();
+	player->setPosition(vec3f_t(0.0f, 0.0f, -3.0f));
+
 //	universe = new Universe();
 	engine = new Engine(player);
+
 //
 //	universe->init();
 }
@@ -74,10 +77,10 @@ void CoreApp::tick()
 {
 	Date *jdate = engine->getRealTime();
 
-	double  dt;
+	float   dt;
 	vec3f_t av, tv;
 
-//	dt = jdate->update();
+	dt = jdate->update();
 	av = player->getAngularVelocity();
 	tv = player->getTravelVelocity();
 

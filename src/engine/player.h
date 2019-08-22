@@ -47,7 +47,8 @@ public:
 	inline float   getTravelSpeed()     { return tv.z; }
 
     Camera *getCamera(int idx) const;
-
+	
+	void setPosition(vec3f_t pos);
 	void setAngularVelocity(vec3f_t av);
 	void setTravelVelocity(vec3f_t tv);
 	void setTravelSpeed(float ts);

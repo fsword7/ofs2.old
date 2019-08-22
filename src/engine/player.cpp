@@ -6,6 +6,7 @@
  */
 
 #include "main/core.h"
+#include "main/date.h"
 #include "engine/object.h"
 #include "engine/player.h"
 
@@ -82,6 +83,13 @@ Camera *Player::getCamera(int idx) const
 	return nullptr;
 }
 
+void Player::setPosition(vec3f_t pos)
+{
+	lpos = pos;
+	for (auto cam : camera)
+		cam->update();
+}
+
 void Player::setAngularVelocity(vec3f_t _av)
 {
 	av = _av;
@@ -99,9 +107,9 @@ void Player::setTravelSpeed(float ts)
 }
 
 void Player::update(float dt, float timeTravel)
-{
-	// realTime += dt / SECONDS_PER_DAY;
-	// jdTime   += (dt / SECONDS_PER_DAY) * timeTravel;
+{	
+	realTime += dt / SECONDS_PER_DAY;
+	jdTime   += (dt / SECONDS_PER_DAY) * timeTravel;
 
 	// Free travel mode
 	// Update current position and orientation (local reference frame)
