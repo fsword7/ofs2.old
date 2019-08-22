@@ -179,7 +179,7 @@ void Scene::render(const Player &player)
 	// float camx = sin(float(SDL_GetTicks())/1000.0f) * radius;
 	// float camz = cos(float(SDL_GetTicks())/1000.0f) * radius;
 	// view = glm::lookAt(glm::vec3(camx, 0.0f, camz), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	view = glm::toMat4(crot);
+	view = glm::transpose(glm::toMat4(crot));
 	view = glm::translate(view, cpos);
 
 	uint32_t viewLoc = glGetUniformLocation(demo->getID(), "view");
