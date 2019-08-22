@@ -105,9 +105,9 @@ void CoreApp::tick()
 
 	// Travel velocity control
 	if (stateKey[keyPad1])
-		tv.z -= dt /* * 1000.0 */;
-	if (stateKey[keyPad3])
 		tv.z += dt /* * 1000.0 */;
+	if (stateKey[keyPad3])
+		tv.z -= dt /* * 1000.0 */;
 
 	// Braking velocity control
 	if (stateKey[keyPad5])
