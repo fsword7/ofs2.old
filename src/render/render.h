@@ -8,6 +8,7 @@
 #pragma once
 
 #include "render/gl/context.h"
+#include "render/gl/buffer.h"
 #include "render/gl/shader.h"
 
 class Scene
@@ -26,6 +27,8 @@ private:
 
 	ShaderManager smgr;
 	ShaderProgram *demo = nullptr;
+
+	VertexBuffer *glBuffer;
 
 	uint32_t vao, vbo, ebo;
 	uint32_t myColor;

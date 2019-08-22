@@ -4,6 +4,7 @@ set(ofs_cpp_SRCS
 	engine/player.cpp
 	main/coreapp.cpp
 	main/date.cpp
+	render/gl/buffer.cpp
 	render/gl/context.cpp
 	render/gl/shader.cpp
 	render/mesh.cpp
@@ -30,6 +31,7 @@ set(ofs_h_SRCS
 	main/coreapp.h
 	main/date.h
 	main/math.h
+	render/gl/buffer.h
 	render/gl/context.h
 	render/gl/shader.h
 	render/mesh.h

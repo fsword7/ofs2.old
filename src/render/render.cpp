@@ -7,6 +7,7 @@
 
 #include "main/core.h"
 #include "render/gl/shader.h"
+#include "render/gl/buffer.h"
 #include "render/render.h"
 
 #include <SDL2/SDL.h>
@@ -71,14 +72,20 @@ void Scene::init(int w, int h)
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
+	glBuffer = new VertexBuffer(gl);
+	glBuffer->createBuffer(VertexBuffer::VBO, 1);
+//	glBuffer->createBuffer(VertexBuffer::EBO, 1);
+
+	glBuffer->assign(VertexBuffer::VBO, vertices, sizeof(vertices));
+
+	// glGenVertexArrays(1, &vao);
+	// glGenBuffers(1, &vbo);
 	// glGenBuffers(1, &ebo);
 
-	glBindVertexArray(vao);
+	// glBindVertexArray(vao);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	// glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -186,7 +193,8 @@ void Scene::render()
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
 
-	glBindVertexArray(vao);
+	// glBindVertexArray(vao);
+	glBuffer->bind();
 	for (uint32_t idx = 0; idx < 10; idx++) {
 		glm::mat4 model = glm::mat4(1.0f);
 		float angle = 20.0f * idx;
@@ -200,7 +208,8 @@ void Scene::render()
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
-	glBindVertexArray(0);
-
+	// glBindVertexArray(0);
+	glBuffer->unbind();
+	
 	gl.finish();
 }
