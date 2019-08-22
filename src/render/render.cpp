@@ -78,26 +78,12 @@ void Scene::init(int w, int h)
 
 	glBuffer->assign(VertexBuffer::VBO, vertices, sizeof(vertices));
 
-	// glGenVertexArrays(1, &vao);
-	// glGenBuffers(1, &vbo);
-	// glGenBuffers(1, &ebo);
-
-	// glBindVertexArray(vao);
-
-	// glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	// glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
 
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	// glBindBuffer(GL_ARRAY_BUFFER, 0);
-	// glBindVertexArray(0);
 
 	// Load and create a texture
 	int width, height, nrChannels;
@@ -210,6 +196,6 @@ void Scene::render()
 	}
 	// glBindVertexArray(0);
 	glBuffer->unbind();
-	
+
 	gl.finish();
 }
