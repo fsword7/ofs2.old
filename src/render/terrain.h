@@ -17,7 +17,9 @@ class TerrainTile
 
 public:
     TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint32_t ilng);
-    ~TerrainTile() = default;
+    ~TerrainTile();
+
+    void load();
 
 private:
     TerrainManager &tmgr;
@@ -33,9 +35,11 @@ class TerrainManager
     friend class TerrainTile;
 
 public:
-    TerrainManager() = default;
-    ~TerrainManager() = default;
+    TerrainManager();
+    ~TerrainManager();
 
+    void render(renderParameter &prm);
+    
 private:
-    TerrainTile *rootTiles[2];
+    TerrainTile *terrain[2];
 };

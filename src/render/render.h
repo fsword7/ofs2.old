@@ -12,6 +12,14 @@
 #include "render/gl/shader.h"
 
 class Player;
+class vPlanet;
+
+struct renderParameter
+{
+	glm::mat4 mproj;  // Projection matrix
+	glm::mat4 mview;  // View matrix
+	glm::mat4 model;  // Model matrix (current object)
+};
 
 class Scene
 {
@@ -29,6 +37,8 @@ private:
 
 	const Player *player;
 
+	renderParameter prm;
+
 	ShaderManager smgr;
 	ShaderProgram *demo = nullptr;
 
@@ -38,4 +48,5 @@ private:
 	uint32_t myColor;
 	uint32_t texture1, texture2;
 
+	vPlanet *vobj = nullptr;
 };

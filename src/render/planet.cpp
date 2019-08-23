@@ -12,3 +12,8 @@ vPlanet::vPlanet(const Scene &scene)
 : vObject(scene)
 {
 }
+
+void vPlanet::render(renderParameter &prm)
+{
+    tmgr.render(prm);
+}

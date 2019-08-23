@@ -16,6 +16,8 @@ class vPlanet : public vObject
         vPlanet(const Scene &scene);
         ~vPlanet() = default;
 
+        void render(renderParameter &prm);
+        
     protected:
         TerrainManager tmgr;
 };

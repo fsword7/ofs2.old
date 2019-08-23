@@ -9,6 +9,7 @@
 #include "engine/player.h"
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
+#include "render/planet.h"
 #include "render/render.h"
 
 #include <SDL2/SDL.h>
@@ -130,9 +131,10 @@ void Scene::init(int w, int h)
 
 	glEnable(GL_DEPTH_TEST);
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), float(gl.getWidth()) / float(gl.getHeight()), 0.1f, 100.0f);
+	prm.mproj = glm::perspective(glm::radians(45.0f), float(gl.getWidth()) / float(gl.getHeight()), 0.1f, 100.0f);
 	uint32_t projLoc = glGetUniformLocation(demo->getID(), "projection");
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(prm.mproj));
+
 
 }
 
@@ -149,6 +151,10 @@ void Scene::render(const Player *player)
 
 	this->player = player;
 	
+	if (vobj == nullptr) {
+			vobj = new vPlanet(*this);
+	}
+
 	gl.start();
 
 	glm::vec3 cubePositions[] = {
@@ -174,30 +180,30 @@ void Scene::render(const Player *player)
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, texture2);
 
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::transpose(glm::toMat4(crot));
-	view = glm::translate(view, cpos);
+	prm.mview = glm::transpose(glm::toMat4(crot));
+	prm.mview = glm::translate(prm.mview, cpos);
 
 	uint32_t viewLoc = glGetUniformLocation(demo->getID(), "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(prm.mview));
 
 	// glBindVertexArray(vao);
 	glBuffer->bind();
 	for (uint32_t idx = 0; idx < 10; idx++) {
-		glm::mat4 model = glm::mat4(1.0f);
 		float angle = 20.0f * idx;
 
-		model = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-		model = glm::translate(model, cubePositions[idx]);
+		prm.model = glm::rotate(glm::mat4(1.0f), glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		prm.model = glm::translate(prm.model, cubePositions[idx]);
 
 		uint32_t modelLoc = glGetUniformLocation(demo->getID(), "model");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(prm.model));
 
 		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 	// glBindVertexArray(0);
 	glBuffer->unbind();
+
+	vobj->render(prm);
 
 	gl.finish();
 }

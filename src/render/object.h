@@ -14,6 +14,8 @@ public:
     vObject(const Scene &scene);
     virtual ~vObject() = default;
 
+    virtual void render(renderParameter &prm) = 0;
+
 protected:
     const Scene  &scene;
     // const Object &object;
