@@ -5,12 +5,56 @@
 
 #include "main/core.h"
 #include "render/gl/context.h"
+#include "render/gl/buffer.h"
+#include "render/render.h"
 #include "render/mesh.h"
 
+Mesh::~Mesh()
+{
+    if (vbuf != nullptr)
+        delete vbuf;
+    if (vtx != nullptr)
+        delete vtx;
+    if (idx != nullptr)
+        delete idx;
+}
 
-void Mesh::render(const Context *gl) const
+void Mesh::render(const Context *gl, renderParameter &prm) const
 {
 
+//    pgm->use();
+    vbuf->bind();
+
+	vbuf->assign(VertexBuffer::VBO, vtx, nvtx*sizeof(vtxf_t));
+    vbuf->assign(VertexBuffer::EBO, idx, nidx*sizeof(uint16_t));
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDrawElements(GL_TRIANGLES, nidx, GL_UNSIGNED_SHORT, 0);
+
+    vbuf->unbind();
+}
+
+void Mesh::allocate(const Context *ctx)
+{
+
+    vbuf = new VertexBuffer(*ctx, 1);
+
+   	vbuf->createBuffer(VertexBuffer::VBO, 1);
+	vbuf->createBuffer(VertexBuffer::EBO, 1);
+
+	// vbuf->assign(VertexBuffer::VBO, vtx, nvtx*sizeof(vtxf_t));
+    // vbuf->assign(VertexBuffer::EBO, idx, nidx*sizeof(uint16_t));
 }
 
 Mesh *Mesh::create(int nvtx, vtxf_t *vtx, int nidx, uint16_t *idx)
@@ -34,6 +78,8 @@ Mesh *Mesh::createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr)
 	float mlat1 = PI * float(ilat+1) / float(nlat);
     float mlng0 = PI*2 * (float(nlng/2 - ilng-1) / float(nlng)) - PI;
     float mlng1 = PI*2 * (float(nlng/2 - ilng) / float(nlng)) - PI;
+
+    cout << "ilng " << ilng << " nlng " << nlng << " mlng0 " << mlng0 << " mlng1 " << mlng1 << endl;
 
 //    vObject *vobj = mgr->getVisualObject();
 //	float   rad = vobj->getObject()->getRadius();

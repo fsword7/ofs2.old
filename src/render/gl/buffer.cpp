@@ -8,7 +8,7 @@
 #include "main/core.h"
 #include "render/gl/buffer.h"
 
-VertexBuffer::VertexBuffer(Context &gl, int nArrays)
+VertexBuffer::VertexBuffer(const Context &gl, int nArrays)
 : gl(gl), vao(0), vbo(0), ebo(0)
 {
     glGenVertexArrays(nArrays, &vao);

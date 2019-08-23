@@ -13,11 +13,11 @@
 class vPlanet : public vObject
 {
     public:
-        vPlanet(const Scene &scene);
+        vPlanet(Scene &scene);
         ~vPlanet() = default;
 
         void render(renderParameter &prm);
         
     protected:
-        TerrainManager tmgr;
+        TerrainManager *tmgr;
 };

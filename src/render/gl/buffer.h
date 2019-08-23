@@ -16,7 +16,7 @@ public:
         VAO, VBO, EBO
     };
 
-    VertexBuffer(Context &gl, int nArrays = 1);
+    VertexBuffer(const Context &gl, int nArrays = 1);
     ~VertexBuffer();
 
     inline void bind() const { glBindVertexArray(vao); };
@@ -26,7 +26,7 @@ public:
     void assign(BufferType type, void *data, uint32_t size);
 
 private:
-    Context &gl;
+    const Context &gl;
 
     GLuint vao, vbo, ebo;
 };

@@ -5,7 +5,10 @@
 
 #pragma once
 
+#include "render/render.h"
+
 class Context;
+class VertexBuffer;
 
 template <typename T>
 struct Vertex {
@@ -31,16 +34,18 @@ class Mesh
 {
 public:
     Mesh() = default;
-    ~Mesh() = default;
+    ~Mesh();
 
-    void render(const Context *ctx) const;
+    void allocate(const Context *ctx);
+    void render(const Context *ctx, renderParameter &prm) const;
 
  	static Mesh *create(int nvtx, vtxf_t *vtx, int nidx, uint16_t *idx);   
     static Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr);
 
 public:
-    int      nvtx, nidx;
-    vtxf_t   *vtx;
-    uint16_t *idx;
+    int      nvtx = 0, nidx = 0;
+    vtxf_t   *vtx = nullptr;
+    uint16_t *idx = nullptr;
 
+    VertexBuffer *vbuf = nullptr;
 };

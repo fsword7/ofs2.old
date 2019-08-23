@@ -11,6 +11,9 @@
 #include "render/gl/buffer.h"
 #include "render/gl/shader.h"
 
+#define DIST_NEAR	0.001f
+#define DIST_FAR	1.0e8f
+
 class Player;
 class vPlanet;
 
@@ -19,6 +22,7 @@ struct renderParameter
 	glm::mat4 mproj;  // Projection matrix
 	glm::mat4 mview;  // View matrix
 	glm::mat4 model;  // Model matrix (current object)
+	glm::mat4 mvp;
 };
 
 class Scene
@@ -26,6 +30,9 @@ class Scene
 public:
 	Scene() = default;
 	~Scene() = default;
+
+	inline ShaderManager &getShaderManager() { return smgr; }
+	inline const Context *getContext() const { return &gl; }
 
 	void init(int width, int height);
 	void resize(int width, int height);
