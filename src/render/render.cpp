@@ -33,7 +33,7 @@ void Scene::render(const Player *player)
 	this->player = player;
 	
 	if (vobj == nullptr) {
-			vobj = new vPlanet(*this);
+		vobj = new vPlanet(*this);
 	}
 
 	gl.start();

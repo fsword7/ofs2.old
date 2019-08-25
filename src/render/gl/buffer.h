@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "render/gl/context.h"
+#include "render/context.h"
 
 class VertexBuffer
 {

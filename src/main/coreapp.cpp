@@ -34,12 +34,8 @@ CoreApp::~CoreApp()
 {
 	if (scene != nullptr)
 		delete scene;
-//	if (universe != nullptr)
-//		delete universe;
 //	if (engine != nullptr)
 //		delete engine;
-	if (player != nullptr)
-		delete player;
 }
 
 void CoreApp::initRenderer()
@@ -52,14 +48,8 @@ void CoreApp::initRenderer()
 void CoreApp::initEngine()
 {
 
-	player = new Player();
-	player->setPosition(vec3f_t(0.0f, 0.0f, -3.0f));
-
-//	universe = new Universe();
-	engine = new Engine(player);
-
-//
-//	universe->init();
+	engine = new Engine();
+	player = engine->getPlayer();
 }
 
 void CoreApp::pressKey(keyCode code, bool down)

@@ -24,18 +24,18 @@ public:
 	// initialization routines
 	void init(int width, int height);
 
+	inline int getWidth() const    { return width; }
+	inline int getHeight() const   { return height; }
+	inline float getAspect() const { return aspect; }
+
 	void resize(int width, int height);
 
 	// render routines
 	void start();
 	void finish();
 
-	inline int getWidth() const    { return width; }
-	inline int getHeight() const   { return height; }
-	inline float getAspect() const { return aspect; }
-
-private:
-	int   width  = 1;
+protected:
+    int   width  = 1;
 	int   height = 1;
 	float aspect = float(width)/float(height);
 

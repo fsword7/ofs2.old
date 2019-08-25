@@ -7,11 +7,13 @@ set(ofs_cpp_SRCS
 	render/gl/buffer.cpp
 	render/gl/context.cpp
 	render/gl/shader.cpp
+	render/context.cpp
 	render/mesh.cpp
 	render/render.cpp
 	render/object.cpp
 	render/planet.cpp
 	render/terrain.cpp
+	universe/universe.cpp
 	util/tree.cpp
 )
 
@@ -38,11 +40,13 @@ set(ofs_h_SRCS
 	render/gl/buffer.h
 	render/gl/context.h
 	render/gl/shader.h
+	render/context.h
 	render/mesh.h
 	render/render.h
 	render/object.h
 	render/planet.h
 	render/terrain.h
+	universe/universe.h
 	util/color.h
 	util/stb_image.h
 	util/tree.h

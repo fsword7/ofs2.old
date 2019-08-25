@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "render/gl/context.h"
+#include "render/context.h"
 #include "render/gl/buffer.h"
 #include "render/gl/shader.h"
 

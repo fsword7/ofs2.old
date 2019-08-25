@@ -10,10 +10,11 @@
 #include "engine/engine.h"
 #include "engine/player.h"
 
-Engine::Engine(Player *_player)
-: player(_player),
-  realTime(0), scaleTime(1.0)
+Engine::Engine()
+: realTime(0), scaleTime(1.0)
 {
+	player.setPosition(vec3f_t(0.0f, 0.0f, -3.0f));
+	
 	pdata = "data/";
 }
 
@@ -32,6 +33,5 @@ void Engine::update(float dt)
 {
 	// Update current julian time
 	realTime += dt / SECONDS_PER_DAY;
-	if (player != nullptr)
-		player->update(dt, scaleTime);
+	player.update(dt, scaleTime);
 }

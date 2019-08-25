@@ -8,16 +8,17 @@
 #pragma once
 
 #include "main/date.h"
-
-//class Universe;
-class Player;
+#include "engine/player.h"
+#include "universe/universe.h"
 
 class Engine
 {
 public:
-	Engine(Player *player);
+	Engine();
 	~Engine();
 
+	inline Universe *getUniverse() { return &universe; }
+	inline Player *getPlayer() { return &player; }
 	inline Date *getRealTime() { return &realDate; }
 
 //	inline string getDataFolder() const { return pdata; }
@@ -26,8 +27,8 @@ public:
 	void update(float dt);
 
 private:
-//	Universe *universe;
-	Player   *player;
+	Player   player;
+	Universe universe;
 
 	Date 	realDate;	// current Julian clock
 	float	realTime;	// System time in Julian clock

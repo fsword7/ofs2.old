@@ -6,7 +6,7 @@
  */
 
 #include "main/core.h"
-#include "render/gl/context.h"
+#include "render/context.h"
 
 void Context::init(int w, int h)
 {
