@@ -6,6 +6,7 @@
 #include "main/core.h"
 #include "render/gl/context.h"
 #include "render/gl/buffer.h"
+#include "render/gl/texture.h"
 #include "render/render.h"
 #include "render/mesh.h"
 
@@ -37,11 +38,18 @@ void Mesh::render(const Context *gl, renderParameter &prm) const
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
+    if (texImage != nullptr) {
+        glActiveTexture(GL_TEXTURE0);
+        texImage->bind();
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDrawElements(GL_TRIANGLES, nidx, GL_UNSIGNED_SHORT, 0);
 
+	glDrawElements(GL_TRIANGLES, nidx, GL_UNSIGNED_SHORT, 0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     vbuf->unbind();
 }
 

@@ -47,7 +47,7 @@ Texture *Texture::create(const string &fname)
     int      components;
     uint8_t *data = nullptr;
 
-    stbi_set_flip_vertically_on_load(true);
+    // stbi_set_flip_vertically_on_load(true);
 	data = stbi_load(fname.c_str(), &width, &height, &components, 0);
     if (data == nullptr) {
         cout << "Can't open file: " << fname << endl;
