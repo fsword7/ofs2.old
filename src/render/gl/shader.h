@@ -9,6 +9,10 @@
 
 #include "render/context.h"
 
+namespace ofs::gl {
+
+};
+
 enum ShaderType {
 	shrUnknown = 0,
 	shrVertexProcessor,

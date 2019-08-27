@@ -9,6 +9,10 @@
 
 #include "render/context.h"
 
+namespace ofs::gl {
+
+};
+
 class VertexBuffer
 {
 public:

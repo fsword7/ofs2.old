@@ -9,6 +9,10 @@
 
 #include <GL/glew.h>
 
+namespace ofs::gl {
+
+};
+
 class Context
 {
 public:

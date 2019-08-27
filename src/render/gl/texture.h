@@ -9,6 +9,10 @@
 
 #include "render/gl/context.h"
 
+namespace ofs::gl {
+
+};
+
 class Texture
 {
 public:
