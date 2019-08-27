@@ -20,6 +20,10 @@ public:
     Object(ObjectType type, const string &name);
     virtual ~Object();
 	
+    inline string getName(uint32_t idx = 0) { return idx < objNames.size() ? objNames[idx] : string(); }
+
+    inline void setName(const string &name) { objNames[0] = name; }
+
     vec3f_t getPosition(float dt = 0) const;
 	quatf_t getRotation(float dt = 0) const;
 
