@@ -9,6 +9,7 @@
 
 class Context;
 class VertexBuffer;
+class Texture;
 
 template <typename T>
 struct Vertex {
@@ -48,4 +49,5 @@ public:
     uint16_t *idx = nullptr;
 
     VertexBuffer *vbuf = nullptr;
+    Texture *texImage;
 };

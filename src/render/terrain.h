@@ -31,6 +31,8 @@ private:
     tcrf_t   tcRange;
 
     Mesh *mesh = nullptr;
+    Texture *texImage = nullptr;
+    bool texOwn = false;
 };
 
 class TerrainManager

@@ -6,6 +6,7 @@
  */
 
 #include "main/core.h"
+#include "render/gl/texture.h"
 #include "render/render.h"
 #include "render/terrain.h"
 
@@ -24,9 +25,17 @@ TerrainTile::~TerrainTile()
 
 void TerrainTile::load()
 {
+	string fname = fmt::sprintf("%s/surf/%02d/%06d/%06d.png",
+		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+
+	texImage = Texture::create(fname);
+	texOwn = true;
+
 	mesh = Mesh::createSphere(lod, ilat, ilng, 32, tcRange);
-	if (mesh != nullptr)
+	if (mesh != nullptr) {
 		mesh->allocate(tmgr.scene.getContext());
+		mesh->texImage = texImage;
+	}
 }
 
 void TerrainTile::render(renderParameter &prm)
