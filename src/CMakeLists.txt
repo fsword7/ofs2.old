@@ -14,6 +14,7 @@ set(ofs_cpp_SRCS
 	render/object.cpp
 	render/planet.cpp
 	render/terrain.cpp
+	universe/astro.cpp
 	universe/body.cpp
 	universe/star.cpp
 	universe/universe.cpp
@@ -50,6 +51,7 @@ set(ofs_h_SRCS
 	render/object.h
 	render/planet.h
 	render/terrain.h
+	universe/astro.h
 	universe/body.h
 	universe/star.h
 	universe/universe.h
