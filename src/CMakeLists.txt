@@ -7,6 +7,7 @@ set(ofs_cpp_SRCS
 	render/gl/buffer.cpp
 	render/gl/context.cpp
 	render/gl/shader.cpp
+	render/gl/texture.cpp
 	render/context.cpp
 	render/mesh.cpp
 	render/render.cpp
@@ -42,6 +43,7 @@ set(ofs_h_SRCS
 	render/gl/buffer.h
 	render/gl/context.h
 	render/gl/shader.h
+	render/gl/texture.h
 	render/context.h
 	render/mesh.h
 	render/render.h
