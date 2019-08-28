@@ -78,5 +78,5 @@ namespace ofs::universe {
         int    temp;
 
     };
-};
+}
 

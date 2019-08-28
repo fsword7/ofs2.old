@@ -94,4 +94,4 @@ namespace ofs::astro {
 	{
 		return sqrt((T(2.0) * G * mass * 1e-9) / radius);
 	}
-};
+}
