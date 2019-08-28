@@ -7,3 +7,10 @@
 
 #include "main/core.h"
 #include "universe/universe.h"
+
+using namespace ofs::universe;
+
+void Universe::init()
+{
+    
+}

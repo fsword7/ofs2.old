@@ -16,6 +16,8 @@ Engine::Engine()
 	player.setPosition(vec3f_t(0.0f, 0.0f, -3.0f));
 	
 	pdata = "data/";
+
+	universe.init();
 }
 
 Engine::~Engine()
