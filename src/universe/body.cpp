@@ -8,3 +8,4 @@
 #include "main/core.h"
 #include "universe/body.h"
 
+using namespace ofs::universe;

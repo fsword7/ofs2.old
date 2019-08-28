@@ -9,11 +9,13 @@
 
 #include "engine/object.h"
 
-class CelestialBody : public Object
-{
-public:
-    CelestialBody() = default;
-    ~CelestialBody() = default;
+namespace ofs::universe {
+    class CelestialBody : public Object
+    {
+    public:
+        CelestialBody() = default;
+        ~CelestialBody() = default;
 
-private:
-};
+    private:
+    };
+}
