@@ -17,6 +17,7 @@ set(ofs_cpp_SRCS
 	universe/astro.cpp
 	universe/body.cpp
 	universe/star.cpp
+	universe/starlib.cpp
 	universe/universe.cpp
 	util/tree.cpp
 )
@@ -53,8 +54,11 @@ set(ofs_h_SRCS
 	render/terrain.h
 	universe/astro.h
 	universe/body.h
+	universe/hygdata.h
 	universe/star.h
+	universe/starlib.h
 	universe/universe.h
+	universe/xhipdata.h
 	util/color.h
 	util/stb_image.h
 	util/tree.h
