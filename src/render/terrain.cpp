@@ -61,19 +61,33 @@ vec3f_t TerrainTile::calculateCenter()
 	int nlat = 1 << lod;
 	int nlng = 2 << lod;
 
-	float latc = (PI/2) - PI * ((float(ilat)+0.5) / float(nlat));
-	// float lngc = (PI*2) * ((float(nlng/2 - ilng-1)+0.5) / float(nlng)) - PI;
-  	float lngc = (PI*2) * ((float(ilng)+0.5) / float(nlng)) - PI;
-  	if (lngc < PI*2)
-        lngc += PI*2;
+	float mlat0 = PI * float(ilat) / float(nlat);
+	float mlat1 = PI * float(ilat+1) / float(nlat);
+    // float mlng0 = PI*2 * (float(nlng/2 - ilng-1) / float(nlng)) - PI;
+    // float mlng1 = PI*2 * (float(nlng/2 - ilng) / float(nlng)) - PI;
+    float mlng0 = PI*2 * (float(ilng) / float(nlng)) - PI;
+    float mlng1 = PI*2 * (float(ilng+1) / float(nlng)) - PI;
 
+	// float latc = (PI/2) - PI * ((float(ilat)+0.5f) / float(nlat));
+	// float lngc = (PI*2) * ((float(nlng/2 - ilng-1)+0.5) / float(nlng)) - PI;
+ 	// if (lngc < PI*2)
+    //     lngc += PI*2;
+
+ 	float latc = PI * ((float(ilat)+0.5f) / float(nlat));
+	float lngc = PI*2 * ((float(ilng)+0.5f) / float(nlng)) - PI;
+ 
 	float slat = sin(latc), clat = cos(latc);
 	float slng = sin(lngc), clng = cos(lngc);
 
-	// cout << "Index:  (" << ilat << "," << ilng << ") of (" << nlat << "," << nlng
-	//      << ") at LOD " << lod+3 << endl;
-	// cout << "Center: (" << toDegree(latc)
-	// 	 << "," << toDegree(lngc) << ")" << endl;
+	cout << "Index:  (" << ilat << "," << ilng << ") of (" << nlat << "," << nlng
+	     << ") at LOD " << lod+3 << endl;
+	cout << "Center: (" << toDegree(latc)
+		 << "," << toDegree(lngc) << ")" << endl;
+	cout << "Coordinate: ( " << toDegree(mlng0) << " , " << toDegree(mlat0) << " ) - ( " 
+	                         << toDegree(mlng1) << " , " << toDegree(mlat0) << " )" << endl;
+	cout << "            ( " << toDegree(mlng0) << " , " << toDegree(mlat1) << " ) - ( " 
+	                         << toDegree(mlng1) << " , " << toDegree(mlat1) << " )" << endl;
+						 
 
 	return vec3f_t(clat*clng, slat, clat*-slng);
 }
@@ -150,11 +164,11 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 	// Check if tile is visible from camera position
 	// If tile is hiding from camera position, mark
 	// tile as invisible (LOD level 1+).
-	// if (adist >= prm.obj.viewap) {
-	// 	// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
-    // 	tile->state = TerrainTile::Invisible;
-    // 	return;
-	// }
+	if (adist >= prm.obj.viewap) {
+		// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
+    	tile->state = TerrainTile::Invisible;
+    	return;
+	}
 
 	// Check if tile is visible in view
 
