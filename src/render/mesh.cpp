@@ -89,7 +89,8 @@ Mesh *Mesh::createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr)
     float mlng0 = PI*2 * (float(ilng) / float(nlng)) - PI;
     float mlng1 = PI*2 * (float(ilng+1) / float(nlng)) - PI;
 
-    cout << "ilng " << ilng << " nlng " << nlng << " mlng0 " << mlng0 << " mlng1 " << mlng1 << endl;
+    // cout << "ilng " << ilng << " nlng " << nlng << " mlng0 " << mlng0 << " mlng1 " << mlng1 << 
+    //     " ( " << toDegree(mlng0) << " , " << toDegree(mlng1) << " )" << endl;
 
 //    vObject *vobj = mgr->getVisualObject();
 //	float   rad = vobj->getObject()->getRadius();
