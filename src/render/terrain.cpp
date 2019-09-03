@@ -16,6 +16,7 @@ TerrainTile::TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint3
 : tmgr(mgr), lod(lod), ilat(ilat), ilng(ilng), tcRange(fullRange)
 {
 	center = calculateCenter();
+	cout << "    New tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
 }
 
 TerrainTile::~TerrainTile()
@@ -31,6 +32,9 @@ TerrainTile *TerrainTile::createChild(int idx)
 	int nlod = lod + 1;
 	int nlat = ilat*2 + (idx / 2);
 	int nlng = ilng*2 + (idx % 2);
+
+	cout << "Current tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
+	cout << "    New tile: lod = " << nlod << " ilat = " << nlat << " ilng = " << nlng << " index = " << idx << endl;
 
 	child = new TerrainTile(tmgr, nlod, nlat, nlng);
 	if (child != nullptr)
@@ -58,17 +62,18 @@ vec3f_t TerrainTile::calculateCenter()
 	int nlng = 2 << lod;
 
 	float latc = (PI/2) - PI * ((float(ilat)+0.5) / float(nlat));
-	float lngc = (PI*2) * ((float(nlng/2 - ilng-1)+0.5) / float(nlng)) - PI;
-    if (lngc < PI*2)
+	// float lngc = (PI*2) * ((float(nlng/2 - ilng-1)+0.5) / float(nlng)) - PI;
+  	float lngc = (PI*2) * ((float(ilng)+0.5) / float(nlng)) - PI;
+  	if (lngc < PI*2)
         lngc += PI*2;
 
 	float slat = sin(latc), clat = cos(latc);
 	float slng = sin(lngc), clng = cos(lngc);
 
-	//	std::cout << "Index:  (" << lat << "," << lng << ") of (" << nlat << "," << nlng
-	//              << ") at LOD " << lod+4 << std::endl;
-	//	std::cout << "Center: (" << toDegrees(latc)
-	//			  << "," << toDegrees(lngc) << ")" << std::endl;
+	// cout << "Index:  (" << ilat << "," << ilng << ") of (" << nlat << "," << nlng
+	//      << ") at LOD " << lod+3 << endl;
+	// cout << "Center: (" << toDegree(latc)
+	// 	 << "," << toDegree(lngc) << ")" << endl;
 
 	return vec3f_t(clat*clng, slat, clat*-slng);
 }
@@ -145,11 +150,11 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 	// Check if tile is visible from camera position
 	// If tile is hiding from camera position, mark
 	// tile as invisible (LOD level 1+).
-	if (adist >= prm.obj.viewap) {
-		std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
-    	tile->state = TerrainTile::Invisible;
-    	return;
-	}
+	// if (adist >= prm.obj.viewap) {
+	// 	// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
+    // 	tile->state = TerrainTile::Invisible;
+    // 	return;
+	// }
 
 	// Check if tile is visible in view
 
@@ -227,7 +232,7 @@ void TerrainManager::render(renderParameter &prm)
 {
 	pgm->use();
 
-	prm.obj.maxLOD = 20;
+	prm.obj.maxLOD = 1;
 	prm.obj.biasLOD = 0;
 
 	prm.obj.opos = vec3f_t(0.0f, 0.0f, 0.0f);
