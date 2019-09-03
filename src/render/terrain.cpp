@@ -132,79 +132,79 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 	double erad;
 	double tdist, apr;
 	int    tlod;
-	bool   split = false;
+	bool   splitFlag = false;
     int    bias = 4;
 
 	tile->state = TerrainTile::Rendering;
 
 	// Find angle between camera and tile center
-	// trad = trad0 / double(nlat);
-	// alpha = acos(glm::dot(prm.cdir, tile->center));
-	// adist = alpha - trad;
+	trad = trad0 / double(nlat);
+	alpha = acos(glm::dot(prm.obj.cdir, tile->center));
+	adist = alpha - trad;
 
 	// Check if tile is visible from camera position
 	// If tile is hiding from camera position, mark
 	// tile as invisible (LOD level 1+).
-	// if (adist >= prm.viewap) {
-	// 	std::cout << "Out of view: " << toDegrees(adist) << " >= " << toDegrees(prm.viewap) << std::endl;
-    // 	tile->state = Tile::Invisible;
-    // 	return;
-	// }
+	if (adist >= prm.obj.viewap) {
+		std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
+    	tile->state = TerrainTile::Invisible;
+    	return;
+	}
 
 	// Check if tile is visible in view
 
-//
-//	// Check LOD level from tile distance
-//	{
-////		erad = obj->getObject()->getRadius();
-//		erad = 1.0;
-//		if (adist < 0.0) {
-//			tdist = prm.cdist - erad;
-////            std::cout << "*** Above tile (LOD " << tile->lod+4 << "," << tile->lat << "," << tile->lng << ")"
-////                      << std::endl;
-//		} else {
-//			double h = erad * sin(adist);
-//			double a = prm.cdist - (erad * cos(adist));
-//			tdist = sqrt(h*h + a*a);
-//		}
-//        bias -= 2.0 * sqrt(std::max(0.0, adist) / prm.viewap);
-//		apr = tdist * prm.tanap;
-//		if (apr > 0.000001)
-//			tlod = std::max(0, std::min(prm.maxLOD, (int)(bias - log(apr)*1.1)));
-//		else
-//			tlod = prm.maxLOD;
-//        tlod += prm.lodBias;
-//		split = (lod < tlod+1);
-//	}
-//
-////    split = false;
-//	if (split == true) {
-////        std::cout << "Tile split at LOD " << lod+4 << "(Expected LOD " << tlod+4 << ")" << std::endl;
-//        bool valid = true;
-//        // Check children that have valid flag
-//		for (int idx = 0; idx < 4; idx++) {
-//			Tile *child = tile->getChild(idx);
-//			if (child == nullptr)
-//				child = createChildNode(tile, idx);
-//			else if (child->state == Tile::Invalid)
-//				loader->queue(child);
-//            if ((child->state & TILE_VALID) == 0)
-//                valid = false;
-//		}
-//        // When all children have valid flags, process nodes in next LOD level.
-//        if (valid) {
-//            tile->state = Tile::Active;
-//            for (int idx = 0; idx < 4; idx++)
-//                processNode(tile->getChild(idx), prm);
-//        }
-//	} else {
-////		std::cout << "Tile LOD Level: " << lod+4 << " (" << tile->lat << ","
-////				  << tile->lng << ")" << std::endl;
-////		std::cout << "Alpha: " << toDegrees(alpha) << " Distance: " << toDegrees(adist)
-////				<< " Tile Distance: " << tdist << std::endl;
-////		std::cout << "Aperture: " << apr << " LOD: " << lod+4
-////				<< " Tile Center LOD: " << tlod+4 << std::endl;
-//	}
+
+	// Check LOD level from tile distance
+	{
+		erad = prm.obj.orad;
+		if (adist < 0.0) {
+			tdist = prm.obj.cdist - erad;
+//            std::cout << "*** Above tile (LOD " << tile->lod+4 << "," << tile->lat << "," << tile->lng << ")"
+//                      << std::endl;
+		} else {
+			double h = erad * sin(adist);
+			double a = prm.obj.cdist - (erad * cos(adist));
+			tdist = sqrt(h*h + a*a);
+		}
+    	bias -= 2.0 * sqrt(std::max(0.0, adist) / prm.obj.viewap);
+		apr = tdist * prm.tanap;
+		if (apr > 0.000001)
+			tlod = std::max(0, std::min(int(prm.obj.maxLOD), int(bias - log(apr)*1.1)));
+		else
+			tlod = prm.obj.maxLOD;
+    	tlod += prm.obj.biasLOD;
+		splitFlag = (lod < tlod+1);
+	}
+
+//    split = false;
+	if (splitFlag == true) {
+//        std::cout << "Tile split at LOD " << lod+4 << "(Expected LOD " << tlod+4 << ")" << std::endl;
+       bool valid = true;
+       // Check children that have valid flag
+
+		for (int idx = 0; idx < 4; idx++) {
+			TerrainTile *child = tile->getChild(idx);
+			if (child == nullptr)
+				child = tile->createChild(idx);
+			else if (child->state == TerrainTile::Invalid)
+				child->load();
+           if ((child->state & TILE_VALID) == 0)
+            	valid = false;
+		}
+       // When all children have valid flags, process nodes in next LOD level.
+       if (valid) {
+        	tile->state = TerrainTile::Active;
+        	for (int idx = 0; idx < 4; idx++)
+            	process(tile->getChild(idx), prm);
+       }
+	} else {
+//		std::cout << "Tile LOD Level: " << lod+4 << " (" << tile->lat << ","
+//				  << tile->lng << ")" << std::endl;
+//		std::cout << "Alpha: " << toDegrees(alpha) << " Distance: " << toDegrees(adist)
+//				<< " Tile Distance: " << tdist << std::endl;
+//		std::cout << "Aperture: " << apr << " LOD: " << lod+4
+//				<< " Tile Center LOD: " << tlod+4 << std::endl;
+	}
 
 }
 
@@ -227,7 +227,35 @@ void TerrainManager::render(renderParameter &prm)
 {
 	pgm->use();
 
-	prm.model = glm::translate(glm::mat4(1.0f), vec3f_t(0.0f, 0.0f, 0.0f));
+	prm.obj.maxLOD = 20;
+	prm.obj.biasLOD = 0;
+
+	prm.obj.opos = vec3f_t(0.0f, 0.0f, 0.0f);
+	prm.obj.orot = mat4f_t(1.0f);
+	prm.obj.orad = 1.0f;
+
+	prm.obj.cpos   = prm.obj.opos - prm.cpos;
+	prm.obj.cdir   = glm::transpose(prm.obj.orot) * vec4f_t(-prm.obj.cpos, 1.0f);
+	prm.obj.cdist  = glm::length(prm.obj.cdir);
+	prm.obj.viewap = (prm.obj.cdist >= prm.obj.orad) ? acos(prm.obj.orad / prm.obj.cdist) : 0.0f;
+
+//	std::cout << "Tile Manger - Render Parameter" << std::endl;
+//	std::cout << "Planet Radius:    " << rad << std::endl;
+//	std::cout << "Planet Position:  (" << prm.ppos.x() << "," << prm.ppos.y() << "," << prm.ppos.z() << ")" << std::endl;
+//	std::cout << "Camera Position:  (" << prm.cpos.x() << "," << prm.cpos.y() << "," << prm.cpos.z() << ")" << std::endl;
+//	std::cout << "Camera Direction: (" << prm.cdir.x() << "," << prm.cdir.y() << "," << prm.cdir.z() << ")" << std::endl;
+//	std::cout << "Camera Distance:  " << prm.cdist << std::endl;
+//	std::cout << "Horizon View:     " << toDegrees(prm.viewap) << std::endl;
+//    std::cout << "Camera Position:  (" << cpos.x() << "," << cpos.y() << "," << cpos.z()
+//              << ") in Universe frame" << std::endl;
+
+//    obj->getCoordinates(prm.cpos, &lat, &lng);
+//    std::cout << "Planet Position:  (" << toDegrees(lat) << "," << toDegrees(lng) << ")" << std::endl;
+
+	prm.obj.cdist /= prm.obj.orad;
+	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
+
+	prm.model = glm::translate(glm::mat4(1.0f), prm.obj.opos);
 	prm.mvp = prm.mproj * prm.mview * prm.model;
 
 	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");

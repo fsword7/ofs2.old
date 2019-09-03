@@ -23,6 +23,29 @@ struct renderParameter
 	glm::mat4 mview;  // View matrix
 	glm::mat4 model;  // Model matrix (current object)
 	glm::mat4 mvp;
+
+	// Camera parameters (global)
+	vec3f_t cpos;
+	quatf_t crot;
+	float   tanap;
+
+	// Object parameters (reference frame)
+	struct {
+		uint32_t maxLOD;
+		uint32_t biasLOD;
+		vec3f_t  opos;
+		mat4f_t  orot;
+		float    orad;
+
+		vec3f_t  cpos;
+		mat4f_t  crot;
+		vec3f_t  cdir;
+		float    cdist;
+
+		float    viewap;
+		float    tanap;
+	} obj;
+
 };
 
 class Scene

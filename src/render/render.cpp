@@ -27,9 +27,10 @@ void Scene::resize(int w, int h)
 void Scene::render(const Player *player)
 {
 	Camera *cam = player->getCamera(0);
-	vec3f_t cpos = cam->getPosition();
-	quatf_t crot = cam->getRotation();
-
+	prm.cpos = cam->getPosition();
+	prm.crot = cam->getRotation();
+	prm.tanap = cam->getTanAp();
+	
 	this->player = player;
 	
 	if (vobj == nullptr) {
@@ -42,8 +43,8 @@ void Scene::render(const Player *player)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	prm.mproj = glm::perspective(glm::radians(OFS_DEFAULT_FOV), float(gl.getWidth()) / float(gl.getHeight()), DIST_NEAR, DIST_FAR);
-	prm.mview = glm::transpose(glm::toMat4(crot));
-	prm.mview = glm::translate(prm.mview, cpos);
+	prm.mview = glm::transpose(glm::toMat4(prm.crot));
+	prm.mview = glm::translate(prm.mview, prm.cpos);
 
 	vobj->render(prm);
 
