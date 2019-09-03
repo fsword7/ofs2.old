@@ -25,11 +25,13 @@ Camera::~Camera()
 void Camera::setFOVrad(double _fov)
 {
 	fov = _fov;
+	tanap = tan(fov);
 }
 
 void Camera::setFOVdeg(double _fov)
 {
 	fov = toRadian(_fov);
+	tanap = tan(fov);
 }
 
 void Camera::focus(Object *obj)

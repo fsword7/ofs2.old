@@ -19,7 +19,7 @@ public:
 	inline vec3f_t getPosition() const { return camPosition; }
 	inline quatf_t getRotation() const { return camRotation; }
 	inline float getFOV() const { return fov; }
-
+	inline float getTanAp() const { return tanap; }
 	void setFOVrad(double fov);
 	void setFOVdeg(double fov);
 
@@ -30,7 +30,8 @@ private:
     Player  *player;
     vec3f_t  camPosition;
     quatf_t  camRotation;
-    float    fov; 
+    float    fov;
+	float    tanap;
 };
 
 class Player
