@@ -164,11 +164,11 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 	// Check if tile is visible from camera position
 	// If tile is hiding from camera position, mark
 	// tile as invisible (LOD level 1+).
-	if (adist >= prm.obj.viewap) {
-		// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
-    	tile->state = TerrainTile::Invisible;
-    	return;
-	}
+	// if (adist >= prm.obj.viewap) {
+	// 	// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
+    // 	tile->state = TerrainTile::Invisible;
+    // 	return;
+	// }
 
 	// Check if tile is visible in view
 
@@ -246,7 +246,7 @@ void TerrainManager::render(renderParameter &prm)
 {
 	pgm->use();
 
-	prm.obj.maxLOD = 1;
+	prm.obj.maxLOD = 2;
 	prm.obj.biasLOD = 0;
 
 	prm.obj.opos = vec3f_t(0.0f, 0.0f, 0.0f);
@@ -254,7 +254,7 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.orad = 1.0f;
 
 	prm.obj.cpos   = prm.obj.opos - prm.cpos;
-	prm.obj.cdir   = glm::transpose(prm.obj.orot) * vec4f_t(-prm.obj.cpos, 1.0f);
+	prm.obj.cdir   = glm::transpose(prm.obj.orot) * vec4f_t(prm.obj.cpos, 1.0f);
 	prm.obj.cdist  = glm::length(prm.obj.cdir);
 	prm.obj.viewap = (prm.obj.cdist >= prm.obj.orad) ? acos(prm.obj.orad / prm.obj.cdist) : 0.0f;
 
