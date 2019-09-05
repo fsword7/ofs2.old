@@ -50,12 +50,12 @@ Texture *Texture::create(const string &fname)
     // stbi_set_flip_vertically_on_load(true);
 	data = stbi_load(fname.c_str(), &width, &height, &components, 0);
     if (data == nullptr) {
-        cout << "Can't open file: " << fname << endl;
+        // cout << "Can't open file: " << fname << endl;
         return nullptr;
     }
 
-    cout << "File: " << fname << endl;
-    cout << "Format Width " << width << " Height " << height << " Components " << components << endl;
+    // cout << "File: " << fname << endl;
+    // cout << "Format Width " << width << " Height " << height << " Components " << components << endl;
 
     Texture *texImage = new Texture(width, height);
     texImage->components = components;
