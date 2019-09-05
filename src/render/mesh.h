@@ -37,8 +37,10 @@ public:
     Mesh() = default;
     ~Mesh();
 
+    inline bool isAllocated() const { return allocatedFlag; }
+
     void allocate(const Context *ctx);
-    void render(const Context *ctx, renderParameter &prm) const;
+    void render(const Context *ctx, renderParameter &prm);
 
  	static Mesh *create(int nvtx, vtxf_t *vtx, int nidx, uint16_t *idx);   
     static Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr);
@@ -48,6 +50,7 @@ public:
     vtxf_t   *vtx = nullptr;
     uint16_t *idx = nullptr;
 
+    bool allocatedFlag = false;
     VertexBuffer *vbuf = nullptr;
     Texture *texImage;
 };

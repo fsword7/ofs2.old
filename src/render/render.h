@@ -11,7 +11,7 @@
 #include "render/gl/buffer.h"
 #include "render/gl/shader.h"
 
-#define DIST_NEAR	0.001f
+#define DIST_NEAR	0.0001f
 #define DIST_FAR	1.0e8f
 
 class Player;
@@ -58,6 +58,8 @@ public:
 	inline const Context *getContext() const { return &gl; }
 
 	void init(int width, int height);
+	void cleanup();
+	
 	void resize(int width, int height);
 
 	void render(const Player *player);

@@ -20,10 +20,12 @@ Mesh::~Mesh()
         delete idx;
 }
 
-void Mesh::render(const Context *gl, renderParameter &prm) const
+void Mesh::render(const Context *gl, renderParameter &prm)
 {
 
 //    pgm->use();
+    if (isAllocated() == false)
+        allocate(gl);
     vbuf->bind();
 
 	vbuf->assign(VertexBuffer::VBO, vtx, nvtx*sizeof(vtxf_t));
@@ -39,9 +41,12 @@ void Mesh::render(const Context *gl, renderParameter &prm) const
 	glEnableVertexAttribArray(2);
 
     if (texImage != nullptr) {
-        glActiveTexture(GL_TEXTURE0);
+        if (texImage->isLoaded() == false)
+            texImage->load();
+        glActiveTexture(GL_TEXTURE0);   
         texImage->bind();
     } else {
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     
@@ -63,6 +68,8 @@ void Mesh::allocate(const Context *ctx)
 
 	// vbuf->assign(VertexBuffer::VBO, vtx, nvtx*sizeof(vtxf_t));
     // vbuf->assign(VertexBuffer::EBO, idx, nidx*sizeof(uint16_t));
+
+    allocatedFlag = true;
 }
 
 Mesh *Mesh::create(int nvtx, vtxf_t *vtx, int nidx, uint16_t *idx)

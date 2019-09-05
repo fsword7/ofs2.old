@@ -31,9 +31,11 @@ public:
     Texture(uint32_t width, uint32_t height);
     ~Texture();
 
-    inline void bind() const   { glBindTexture(GL_TEXTURE_2D, id); }
-    inline void unbind() const { glBindTexture(GL_TEXTURE_2D, 0); }
+    inline bool isLoaded() const { return loadFlag; }
+    inline void bind() const     { glBindTexture(GL_TEXTURE_2D, id); }
+    inline void unbind() const   { glBindTexture(GL_TEXTURE_2D, 0); }
 
+    // void bind();
     void load();
 
     static Texture *create(const string &fname);
@@ -49,5 +51,6 @@ private:
     MipMapMode mipMode = NoMipMaps;
     BorderMode borderMode = EdgeClamp;
 
+    bool loadFlag = false;
     GLuint id = 0;
 };

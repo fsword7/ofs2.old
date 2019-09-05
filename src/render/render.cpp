@@ -17,6 +17,15 @@ void Scene::init(int w, int h)
 	gl.init(w, h);
 
 	glEnable(GL_DEPTH_TEST);
+
+	// Initialize global parameters
+	TerrainManager::ginit(*this);
+}
+
+void Scene::cleanup()
+{
+	// Cleanup global parameters
+	TerrainManager::gexit();
 }
 
 void Scene::resize(int w, int h)

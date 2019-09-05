@@ -15,10 +15,12 @@
 #define TILE_ACTIVE 0x40000000
 
 class TerrainManager;
+class TerrainHandler;
 
 class TerrainTile : public Tree<TerrainTile, QTREE_NODES>
 {
     friend class TerrainManager;
+    friend class TerrainHandler;
 
 public:
     enum TileState {
@@ -32,12 +34,15 @@ public:
         Rendering = TILE_VALID|TILE_ACTIVE|0x0010
     };
 
-    TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint32_t ilng);
+    TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint32_t ilng, TerrainTile *parent = nullptr);
     ~TerrainTile();
+
+    inline Texture *getTexture() const { return texImage; }
 
     TerrainTile *createChild(int idx);
 
     vec3f_t calculateCenter();
+    void setSubTexCoordRange(const tcrf_t &ptcr);
 
     void split();
     void load();
@@ -58,6 +63,33 @@ private:
     bool texOwn = false;
 };
 
+class TerrainHandler
+{
+public:
+	TerrainHandler();
+	~TerrainHandler();
+
+	void start();
+	void shutdown();
+
+	void queue(TerrainTile *tile);
+	bool unqueue(TerrainTile *tile);
+	void unqueue(TerrainManager *mgr);
+
+protected:
+	void handle();
+
+private:
+	std::queue<TerrainTile *> tiles;
+
+	// Thread process handle
+	volatile bool runHandler;
+	int           msFreq;
+	std::thread   loader;
+	std::mutex    mu_queue;
+	std::mutex    mu_loading;
+};
+
 class TerrainManager
 {
     friend class TerrainTile;
@@ -65,6 +97,9 @@ class TerrainManager
 public:
     TerrainManager(Scene &scene);
     ~TerrainManager();
+
+    static void ginit(Scene &scene);
+    static void gexit();
 
     void process(TerrainTile *tile, renderParameter &prm);
     void render(TerrainTile *tile, renderParameter &prm);
@@ -74,6 +109,8 @@ private:
     Scene &scene;
 
     ShaderProgram *pgm;
+
+    static TerrainHandler *loader;
 
     TerrainTile *terrain[2];
 };

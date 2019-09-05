@@ -10,13 +10,22 @@
 #include "render/render.h"
 #include "render/terrain.h"
 
+// Global parameters
+TerrainHandler *TerrainManager::loader = nullptr;
+
 static tcrf_t fullRange = { 0.0f, 1.0f, 0.0f, 1.0f };
 
-TerrainTile::TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint32_t ilng)
-: tmgr(mgr), lod(lod), ilat(ilat), ilng(ilng), tcRange(fullRange)
+TerrainTile::TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint32_t ilng, TerrainTile *parent)
+: Tree(parent), tmgr(mgr), lod(lod), ilat(ilat), ilng(ilng), tcRange(fullRange)
 {
 	center = calculateCenter();
 	// cout << "    New tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
+
+	mesh = Mesh::createSphere(lod, ilat, ilng, 32, tcRange);
+	if (mesh != nullptr) {
+		mesh->allocate(tmgr.scene.getContext());
+		mesh->texImage = texImage;
+	}
 }
 
 TerrainTile::~TerrainTile()
@@ -36,9 +45,9 @@ TerrainTile *TerrainTile::createChild(int idx)
 	// cout << "Current tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
 	// cout << "    New tile: lod = " << nlod << " ilat = " << nlat << " ilng = " << nlng << " index = " << idx << endl;
 
-	child = new TerrainTile(tmgr, nlod, nlat, nlng);
+	child = new TerrainTile(tmgr, nlod, nlat, nlng, this);
 	if (child != nullptr)
-		child->load();
+		tmgr.loader->queue(child);
 	addChild(idx, child);
 
 	return child;
@@ -92,6 +101,26 @@ vec3f_t TerrainTile::calculateCenter()
 	return vec3f_t(slat*clng, clat, slat*-slng);
 }
 
+void TerrainTile::setSubTexCoordRange(const tcrf_t &ptcr)
+{
+	// if ((ilng & 1) == 0) { // Right column
+	if (ilng & 1) { // Right column
+		tcRange.tumin = (ptcr.tumin + ptcr.tumax) / 2.0;
+		tcRange.tumax = ptcr.tumax;
+	} else {       // Left column
+		tcRange.tumin = ptcr.tumin;
+		tcRange.tumax = (ptcr.tumin + ptcr.tumax) / 2.0;
+	}
+
+	if (ilat & 1) { // Top row
+		tcRange.tvmin = (ptcr.tvmin + ptcr.tvmax) / 2.0;
+		tcRange.tvmax = ptcr.tvmax;
+	} else {       // Bottom row
+		tcRange.tvmin = ptcr.tvmin;
+		tcRange.tvmax = (ptcr.tvmin + ptcr.tvmax) / 2.0;
+	}
+}
+
 void TerrainTile::load()
 {
 	state = Loading;
@@ -100,11 +129,23 @@ void TerrainTile::load()
 		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
 
 	texImage = Texture::create(fname);
-	texOwn = true;
+	if (texImage == nullptr) {
+    	// Non-existent tile. Have to load
+    	// lower LOD tile from parent tile
+    	// and set sub texture range.
+    	TerrainTile *ptile = getParent();
+    	if (ptile != nullptr) {
+    		texImage = ptile->getTexture();
+    		texOwn   = false;
+    		setSubTexCoordRange(ptile->tcRange);
+    		// std::cout << "Subtexture created" << std::endl;
+    	}
+	} else
+		texOwn = true;
 
 	mesh = Mesh::createSphere(lod, ilat, ilng, 32, tcRange);
 	if (mesh != nullptr) {
-		mesh->allocate(tmgr.scene.getContext());
+		// mesh->allocate(tmgr.scene.getContext());
 		mesh->texImage = texImage;
 	}
 
@@ -140,13 +181,29 @@ TerrainManager::~TerrainManager()
 		delete terrain[idx];
 }
 
+void TerrainManager::ginit(Scene &scene)
+{
+	// Initialize and start up thread process for loading tiles
+	loader = new TerrainHandler();
+}
+
+void TerrainManager::gexit()
+{
+	if (loader != nullptr) {
+		delete loader;
+		loader = nullptr;
+	}
+}
+
 void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 {
 	int lod  = tile->lod;
 	int nlat = 1 << tile->ilat;
 	int nlng = 2 << tile->ilng;
 
-	double trad0 = sqrt(2.0)*(PI/2);
+	// farthest edge of quad tile radius
+	constexpr double trad0 = sqrt(2.0)*(PI/2);
+
 	double trad, alpha, adist;
 	double erad;
 	double tdist, apr;
@@ -209,7 +266,7 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 			if (child == nullptr)
 				child = tile->createChild(idx);
 			else if (child->state == TerrainTile::Invalid)
-				child->load();
+				loader->queue(child);
            if ((child->state & TILE_VALID) == 0)
             	valid = false;
 		}
