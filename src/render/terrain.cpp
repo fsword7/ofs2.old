@@ -16,7 +16,7 @@ TerrainTile::TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint3
 : tmgr(mgr), lod(lod), ilat(ilat), ilng(ilng), tcRange(fullRange)
 {
 	center = calculateCenter();
-	cout << "    New tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
+	// cout << "    New tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
 }
 
 TerrainTile::~TerrainTile()
@@ -33,8 +33,8 @@ TerrainTile *TerrainTile::createChild(int idx)
 	int nlat = ilat*2 + (idx / 2);
 	int nlng = ilng*2 + (idx % 2);
 
-	cout << "Current tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
-	cout << "    New tile: lod = " << nlod << " ilat = " << nlat << " ilng = " << nlng << " index = " << idx << endl;
+	// cout << "Current tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
+	// cout << "    New tile: lod = " << nlod << " ilat = " << nlat << " ilng = " << nlng << " index = " << idx << endl;
 
 	child = new TerrainTile(tmgr, nlod, nlat, nlng);
 	if (child != nullptr)
@@ -79,24 +79,24 @@ vec3f_t TerrainTile::calculateCenter()
 	float slat = sin(latc), clat = cos(latc);
 	float slng = sin(lngc), clng = cos(lngc);
 
-	cout << "Index:  (" << ilat << "," << ilng << ") of (" << nlat << "," << nlng
-	     << ") at LOD " << lod+3 << endl;
-	cout << "Center: (" << toDegree(latc)
-		 << "," << toDegree(lngc) << ")" << endl;
-	cout << "Coordinate: ( " << toDegree(mlng0) << " , " << toDegree(mlat0) << " ) - ( " 
-	                         << toDegree(mlng1) << " , " << toDegree(mlat0) << " )" << endl;
-	cout << "            ( " << toDegree(mlng0) << " , " << toDegree(mlat1) << " ) - ( " 
-	                         << toDegree(mlng1) << " , " << toDegree(mlat1) << " )" << endl;
+	// cout << "Index:  (" << ilat << "," << ilng << ") of (" << nlat << "," << nlng
+	//      << ") at LOD " << lod+3 << endl;
+	// cout << "Center: (" << toDegree(latc)
+	// 	 << "," << toDegree(lngc) << ")" << endl;
+	// cout << "Coordinate: ( " << toDegree(mlng0) << " , " << toDegree(mlat0) << " ) - ( " 
+	//                          << toDegree(mlng1) << " , " << toDegree(mlat0) << " )" << endl;
+	// cout << "            ( " << toDegree(mlng0) << " , " << toDegree(mlat1) << " ) - ( " 
+	//                          << toDegree(mlng1) << " , " << toDegree(mlat1) << " )" << endl;
 						 
-
-	return vec3f_t(clat*clng, slat, clat*-slng);
+	// return vec3f_t(clat*clng, slat, clat*-slng);
+	return vec3f_t(slat*clng, clat, slat*-slng);
 }
 
 void TerrainTile::load()
 {
 	state = Loading;
 
-	string fname = fmt::sprintf("%s/surf/%02d/%06d/%06d.png",
+	string fname = fmt::sprintf("%s/surf/%02d/%06d/%06d.jpg",
 		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
 
 	texImage = Texture::create(fname);
@@ -160,15 +160,18 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 	trad = trad0 / double(nlat);
 	alpha = acos(glm::dot(prm.obj.cdir, tile->center));
 	adist = alpha - trad;
+	
+	// cout << "Tile Position:    (" << tile->center.x << "," << tile->center.y << "," << tile->center.z << ")" << endl;
+	// cout << "Angle from center: " << toDegree(alpha) << endl;
 
 	// Check if tile is visible from camera position
 	// If tile is hiding from camera position, mark
 	// tile as invisible (LOD level 1+).
-	// if (adist >= prm.obj.viewap) {
-	// 	// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
-    // 	tile->state = TerrainTile::Invisible;
-    // 	return;
-	// }
+	if (adist >= prm.obj.viewap) {
+		// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
+    	tile->state = TerrainTile::Invisible;
+    	return;
+	}
 
 	// Check if tile is visible in view
 
@@ -246,7 +249,7 @@ void TerrainManager::render(renderParameter &prm)
 {
 	pgm->use();
 
-	prm.obj.maxLOD = 2;
+	prm.obj.maxLOD = 16;
 	prm.obj.biasLOD = 0;
 
 	prm.obj.opos = vec3f_t(0.0f, 0.0f, 0.0f);
@@ -258,18 +261,18 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.cdist  = glm::length(prm.obj.cdir);
 	prm.obj.viewap = (prm.obj.cdist >= prm.obj.orad) ? acos(prm.obj.orad / prm.obj.cdist) : 0.0f;
 
-//	std::cout << "Tile Manger - Render Parameter" << std::endl;
-//	std::cout << "Planet Radius:    " << rad << std::endl;
-//	std::cout << "Planet Position:  (" << prm.ppos.x() << "," << prm.ppos.y() << "," << prm.ppos.z() << ")" << std::endl;
-//	std::cout << "Camera Position:  (" << prm.cpos.x() << "," << prm.cpos.y() << "," << prm.cpos.z() << ")" << std::endl;
-//	std::cout << "Camera Direction: (" << prm.cdir.x() << "," << prm.cdir.y() << "," << prm.cdir.z() << ")" << std::endl;
-//	std::cout << "Camera Distance:  " << prm.cdist << std::endl;
-//	std::cout << "Horizon View:     " << toDegrees(prm.viewap) << std::endl;
-//    std::cout << "Camera Position:  (" << cpos.x() << "," << cpos.y() << "," << cpos.z()
-//              << ") in Universe frame" << std::endl;
+	// cout << "Terrain Manager - Render Parameter" << endl;
+	// cout << "Planet Radius:    " << prm.obj.orad << endl;
+	// cout << "Planet Position:  (" << prm.obj.opos.x << "," << prm.obj.opos.y << "," << prm.obj.opos.z << ")" << endl;
+	// cout << "Camera Position:  (" << prm.obj.cpos.x << "," << prm.obj.cpos.y << "," << prm.obj.cpos.z << ")" << endl;
+	// cout << "Camera Direction: (" << prm.obj.cdir.x << "," << prm.obj.cdir.y << "," << prm.obj.cdir.z << ")" << endl;
+	// cout << "Camera Distance:  " << prm.obj.cdist << endl;
+	// cout << "Horizon View:     " << toDegree(prm.obj.viewap) << endl;
+	// cout << "Camera Position:  (" << prm.cpos.x << "," << prm.cpos.y << "," << prm.cpos.z
+    //          << ") in Universe frame" << endl;
 
 //    obj->getCoordinates(prm.cpos, &lat, &lng);
-//    std::cout << "Planet Position:  (" << toDegrees(lat) << "," << toDegrees(lng) << ")" << std::endl;
+//    cout << "Planet Position:  (" << toDegrees(lat) << "," << toDegrees(lng) << ")" << endl;
 
 	prm.obj.cdist /= prm.obj.orad;
 	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
