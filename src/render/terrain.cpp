@@ -198,8 +198,8 @@ void TerrainManager::gexit()
 void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 {
 	int lod  = tile->lod;
-	int nlat = 1 << tile->ilat;
-	int nlng = 2 << tile->ilng;
+	int nlat = 1 << tile->lod;
+	int nlng = 2 << tile->lod;
 
 	// farthest edge of quad tile radius
 	constexpr double trad0 = sqrt(2.0)*(PI/2);
@@ -225,10 +225,12 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 	// If tile is hiding from camera position, mark
 	// tile as invisible (LOD level 1+).
 	if (adist >= prm.obj.viewap) {
-		// std::cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << std::endl;
+		// cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << endl;
     	tile->state = TerrainTile::Invisible;
     	return;
 	}
+	// cout << "In View: (LOD " << tile->lod+3 << "," << tile->ilat << "," << tile->ilng << ") "
+	// 	 << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << endl;
 
 	// Check if tile is visible in view
 
@@ -238,8 +240,8 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 		erad = prm.obj.orad;
 		if (adist < 0.0) {
 			tdist = prm.obj.cdist - erad;
-//            std::cout << "*** Above tile (LOD " << tile->lod+4 << "," << tile->lat << "," << tile->lng << ")"
-//                      << std::endl;
+        	// cout << "*** Above tile (LOD " << tile->lod+3 << "," << tile->ilat << "," << tile->ilng << ")"
+			// 	 << " Distance from ground " << erad << endl;
 		} else {
 			double h = erad * sin(adist);
 			double a = prm.obj.cdist - (erad * cos(adist));
@@ -306,7 +308,7 @@ void TerrainManager::render(renderParameter &prm)
 {
 	pgm->use();
 
-	prm.obj.maxLOD = 16;
+	prm.obj.maxLOD = 18;
 	prm.obj.biasLOD = 0;
 
 	prm.obj.opos = vec3f_t(0.0f, 0.0f, 0.0f);
