@@ -315,13 +315,14 @@ void TerrainManager::render(renderParameter &prm)
 	// Object position and orientation parameters
 	prm.obj.opos = vec3f_t(0.0f, 0.0f, -6.0f);
 	prm.obj.orot = glm::rotate(mat4f_t(1.0f), glm::radians(0.0f), vec3f_t(0.0f, 0.0f, 1.0f));
-	prm.obj.orad = 1.0f;
+	prm.obj.orad = 2.0f;
 
 	// Camera position and oreintation parameters in object reference frame.
 	prm.obj.cpos   = prm.obj.opos - prm.cpos;
 	prm.obj.cdir   = glm::transpose(prm.obj.orot) * vec4f_t(prm.obj.cpos, 1.0f);
-	prm.obj.cdist  = glm::length(prm.obj.cdir);
-	prm.obj.viewap = (prm.obj.cdist >= prm.obj.orad) ? acos(prm.obj.orad / prm.obj.cdist) : 0.0f;
+	prm.obj.cdist  = glm::length(prm.obj.cdir) / prm.obj.orad;
+	prm.obj.viewap = (prm.obj.cdist >= 1.0f) ? acos(1.0f / prm.obj.cdist) : 0.0f;
+	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 
 	// cout << "Terrain Manager - Render Parameter" << endl;
 	// cout << "Planet Radius:    " << prm.obj.orad << endl;
@@ -336,8 +337,9 @@ void TerrainManager::render(renderParameter &prm)
 //    obj->getCoordinates(prm.cpos, &lat, &lng);
 //    cout << "Planet Position:  (" << toDegrees(lat) << "," << toDegrees(lng) << ")" << endl;
 
+	// Normalize units in object radius
 	// prm.obj.cdist /= prm.obj.orad;
-	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
+	// prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 
 	prm.model = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
 	prm.mvp = prm.mproj * prm.mview * prm.model;
