@@ -36,9 +36,11 @@ void Scene::resize(int w, int h)
 void Scene::render(const Player *player)
 {
 	Camera *cam = player->getCamera(0);
-	prm.cpos = cam->getPosition();
-	prm.crot = cam->getRotation();
-	prm.tanap = cam->getTanAp();
+	
+	prm.jdTime  = player->getJulianTime();
+	prm.cpos    = cam->getPosition();
+	prm.crot    = cam->getRotation();
+	prm.tanap   = cam->getTanAp();
 	
 	this->player = player;
 	

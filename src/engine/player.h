@@ -40,12 +40,15 @@ public:
     Player();
     ~Player();
 
-	inline vec3f_t getPosition() const { return lpos; }
-	inline quatf_t getRotation() const { return lqrot; }
+	inline vec3f_t getPosition() const   { return lpos; }
+	inline quatf_t getRotation() const   { return lqrot; }
+	inline float   getJulianTime() const { return jdTime; }
 
 	inline vec3f_t getAngularVelocity() { return av; }
 	inline vec3f_t getTravelVelocity()  { return tv; }
 	inline float   getTravelSpeed()     { return tv.z; }
+
+
 
     Camera *getCamera(int idx) const;
 	

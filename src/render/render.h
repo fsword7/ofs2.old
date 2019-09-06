@@ -19,6 +19,8 @@ class vPlanet;
 
 struct renderParameter
 {
+	double jdTime;    // Current julian time
+
 	glm::mat4 mproj;  // Projection matrix
 	glm::mat4 mview;  // View matrix
 	glm::mat4 model;  // Model matrix (current object)
