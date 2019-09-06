@@ -215,7 +215,7 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 
 	// Find angle between camera and tile center
 	trad = trad0 / double(nlat);
-	alpha = acos(glm::dot(prm.obj.cdir, tile->center));
+	alpha = acos(glm::dot(prm.obj.cdir, -tile->center));
 	adist = alpha - trad;
 	
 	// cout << "Tile Position:    (" << tile->center.x << "," << tile->center.y << "," << tile->center.z << ")" << endl;
@@ -225,7 +225,8 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 	// If tile is hiding from camera position, mark
 	// tile as invisible (LOD level 1+).
 	if (adist >= prm.obj.viewap) {
-		// cout << "Out of view: " << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << endl;
+		// cout << "Out of view: " << tile->lod+3 << "," << tile->ilat << "," << tile->ilng << ") "
+		// 	 << toDegree(adist) << " >= " << toDegree(prm.obj.viewap) << endl;
     	tile->state = TerrainTile::Invisible;
     	return;
 	}
@@ -311,10 +312,12 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.maxLOD = 18;
 	prm.obj.biasLOD = 0;
 
-	prm.obj.opos = vec3f_t(0.0f, 0.0f, -3.0f);
+	// Object position and orientation parameters
+	prm.obj.opos = vec3f_t(0.0f, 0.0f, -6.0f);
 	prm.obj.orot = glm::rotate(mat4f_t(1.0f), glm::radians(0.0f), vec3f_t(0.0f, 0.0f, 1.0f));
 	prm.obj.orad = 1.0f;
 
+	// Camera position and oreintation parameters in object reference frame.
 	prm.obj.cpos   = prm.obj.opos - prm.cpos;
 	prm.obj.cdir   = glm::transpose(prm.obj.orot) * vec4f_t(prm.obj.cpos, 1.0f);
 	prm.obj.cdist  = glm::length(prm.obj.cdir);
@@ -333,7 +336,7 @@ void TerrainManager::render(renderParameter &prm)
 //    obj->getCoordinates(prm.cpos, &lat, &lng);
 //    cout << "Planet Position:  (" << toDegrees(lat) << "," << toDegrees(lng) << ")" << endl;
 
-	prm.obj.cdist /= prm.obj.orad;
+	// prm.obj.cdist /= prm.obj.orad;
 	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 
 	prm.model = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
@@ -343,9 +346,11 @@ void TerrainManager::render(renderParameter &prm)
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(prm.mvp));
 
 	// Rendering terrain area
-	for (int idx = 0; idx < 2; idx++)
-		process(terrain[idx], prm);
-	for (int idx = 0; idx < 2; idx++)
-		render(terrain[idx], prm);
+	// for (int idx = 0; idx < 2; idx++)
+	// 	process(terrain[idx], prm);
+	// for (int idx = 0; idx < 2; idx++)
+	// 	render(terrain[idx], prm);
+	process(terrain[0], prm);
+	render(terrain[0], prm);
 
 }
