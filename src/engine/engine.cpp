@@ -10,6 +10,8 @@
 #include "engine/engine.h"
 #include "engine/player.h"
 
+using namespace ofs::universe;
+
 Engine::Engine()
 : realTime(0), scaleTime(1.0)
 {

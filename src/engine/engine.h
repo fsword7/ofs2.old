@@ -11,6 +11,8 @@
 #include "engine/player.h"
 #include "universe/universe.h"
 
+using namespace ofs::universe;
+
 class Engine
 {
 public:

@@ -8,9 +8,10 @@
 #include "main/core.h"
 #include "universe/universe.h"
 
-using namespace ofs::universe;
-
 void Universe::init()
 {
     
+    earth = new CelestialBody();
+    earth->setName("earth");
+    earth->setRadius(2.0f);
 }

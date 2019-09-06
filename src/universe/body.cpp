@@ -9,3 +9,9 @@
 #include "universe/body.h"
 
 using namespace ofs::universe;
+
+CelestialBody::CelestialBody()
+: Object(ObjectType::objCelestialBody)
+{
+
+}

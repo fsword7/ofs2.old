@@ -13,7 +13,7 @@ namespace ofs::universe {
     class CelestialBody : public Object
     {
     public:
-        CelestialBody() = default;
+        CelestialBody();
         ~CelestialBody() = default;
 
     private:

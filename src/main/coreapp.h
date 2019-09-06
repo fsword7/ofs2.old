@@ -7,8 +7,9 @@
 
 #pragma once
 
+#include "universe/universe.h"
+
 class Engine;
-//class Universe;
 class Player;
 class Scene;
 
@@ -81,7 +82,7 @@ namespace ofs {
 	private:
 		Player   *player;
 		Engine   *engine;
-//		Universe *universe;
+		Universe *universe;
 		Scene *scene = nullptr;
 
 		// keyboard handle parameters

@@ -8,15 +8,22 @@
 #pragma once
 
 #include "universe/starlib.h"
+#include "universe/body.h"
 
-class Universe
-{
-public:
-    Universe() = default;
-    ~Universe() = default;
+using namespace ofs::universe;
 
-    void init();
-    
-private:
-    ofs::universe::StarCatalogue starlib;
-};
+namespace ofs::universe {
+    class Universe
+    {
+    public:
+        Universe() = default;
+        ~Universe() = default;
+
+        void init();
+        
+    private:
+        StarCatalogue starlib;
+
+        CelestialBody *earth;
+    };
+}

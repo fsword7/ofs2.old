@@ -50,6 +50,7 @@ void CoreApp::initEngine()
 
 	engine = new Engine();
 	player = engine->getPlayer();
+	universe = engine->getUniverse();
 }
 
 void CoreApp::pressKey(keyCode code, bool down)
