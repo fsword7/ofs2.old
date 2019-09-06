@@ -13,5 +13,6 @@ void Universe::init()
     
     earth = new CelestialBody();
     earth->setName("earth");
-    earth->setRadius(2.0f);
+    earth->setPosition(vec3f_t(0.0f, 0.0f, -20000.0f));
+    earth->setRadius(6371.0f);
 }

@@ -24,6 +24,7 @@ public:
 
     inline void setName(const string &name) { objNames[0] = name; }
 
+    inline void setPosition(vec3f_t pos) { objPosition = pos; }
     inline void setRadius(float rad) { objRadius = rad; }
     inline float getRadius() const { return objRadius; }
 

@@ -12,8 +12,8 @@
 #include "render/gl/buffer.h"
 #include "render/gl/shader.h"
 
-#define DIST_NEAR	0.0001f
-#define DIST_FAR	1.0e8f
+#define DIST_NEAR	1.0f
+#define DIST_FAR	1e8f
 
 class Player;
 class vPlanet;

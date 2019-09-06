@@ -11,7 +11,7 @@
 vPlanet::vPlanet(Scene &scene, Object &object)
 : vObject(scene, object)
 {
-    tmgr = new TerrainManager(scene);
+    tmgr = new TerrainManager(scene, object);
 }
 
 void vPlanet::render(renderParameter &prm)
