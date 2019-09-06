@@ -53,7 +53,7 @@ void Scene::render(const Player *player)
 
 	prm.mproj = glm::perspective(glm::radians(OFS_DEFAULT_FOV), float(gl.getWidth()) / float(gl.getHeight()), DIST_NEAR, DIST_FAR);
 	prm.mview = glm::transpose(glm::toMat4(prm.crot));
-	prm.mview = glm::translate(prm.mview, prm.cpos);
+	// prm.mview = glm::translate(prm.mview, prm.cpos);
 
 	vobj->render(prm);
 

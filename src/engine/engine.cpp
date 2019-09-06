@@ -13,7 +13,7 @@
 Engine::Engine()
 : realTime(0), scaleTime(1.0)
 {
-	player.setPosition(vec3f_t(0.0f, 0.0f, -3.0f));
+	player.setPosition(vec3f_t(0.0f, 0.0f, 0.0f));
 	
 	pdata = "data/";
 

@@ -311,8 +311,8 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.maxLOD = 18;
 	prm.obj.biasLOD = 0;
 
-	prm.obj.opos = vec3f_t(0.0f, 0.0f, 0.0f);
-	prm.obj.orot = mat4f_t(1.0f);
+	prm.obj.opos = vec3f_t(0.0f, 0.0f, -3.0f);
+	prm.obj.orot = glm::rotate(mat4f_t(1.0f), glm::radians(0.0f), vec3f_t(0.0f, 0.0f, 1.0f));
 	prm.obj.orad = 1.0f;
 
 	prm.obj.cpos   = prm.obj.opos - prm.cpos;
@@ -336,7 +336,7 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.cdist /= prm.obj.orad;
 	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 
-	prm.model = glm::translate(glm::mat4(1.0f), prm.obj.opos);
+	prm.model = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
 	prm.mvp = prm.mproj * prm.mview * prm.model;
 
 	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");

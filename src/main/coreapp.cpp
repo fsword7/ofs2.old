@@ -94,9 +94,9 @@ void CoreApp::tick()
 		av += vec3f_t(0, 0, dt * keyRotationAccel);
 
 	// Travel velocity control
-	if (stateKey[keyPad1])
-		tv.z += dt /* * 1000.0 */;
 	if (stateKey[keyPad3])
+		tv.z += dt /* * 1000.0 */;
+	if (stateKey[keyPad1])
 		tv.z -= dt /* * 1000.0 */;
 
 	// Braking velocity control
