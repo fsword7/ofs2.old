@@ -21,6 +21,8 @@ namespace ofs::universe {
 
         void init();
         
+        CelestialBody *getEarth() const { return earth; }
+
     private:
         StarCatalogue starlib;
 

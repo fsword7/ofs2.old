@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "universe/universe.h"
 #include "render/context.h"
 #include "render/gl/buffer.h"
 #include "render/gl/shader.h"
@@ -64,7 +65,7 @@ public:
 	
 	void resize(int width, int height);
 
-	void render(const Player *player);
+	void render(const Player *player, const Universe *universe);
 
 private:
 	Context gl;

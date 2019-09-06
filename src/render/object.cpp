@@ -9,8 +9,8 @@
 #include "render/render.h"
 #include "render/object.h"
 
-vObject::vObject(const Scene &scene)
-: scene(scene)
+vObject::vObject(const Scene &scene, const Object &object)
+: scene(scene), object(object)
 {
 
 }

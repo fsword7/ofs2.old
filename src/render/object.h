@@ -7,16 +7,17 @@
 
 #pragma once
 
+#include "engine/object.h"
 #include "render/render.h"
 
 class vObject {
 public:
-    vObject(const Scene &scene);
+    vObject(const Scene &scene, const Object &object);
     virtual ~vObject() = default;
 
     virtual void render(renderParameter &prm) = 0;
 
 protected:
     const Scene  &scene;
-    // const Object &object;
+    const Object &object;
 };

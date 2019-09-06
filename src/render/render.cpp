@@ -33,7 +33,7 @@ void Scene::resize(int w, int h)
 	gl.resize(w, h);
 }
 
-void Scene::render(const Player *player)
+void Scene::render(const Player *player, const Universe *universe)
 {
 	Camera *cam = player->getCamera(0);
 	
@@ -45,7 +45,7 @@ void Scene::render(const Player *player)
 	this->player = player;
 	
 	if (vobj == nullptr) {
-		vobj = new vPlanet(*this);
+		vobj = new vPlanet(*this, *universe->getEarth());
 	}
 
 	gl.start();
