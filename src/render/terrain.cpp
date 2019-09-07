@@ -350,13 +350,10 @@ void TerrainManager::render(renderParameter &prm)
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(prm.mvp));
 
 	// Rendering terrain area
-	// for (int idx = 0; idx < 2; idx++)
-	// 	process(terrain[idx], prm);
-	// for (int idx = 0; idx < 2; idx++)
-	// 	render(terrain[idx], prm);
-	process(terrain[0], prm);
-	render(terrain[0], prm);
-
+	for (int idx = 0; idx < 2; idx++)
+		process(terrain[idx], prm);
+	for (int idx = 0; idx < 2; idx++)
+		render(terrain[idx], prm);
 }
 
 Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr)

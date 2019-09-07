@@ -16,8 +16,8 @@ void Scene::init(int w, int h)
 {
 	gl.init(w, h);
 
-	// Have to disable that due to near/far plane problems in perspective.
-	// glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
@@ -58,7 +58,9 @@ void Scene::render(const Player *player, const Universe *universe)
 	prm.mview = glm::transpose(glm::toMat4(prm.crot));
 	// prm.mview = glm::translate(prm.mview, prm.cpos);
 
+	// glDepthMask(GL_FALSE);
 	vobj->render(prm);
+	// glDepthMask(GL_TRUE);
 
 	gl.finish();
 }
