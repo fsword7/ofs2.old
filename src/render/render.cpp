@@ -16,7 +16,8 @@ void Scene::init(int w, int h)
 {
 	gl.init(w, h);
 
-	glEnable(GL_DEPTH_TEST);
+	// Have to disable that due to near/far plane problems in perspective.
+	// glEnable(GL_DEPTH_TEST);
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
