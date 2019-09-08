@@ -26,10 +26,10 @@ public:
 
     inline void setPosition(vec3f_t pos) { objPosition = pos; }
     inline void setRadius(float rad) { objRadius = rad; }
-    inline float getRadius() const { return objRadius; }
+    inline double getRadius() const { return objRadius; }
 
-    vec3f_t getPosition(float jd = 0) const;
-	quatf_t getRotation(float jd = 0) const;
+    vec3d_t getPosition(double jd = 0) const;
+	quatd_t getRotation(double jd = 0) const;
 
 private:
     ObjectType objType = objUnknown;
@@ -38,10 +38,10 @@ protected:
     vector<string> objNames;
 
 	double  objRadius;		// Object radius
-	vec3f_t objSemiAxes;	// Object semi-axes
+	vec3d_t objSemiAxes;	// Object semi-axes
 	double  objMass;		// Object mass
 	double  objAlbedo;		// Object albedo
 
-	vec3f_t objPosition;	// Object current position
-	quatf_t objRotation;	// Object orientation
+	vec3d_t objPosition;	// Object current position
+	quatd_t objRotation;	// Object orientation
 };

@@ -33,7 +33,7 @@ void Engine::start()
 	realTime = realDate;
 }
 
-void Engine::update(float dt)
+void Engine::update(double dt)
 {
 	// Update current julian time
 	realTime += dt / SECONDS_PER_DAY;

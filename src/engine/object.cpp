@@ -31,12 +31,12 @@ Object::~Object()
     objNames.clear();
 }
 
-vec3f_t Object::getPosition(float) const
+vec3d_t Object::getPosition(double) const
 {
 	return objPosition;
 }
 
-quatf_t Object::getRotation(float) const
+quatd_t Object::getRotation(double) const
 {
 	return objRotation;
 }

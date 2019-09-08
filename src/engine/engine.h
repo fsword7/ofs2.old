@@ -26,15 +26,15 @@ public:
 //	inline string getDataFolder() const { return pdata; }
 
 	void start();
-	void update(float dt);
+	void update(double dt);
 
 private:
 	Player   player;
 	Universe universe;
 
 	Date 	realDate;	// current Julian clock
-	float	realTime;	// System time in Julian clock
-	float	scaleTime;	// Time-travel scale time [Julian date]
+	double	realTime;	// System time in Julian clock
+	double	scaleTime;	// Time-travel scale time [Julian date]
 
 	string	pdata; // data folders for file access
 };

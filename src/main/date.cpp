@@ -112,7 +112,7 @@ void Date::reset()
 double Date::update()
 {
 	struct timeval now;
-	float  dt;
+	double dt;
 
 	gettimeofday(&now, nullptr);
 	sysTime  = double(now.tv_sec) + (double(now.tv_usec) / 1000000.0f);

@@ -36,9 +36,9 @@ void Camera::setFOVdeg(double _fov)
 
 void Camera::focus(Object *obj)
 {
-	vec3f_t opos = obj->getPosition();
-	vec3f_t up   = vec3f_t(0, 1, 0);
-	mat4f_t m    = glm::lookAt(camPosition, opos, up);
+	vec3d_t opos = obj->getPosition();
+	vec3d_t up   = vec3d_t(0, 1, 0);
+	mat4d_t m    = glm::lookAt(camPosition, opos, up);
 
 	camRotation = glm::conjugate(glm::quat_cast(m));
 
@@ -67,8 +67,8 @@ Player::Player()
 	camera[0] = new Camera(this);
 
 	// Initialize velocity controls
-	tv = vec3f_t(0, 0, 0);
-	av = vec3f_t(0, 0, 0);
+	tv = vec3d_t(0, 0, 0);
+	av = vec3d_t(0, 0, 0);
 }
 
 Player::~Player()
@@ -85,30 +85,30 @@ Camera *Player::getCamera(int idx) const
 	return nullptr;
 }
 
-void Player::setPosition(vec3f_t pos)
+void Player::setPosition(vec3d_t pos)
 {
 	lpos = pos;
 	for (auto cam : camera)
 		cam->update();
 }
 
-void Player::setAngularVelocity(vec3f_t _av)
+void Player::setAngularVelocity(vec3d_t _av)
 {
 	av = _av;
-	wv = quatf_t(0, av.x, av.y, av.z);
+	wv = quatd_t(0, av.x, av.y, av.z);
 }
 
-void Player::setTravelVelocity(vec3f_t _tv)
+void Player::setTravelVelocity(vec3d_t _tv)
 {
 	tv = _tv;
 }
 
-void Player::setTravelSpeed(float ts)
+void Player::setTravelSpeed(double ts)
 {
 	tv.z = ts;
 }
 
-void Player::update(float dt, float timeTravel)
+void Player::update(double dt, double timeTravel)
 {	
 	realTime += dt / SECONDS_PER_DAY;
 	jdTime   += (dt / SECONDS_PER_DAY) * timeTravel;
