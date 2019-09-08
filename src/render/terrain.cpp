@@ -462,16 +462,17 @@ Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrd_
 
             pos = nml * erad;
 
-            vtx[vidx].vx = pos.x;
-            vtx[vidx].vy = pos.y;
-            vtx[vidx].vz = pos.z;
+			// Convert to 32-bit floats for vertices buffer/rendering
+            vtx[vidx].vx = float(pos.x);
+            vtx[vidx].vy = float(pos.y);
+            vtx[vidx].vz = float(pos.z);
 
-            vtx[vidx].nx = nml.x;
-            vtx[vidx].ny = nml.y;
-            vtx[vidx].nz = nml.z;
+            vtx[vidx].nx = float(nml.x);
+            vtx[vidx].ny = float(nml.y);
+            vtx[vidx].nz = float(nml.z);
 
-            vtx[vidx].tu = tu;
-            vtx[vidx].tv = tv;
+            vtx[vidx].tu = float(tu);
+            vtx[vidx].tv = float(tv);
 
             vidx++;
 
