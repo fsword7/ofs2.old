@@ -41,8 +41,8 @@ public:
 
     TerrainTile *createChild(int idx);
 
-    vec3f_t calculateCenter();
-    void setSubTexCoordRange(const tcrf_t &ptcr);
+    vec3d_t calculateCenter();
+    void setSubTexCoordRange(const tcrd_t &ptcr);
 
     void split();
     void load();
@@ -55,8 +55,8 @@ private:
 
     uint32_t lod;
     uint32_t ilat, ilng;
-    tcrf_t   tcRange;
-    vec3f_t  center;
+    tcrd_t   tcRange;
+    vec3d_t  center;
     
     Mesh *mesh = nullptr;
     Texture *texImage = nullptr;
@@ -105,7 +105,7 @@ public:
     void render(TerrainTile *tile, renderParameter &prm);
     void render(renderParameter &prm);
 
-    Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr);
+    Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrd_t &tcr);
     
 private:
     Scene &scene;

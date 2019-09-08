@@ -14,7 +14,7 @@
 // Global parameters
 TerrainHandler *TerrainManager::loader = nullptr;
 
-static tcrf_t fullRange = { 0.0f, 1.0f, 0.0f, 1.0f };
+static tcrd_t fullRange = { 0.0f, 1.0f, 0.0f, 1.0f };
 
 TerrainTile::TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint32_t ilng, TerrainTile *parent)
 : Tree(parent), tmgr(mgr), lod(lod), ilat(ilat), ilng(ilng), tcRange(fullRange)
@@ -22,11 +22,11 @@ TerrainTile::TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint3
 	center = calculateCenter();
 	// cout << "    New tile: lod = " << lod << " ilat = " << ilat << " ilng = " << ilng << endl;
 
-	mesh = Mesh::createSphere(lod, ilat, ilng, 32, tcRange);
-	if (mesh != nullptr) {
-		mesh->allocate(tmgr.scene.getContext());
-		mesh->texImage = texImage;
-	}
+	// mesh = Mesh::createSphere(lod, ilat, ilng, 32, tcRange);
+	// if (mesh != nullptr) {
+	// 	mesh->allocate(tmgr.scene.getContext());
+	// 	mesh->texImage = texImage;
+	// }
 }
 
 TerrainTile::~TerrainTile()
@@ -66,28 +66,28 @@ void TerrainTile::split()
 	}
 }
 
-vec3f_t TerrainTile::calculateCenter()
+vec3d_t TerrainTile::calculateCenter()
 {
 	int nlat = 1 << lod;
 	int nlng = 2 << lod;
 
-	float mlat0 = PI * float(ilat) / float(nlat);
-	float mlat1 = PI * float(ilat+1) / float(nlat);
+	double mlat0 = PI * double(ilat) / double(nlat);
+	double mlat1 = PI * double(ilat+1) / double(nlat);
     // float mlng0 = PI*2 * (float(nlng/2 - ilng-1) / float(nlng)) - PI;
     // float mlng1 = PI*2 * (float(nlng/2 - ilng) / float(nlng)) - PI;
-    float mlng0 = PI*2 * (float(ilng) / float(nlng)) - PI;
-    float mlng1 = PI*2 * (float(ilng+1) / float(nlng)) - PI;
+    double mlng0 = PI*2 * (double(ilng) / double(nlng)) - PI;
+    double mlng1 = PI*2 * (double(ilng+1) / double(nlng)) - PI;
 
 	// float latc = (PI/2) - PI * ((float(ilat)+0.5f) / float(nlat));
 	// float lngc = (PI*2) * ((float(nlng/2 - ilng-1)+0.5) / float(nlng)) - PI;
  	// if (lngc < PI*2)
     //     lngc += PI*2;
 
- 	float latc = PI * ((float(ilat)+0.5f) / float(nlat));
-	float lngc = PI*2 * ((float(ilng)+0.5f) / float(nlng)) - PI;
+ 	double latc = PI * ((double(ilat)+0.5f) / double(nlat));
+	double lngc = PI*2 * ((double(ilng)+0.5f) / double(nlng)) - PI;
  
-	float slat = sin(latc), clat = cos(latc);
-	float slng = sin(lngc), clng = cos(lngc);
+	double slat = sin(latc), clat = cos(latc);
+	double slng = sin(lngc), clng = cos(lngc);
 
 	// cout << "Index:  (" << ilat << "," << ilng << ") of (" << nlat << "," << nlng
 	//      << ") at LOD " << lod+3 << endl;
@@ -98,11 +98,11 @@ vec3f_t TerrainTile::calculateCenter()
 	// cout << "            ( " << toDegree(mlng0) << " , " << toDegree(mlat1) << " ) - ( " 
 	//                          << toDegree(mlng1) << " , " << toDegree(mlat1) << " )" << endl;
 						 
-	// return vec3f_t(clat*clng, slat, clat*-slng);
-	return vec3f_t(slat*clng, clat, slat*-slng);
+	// return vec3d_t(clat*clng, slat, clat*-slng);
+	return vec3d_t(slat*clng, clat, slat*-slng);
 }
 
-void TerrainTile::setSubTexCoordRange(const tcrf_t &ptcr)
+void TerrainTile::setSubTexCoordRange(const tcrd_t &ptcr)
 {
 	// if ((ilng & 1) == 0) { // Right column
 	if (ilng & 1) { // Right column
@@ -356,30 +356,30 @@ void TerrainManager::render(renderParameter &prm)
 		render(terrain[idx], prm);
 }
 
-Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr)
+Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrd_t &tcr)
 {
 	int nlat = 1 << lod;
 	int nlng = 2 << lod;
 
-	float mlat0 = PI * float(ilat) / float(nlat);
-	float mlat1 = PI * float(ilat+1) / float(nlat);
+	double mlat0 = PI * double(ilat) / double(nlat);
+	double mlat1 = PI * double(ilat+1) / double(nlat);
     // float mlng0 = PI*2 * (float(nlng/2 - ilng-1) / float(nlng)) - PI;
     // float mlng1 = PI*2 * (float(nlng/2 - ilng) / float(nlng)) - PI;
-    float mlng0 = PI*2 * (float(ilng) / float(nlng)) - PI;
-    float mlng1 = PI*2 * (float(ilng+1) / float(nlng)) - PI;
+    double mlng0 = PI*2 * (double(ilng) / double(nlng)) - PI;
+    double mlng1 = PI*2 * (double(ilng+1) / double(nlng)) - PI;
 
     // cout << "ilng " << ilng << " nlng " << nlng << " mlng0 " << mlng0 << " mlng1 " << mlng1 << 
     //     " ( " << toDegree(mlng0) << " , " << toDegree(mlng1) << " )" << endl;
 
-	float   rad  = body.getRadius();
-	float   erad = rad;
+	double   rad  = body.getRadius();
+	double   erad = rad;
 
-    float slng, clng;
-    float slat, clat;
-	float lng, lat;
-    float tu, tv, du, dv;
-    float tur, tvr;
-    vec3f_t pos, nml;
+    double slng, clng;
+    double slat, clat;
+	double lng, lat;
+    double tu, tv, du, dv;
+    double tur, tvr;
+    vec3d_t pos, nml;
 
     int      vidx;
     int      nVertices;
@@ -430,17 +430,17 @@ Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrf_
     vidx = 0;
 	for (int y = 0; y <= grids; y++)
 	{
-		lat  = mlat0 + (mlat1-mlat0) * (float(y)/float(grids));
+		lat  = mlat0 + (mlat1-mlat0) * (double(y)/double(grids));
 		slat = sin(lat); clat = cos(lat);
-        tv = tcr.tvmin + tvr * (float(y)/float(grids));
+        tv = tcr.tvmin + tvr * (double(y)/double(grids));
 
 //        std::cout << "Y = " << y << " LAT: " << toDegrees(lat) << std::endl;
 
 		for (int x = 0; x <= grids; x++)
 		{
-			lng  = mlng0 + (mlng1-mlng0) * (float(x)/float(grids));
+			lng  = mlng0 + (mlng1-mlng0) * (double(x)/double(grids));
 			slng = sin(lng); clng = cos(lng);
-            tu   = tcr.tumin + tur * (float(x)/float(grids));
+            tu   = tcr.tumin + tur * (double(x)/double(grids));
 
 //            std::cout << "X = " << x << " LNG: " << toDegrees(lng) << std::endl;
 
@@ -458,7 +458,7 @@ Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrf_
 //            else
 //            	std::cout << "No elevation data for sphere..." << std::endl;
 
-            nml = vec3f_t(slat*clng, clat, slat*-slng);
+            nml = vec3d_t(slat*clng, clat, slat*-slng);
 
             pos = nml * erad;
 
