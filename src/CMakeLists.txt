@@ -9,6 +9,7 @@ set(ofs_cpp_SRCS
 	render/gl/shader.cpp
 	render/gl/texture.cpp
 	render/context.cpp
+	render/elevation.cpp
 	render/loader.cpp
 	render/mesh.cpp
 	render/render.cpp
