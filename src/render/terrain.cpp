@@ -344,9 +344,11 @@ void TerrainManager::render(renderParameter &prm)
 	// prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 
 	prm.model = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
-	prm.mvp = prm.mproj * prm.mview * prm.model;
+	prm.mvp = prm.mproj * prm.mview;
 
-	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
+	uint32_t mwLoc = glGetUniformLocation(pgm->getID(), "gWorld");
+    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.model));
+	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "gViewProj");
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(prm.mvp));
 
 	// Rendering terrain area
