@@ -43,7 +43,6 @@ public:
     void render(const Context *ctx, renderParameter &prm);
 
  	static Mesh *create(int nvtx, vtxf_t *vtx, int nidx, uint16_t *idx);   
-    static Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrf_t &tcr);
 
 public:
     int      nvtx = 0, nidx = 0;
