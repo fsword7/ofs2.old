@@ -14,6 +14,8 @@
 
 #define DIST_NEAR	0.0001f
 #define DIST_FAR	1.0e6f
+#define DDIST_NEAR	0.0001
+#define DDIST_FAR	1.0e6
 
 class Player;
 class vPlanet;
@@ -26,6 +28,12 @@ struct renderParameter
 	glm::mat4 mview;  // View matrix
 	glm::mat4 model;  // Model matrix (current object)
 	glm::mat4 mvp;
+
+	mat4d_t dmProj;
+	mat4d_t dmView;
+	mat4d_t dmWorld;
+	mat4d_t dtWorld;
+	mat4d_t dmvp;
 
 	// Camera parameters (global)
 	vec3d_t cpos;
