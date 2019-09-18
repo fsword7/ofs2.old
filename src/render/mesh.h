@@ -1,7 +1,9 @@
-// mesh.h - OFS mesh package
-//
-// Created on: August 19, 2019
-//     Author: Tim Stark
+/*
+ * mesh.h - mesh rendering package
+ *
+ *  Created on: Aug 19, 2019
+ *      Author: Tim Stark
+ */
 
 #pragma once
 

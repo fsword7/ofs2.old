@@ -1,7 +1,9 @@
-// mesh.cpp - OFS mesh package
-//
-// Created on: August 19, 2019
-//     Author: Tim Stark
+/*
+ * object.h - mesh rendering package
+ *
+ *  Created on: Aug 19, 2019
+ *      Author: Tim Stark
+ */
 
 #include "main/core.h"
 #include "render/gl/context.h"
