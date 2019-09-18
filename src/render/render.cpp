@@ -54,12 +54,12 @@ void Scene::render(const Player *player, const Universe *universe)
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	prm.mproj = glm::perspective(glm::radians(OFS_DEFAULT_FOV), float(gl.getWidth()) / float(gl.getHeight()), DIST_NEAR, DIST_FAR);
-	prm.mview = glm::transpose(glm::toMat4(prm.crot));
-	// prm.mview = glm::translate(prm.mview, prm.cpos);
+//	prm.mproj = glm::perspective(glm::radians(OFS_DEFAULT_FOV), float(gl.getWidth()) / float(gl.getHeight()), DIST_NEAR, DIST_FAR);
+//	prm.mview = glm::toMat4(prm.crot);
+//	prm.mview = glm::translate(prm.mview, prm.cpos);
 
 	prm.dmProj = glm::perspective(glm::radians(DOFS_DEFAULT_FOV), double(gl.getWidth()) / double(gl.getHeight()), DDIST_NEAR, DDIST_FAR);
-	prm.dmView = glm::transpose(glm::toMat4(prm.crot));
+	prm.dmView = glm::toMat4(prm.crot);
 
 	// glDepthMask(GL_FALSE);
 	vobj->render(prm);

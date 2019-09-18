@@ -174,11 +174,11 @@ void TerrainTile::load()
 void TerrainTile::render(renderParameter &prm)
 {
 	if (mesh != nullptr) {
-		setWorldMatrix(prm);
 
-		prm.model = mat4f_t(prm.dtWorld);
-		uint32_t mwLoc = glGetUniformLocation(tmgr.pgm->getID(), "gWorld");
-    	glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.model));
+//		setWorldMatrix(prm);
+//		prm.model = mat4f_t(prm.dtWorld);
+//		uint32_t mwLoc = glGetUniformLocation(tmgr.pgm->getID(), "gWorld");
+//    	glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.model));
 
 		mesh->render(tmgr.scene.getContext(), prm);
 	}
@@ -367,20 +367,17 @@ void TerrainManager::render(renderParameter &prm)
 	// Normalize units in object radius
 	// prm.obj.cdist /= prm.obj.orad;
 	// prm.obj.cdir   = glm::normalize(prm.obj.cdir);
-
-	prm.model = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
-	prm.mvp = prm.mproj * prm.mview;
-
-	// prm.dmWorld = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
-	// prm.dmvp = prm.dmProj * prm.dmView * prm.dmWorld;
 	
-	// prm.model = mat4f_t(prm.dmWorld);
-	// prm.mvp   = mat4f_t(prm.dmvp);
+	prm.dmWorld = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
+	prm.dmModelView = prm.dmView * prm.dmWorld;
 
-	uint32_t mwLoc = glGetUniformLocation(pgm->getID(), "gWorld");
-    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.model));
-	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "gViewProj");
-    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(prm.mvp));
+	prm.mModelView = mat4f_t(prm.dmModelView);
+	prm.mproj = mat4f_t(prm.dmProj);
+
+	uint32_t mwLoc = glGetUniformLocation(pgm->getID(), "gModelView");
+    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.mModelView));
+	uint32_t mpLoc = glGetUniformLocation(pgm->getID(), "gProj");
+    glUniformMatrix4fv(mpLoc, 1, GL_FALSE, glm::value_ptr(prm.mproj));
 
 	// Rendering terrain area
 	for (int idx = 0; idx < 2; idx++)
