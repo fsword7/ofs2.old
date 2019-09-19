@@ -369,15 +369,14 @@ void TerrainManager::render(renderParameter &prm)
 	// prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 	
 	prm.dmWorld = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
-	prm.dmModelView = prm.dmView * prm.dmWorld;
 
-	prm.mModelView = mat4f_t(prm.dmModelView);
-	prm.mproj = mat4f_t(prm.dmProj);
+	prm.mPView = mat4f_t(prm.dmPView);
+	prm.mWorld = mat4f_t(prm.dmWorld);
 
-	uint32_t mwLoc = glGetUniformLocation(pgm->getID(), "gModelView");
-    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.mModelView));
-	uint32_t mpLoc = glGetUniformLocation(pgm->getID(), "gProj");
-    glUniformMatrix4fv(mpLoc, 1, GL_FALSE, glm::value_ptr(prm.mproj));
+	uint32_t mvLoc = glGetUniformLocation(pgm->getID(), "gView");
+    glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(prm.mPView));
+	uint32_t mwLoc = glGetUniformLocation(pgm->getID(), "gWorld");
+    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.mWorld));
 
 	// Rendering terrain area
 	for (int idx = 0; idx < 2; idx++)

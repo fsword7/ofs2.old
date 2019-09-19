@@ -26,15 +26,15 @@ struct renderParameter
 
 	mat4f_t mproj;  // Projection matrix
 	mat4f_t mview;  // View matrix
-	mat4f_t model;  // Model matrix (current object)
-	mat4f_t mModelView;
+	mat4f_t mWorld;  // Model matrix (current object)
+	mat4f_t mPView;
 	mat4f_t mvp;
 
 	mat4d_t dmProj;
 	mat4d_t dmView;
 	mat4d_t dmWorld;
 	mat4d_t dtWorld;
-	mat4d_t dmModelView;
+	mat4d_t dmPView;
 	mat4d_t dmvp;
 
 	// Camera parameters (global)
