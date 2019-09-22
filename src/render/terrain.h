@@ -11,6 +11,8 @@
 #include "render/mesh.h"
 #include "util/tree.h"
 
+#include "render/elevation.h"
+
 #define TILE_VALID  0x80000000
 #define TILE_ACTIVE 0x40000000
 
@@ -24,14 +26,15 @@ class TerrainTile : public Tree<TerrainTile, QTREE_NODES>
 
 public:
     enum TileState {
-        Invalid   = 0x0000,
-        InQueue   = 0x0001,
-        Loading   = 0x0002,
-        NoImage   = 0x0004,
-        Inactive  = TILE_VALID,
-        Active    = TILE_VALID|TILE_ACTIVE,
-        Invisible = TILE_VALID|TILE_ACTIVE|0x0008,
-        Rendering = TILE_VALID|TILE_ACTIVE|0x0010
+        Invalid      = 0x0000,
+        InQueue      = 0x0001,
+        Loading      = 0x0002,
+		Initializing = 0x0004,
+        NoImage      = 0x0008,
+        Inactive     = TILE_VALID,
+        Active       = TILE_VALID|TILE_ACTIVE,
+        Invisible    = TILE_VALID|TILE_ACTIVE|0x0100,
+        Rendering    = TILE_VALID|TILE_ACTIVE|0x0200
     };
 
     TerrainTile(TerrainManager &mgr, uint32_t lod, uint32_t ilat, uint32_t ilng, TerrainTile *parent = nullptr);
@@ -61,6 +64,8 @@ private:
     Mesh *mesh = nullptr;
     Texture *texImage = nullptr;
     bool texOwn = false;
+
+    int16_t *elev = nullptr;
 };
 
 class TerrainHandler

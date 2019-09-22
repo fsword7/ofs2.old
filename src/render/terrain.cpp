@@ -126,10 +126,19 @@ void TerrainTile::load()
 {
 	state = Loading;
 
-	string fname = fmt::sprintf("%s/surf/%02d/%06d/%06d.jpg",
+	// Orbiter data files (database system)
+	string surfName = fmt::sprintf("%s/surf/%02d/%06d/%06d.jpg",
+		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+	string elevName = fmt::sprintf("%s/elev/%02d/%06d/%06d.elv",
+		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+	string emodName = fmt::sprintf("%s/elev_mod/%02d/%06d/%06d.elv",
+		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+	string maskName = fmt::sprintf("%s/mask/%02d/%06d/%06d.jpg",
+		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+	string cloudName = fmt::sprintf("%s/cloud/%02d/%06d/%06d.jpg",
 		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
 
-	texImage = Texture::create(fname);
+	texImage = Texture::create(surfName);
 	if (texImage == nullptr) {
     	// Non-existent tile. Have to load
     	// lower LOD tile from parent tile
