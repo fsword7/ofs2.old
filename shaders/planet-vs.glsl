@@ -7,8 +7,6 @@ layout (location=2) in vec3 vNormal;
 //layout (location=2) in vec3 vColor;
 layout (location=3) in vec2 vTexCoord;
 
-//uniform mat4 gView;  // Projection * View
-//uniform mat4 gWorld; // World space
 uniform mat4 mvp;
 
 uniform vec3 gCamera;
@@ -27,7 +25,6 @@ void main()
     vec3 ldiff = t2 - (hdiff - t1);
     vec3 pos = hdiff + ldiff;
 
-//    gl_Position = gView * gWorld * vec4(pos, 1.0);
     gl_Position = mvp * vec4(pos, 1.0);
     myColor = vec4(0.7, 0.7, 0.7, 1.0); // vec4(vColor, 1.0);
     texCoord = vTexCoord;
