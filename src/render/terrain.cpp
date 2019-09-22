@@ -102,24 +102,6 @@ vec3d_t TerrainTile::calculateCenter()
 	return vec3d_t(slat*clng, clat, slat*-slng);
 }
 
-void TerrainTile::setWorldMatrix(renderParameter &prm)
-{
-	int    nlat = 1 << lod;
-	int    nlng = 2 << lod;
-	double lat = PI * double(ilat) / double(nlat);
-    double lng = PI*2 * (double(ilng) / double(nlng)) - PI;
-	
-	double dx = /* prm.obj.orad * */ sin(lat) * cos(lng);
-	double dy = /* prm.obj.orad * */ cos(lat);
-	double dz = /* prm.obj.orad * */ sin(lat) * -sin(lng);
-
-	// Determine offsets from object center for tile center
-	prm.dtWorld = prm.obj.orot;
-	prm.dtWorld[3][0] = dx*prm.obj.orot[0][0] + dy*prm.obj.orot[0][1] + dz*prm.obj.orot[0][2] + prm.obj.cpos.x;
-	prm.dtWorld[3][1] = dx*prm.obj.orot[1][0] + dy*prm.obj.orot[1][1] + dz*prm.obj.orot[1][2] + prm.obj.cpos.y;
-	prm.dtWorld[3][2] = dx*prm.obj.orot[2][0] + dy*prm.obj.orot[2][1] + dz*prm.obj.orot[2][2] + prm.obj.cpos.z;
-}
-
 void TerrainTile::setSubTexCoordRange(const tcrd_t &ptcr)
 {
 	// if ((ilng & 1) == 0) { // Right column
@@ -174,12 +156,6 @@ void TerrainTile::load()
 void TerrainTile::render(renderParameter &prm)
 {
 	if (mesh != nullptr) {
-
-//		setWorldMatrix(prm);
-//		prm.model = mat4f_t(prm.dtWorld);
-//		uint32_t mwLoc = glGetUniformLocation(tmgr.pgm->getID(), "gWorld");
-//    	glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.model));
-
 		mesh->render(tmgr.scene.getContext(), prm);
 	}
 }

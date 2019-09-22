@@ -43,7 +43,6 @@ public:
 
     vec3d_t calculateCenter();
     void setSubTexCoordRange(const tcrd_t &ptcr);
-    void setWorldMatrix(renderParameter &prm);
 
     void split();
     void load();
