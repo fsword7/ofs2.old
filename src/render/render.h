@@ -24,8 +24,8 @@ struct renderParameter
 {
 	double jdTime;    // Current julian time
 
-	mat4f_t mproj;  // Projection matrix
-	mat4f_t mview;  // View matrix
+	mat4f_t mProj;  // Projection matrix
+	mat4f_t mView;  // View matrix
 	mat4f_t mWorld;  // Model matrix (current object)
 	mat4f_t mPView;
 	mat4f_t mvp;

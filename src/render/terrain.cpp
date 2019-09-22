@@ -221,6 +221,24 @@ void TerrainManager::gexit()
 	}
 }
 
+void TerrainManager::convertDoubleToTwoFloats(vec3d_t val, vec3f_t &high, vec3f_t &low)
+{
+//	high = vec3f_t(val);
+//	low = vec3f_t(val - vec3d_t(high));
+
+	high.x = float(val.x);
+	high.y = float(val.y);
+	high.z = float(val.z);
+	low.x  = float(val.x - high.x);
+	low.y  = float(val.y - high.y);
+	low.z  = float(val.z - high.z);
+
+//	cout << "Value:  " << val.x << "," << val.y << "," << val.z << endl;
+//	cout << "  High: " << high.x << "," << high.y << "," << high.z << endl;
+//	cout << "  Low:  "  << low.x << "," << low.y << "," << low.z << endl;
+
+}
+
 void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 {
 	int lod  = tile->lod;
@@ -368,15 +386,89 @@ void TerrainManager::render(renderParameter &prm)
 	// prm.obj.cdist /= prm.obj.orad;
 	// prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 	
-	prm.dmWorld = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
+	vec3f_t gCamera, eCamera;
+
+	convertDoubleToTwoFloats(-prm.obj.cpos, gCamera, eCamera);
+
+	prm.dmWorld = prm.dmView * glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
+//	prm.dmView = glm::translate(prm.dmView, prm.obj.cpos);
+//	prm.dmWorld = prm.dmView * mat4d_t(1.0); // glm::transpose(prm.obj.orot);
+//	prm.dmWorld = prm.dmView * glm::translate(prm.obj.orot, prm.obj.cpos);
+
+//	cout << "MV:      " << setw(15) << fixed << prm.dmWorld[0][0] << "," << prm.dmWorld[1][0] << "," << prm.dmWorld[2][0] << "," << prm.dmWorld[3][0] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmWorld[0][1] << "," << prm.dmWorld[1][1] << "," << prm.dmWorld[2][1] << "," << prm.dmWorld[3][1] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmWorld[0][2] << "," << prm.dmWorld[1][2] << "," << prm.dmWorld[2][2] << "," << prm.dmWorld[3][2] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmWorld[0][3] << "," << prm.dmWorld[1][3] << "," << prm.dmWorld[2][3] << "," << prm.dmWorld[3][3] << endl;
+//
+//	cout << "P:       " << setw(15) << fixed << prm.dmProj[0][0] << "," << prm.dmProj[1][0] << "," << prm.dmProj[2][0] << "," << prm.dmProj[3][0] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmProj[0][1] << "," << prm.dmProj[1][1] << "," << prm.dmProj[2][1] << "," << prm.dmProj[3][1] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmProj[0][2] << "," << prm.dmProj[1][2] << "," << prm.dmProj[2][2] << "," << prm.dmProj[3][2] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmProj[0][3] << "," << prm.dmProj[1][3] << "," << prm.dmProj[2][3] << "," << prm.dmProj[3][3] << endl;
+
+//	mat4d_t smWorld = prm.dmWorld;
+
+	prm.dmWorld[3].x = 0;
+	prm.dmWorld[3].y = 0;
+	prm.dmWorld[3].z = 0;
+
+//	cout << "MV2:     " << setw(15) << fixed << prm.dmWorld[0][0] << "," << prm.dmWorld[1][0] << "," << prm.dmWorld[2][0] << "," << prm.dmWorld[3][0] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmWorld[0][1] << "," << prm.dmWorld[1][1] << "," << prm.dmWorld[2][1] << "," << prm.dmWorld[3][1] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmWorld[0][2] << "," << prm.dmWorld[1][2] << "," << prm.dmWorld[2][2] << "," << prm.dmWorld[3][2] << endl;
+//	cout << "         " << setw(15) << fixed << prm.dmWorld[0][3] << "," << prm.dmWorld[1][3] << "," << prm.dmWorld[2][3] << "," << prm.dmWorld[3][3] << endl;
+
+	prm.mvp = mat4f_t(prm.dmProj * prm.dmWorld);
+//	mat4f_t smvp = mat4f_t(prm.dmProj * smWorld);
 
 	prm.mPView = mat4f_t(prm.dmPView);
 	prm.mWorld = mat4f_t(prm.dmWorld);
 
-	uint32_t mvLoc = glGetUniformLocation(pgm->getID(), "gView");
-    glUniformMatrix4fv(mvLoc, 1, GL_FALSE, glm::value_ptr(prm.mPView));
-	uint32_t mwLoc = glGetUniformLocation(pgm->getID(), "gWorld");
-    glUniformMatrix4fv(mwLoc, 1, GL_FALSE, glm::value_ptr(prm.mWorld));
+//	cout << "MVP:     " << setw(15) << fixed << prm.mvp[0][0] << "," << prm.mvp[1][0] << "," << prm.mvp[2][0] << "," << prm.mvp[3][0] << endl;
+//	cout << "         " << setw(15) << fixed << prm.mvp[0][1] << "," << prm.mvp[1][1] << "," << prm.mvp[2][1] << "," << prm.mvp[3][1] << endl;
+//	cout << "         " << setw(15) << fixed << prm.mvp[0][2] << "," << prm.mvp[1][2] << "," << prm.mvp[2][2] << "," << prm.mvp[3][2] << endl;
+//	cout << "         " << setw(15) << fixed << prm.mvp[0][3] << "," << prm.mvp[1][3] << "," << prm.mvp[2][3] << "," << prm.mvp[3][3] << endl;
+//
+//	cout << "cMV:     " << setw(15) << fixed << smWorld[0][0] << "," << smWorld[1][0] << "," << smWorld[2][0] << "," << smWorld[3][0] << endl;
+//	cout << "         " << setw(15) << fixed << smWorld[0][1] << "," << smWorld[1][1] << "," << smWorld[2][1] << "," << smWorld[3][1] << endl;
+//	cout << "         " << setw(15) << fixed << smWorld[0][2] << "," << smWorld[1][2] << "," << smWorld[2][2] << "," << smWorld[3][2] << endl;
+//	cout << "         " << setw(15) << fixed << smWorld[0][3] << "," << smWorld[1][3] << "," << smWorld[2][3] << "," << smWorld[3][3] << endl;
+//
+//	cout << "cMVP:    " << setw(15) << fixed << smvp[0][0] << "," << smvp[1][0] << "," << smvp[2][0] << "," << smvp[3][0] << endl;
+//	cout << "         " << setw(15) << fixed << smvp[0][1] << "," << smvp[1][1] << "," << smvp[2][1] << "," << smvp[3][1] << endl;
+//	cout << "         " << setw(15) << fixed << smvp[0][2] << "," << smvp[1][2] << "," << smvp[2][2] << "," << smvp[3][2] << endl;
+//	cout << "         " << setw(15) << fixed << smvp[0][3] << "," << smvp[1][3] << "," << smvp[2][3] << "," << smvp[3][3] << endl;
+//
+//	cout << "Camera: " << gCamera.x << "," << gCamera.y << "," << gCamera.z << endl;
+//	cout << " Error: " << eCamera.x << "," << eCamera.y << "," << eCamera.z << endl;
+
+//	{
+//		vec3f_t vpos = vec3f_t(-312.516001, -156.352167, 6361.409337);
+//		vec3f_t epos = vec3f_t(-0.00010, 0.000006, 0.000119);
+//
+//	    vec3f_t t1 = epos - eCamera;
+//	    vec3f_t e = t1 - epos;
+//	    vec3f_t t2 = ((-eCamera - e) + (epos - (t1 - e))) +
+//	        vpos - gCamera;
+//	    vec3f_t hdiff = t1 + t2;
+//	    vec3f_t ldiff = t2 - (hdiff - t1);
+//	    vec3f_t pos = hdiff + ldiff;
+//
+//		cout << "Vertex: " << vpos.x << "," << vpos.y << "," << vpos.z << endl;
+//		cout << "Result: " << pos.x << "," << pos.y << "," << pos.z << endl;
+//
+//		vec3f_t rpos = prm.mvp * vec4f_t(pos, 1.0f);
+//		cout << " w/MVP: " << rpos.x << "," << rpos.y << "," << rpos.z << endl;
+//
+//		vec3f_t cpos = smvp * vec4f_t(vpos, 1.0f);
+//		cout << " c/MVP: " << cpos.x << "," << cpos.y << "," << cpos.z << endl;
+//	}
+
+	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
+    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(prm.mvp));
+
+	uint32_t chLoc = glGetUniformLocation(pgm->getID(), "gCamera");
+    glUniform3fv(chLoc, 1, glm::value_ptr(gCamera));
+	uint32_t clLoc = glGetUniformLocation(pgm->getID(), "eCamera");
+    glUniform3fv(clLoc, 1, glm::value_ptr(eCamera));
 
 	// Rendering terrain area
 	for (int idx = 0; idx < 2; idx++)
@@ -496,12 +588,22 @@ Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrd_
             vtx[vidx].vy = float(pos.y);
             vtx[vidx].vz = float(pos.z);
 
+       		vtx[vidx].ex = float(pos.x - vtx[vidx].vx);
+            vtx[vidx].ey = float(pos.y - vtx[vidx].vy);
+            vtx[vidx].ez = float(pos.z - vtx[vidx].vz);
+
             vtx[vidx].nx = float(nml.x);
             vtx[vidx].ny = float(nml.y);
             vtx[vidx].nz = float(nml.z);
 
             vtx[vidx].tu = float(tu);
             vtx[vidx].tv = float(tv);
+
+//            if (vidx == 0) {
+//            	cout << "Value:   " << setw(15) << fixed << pos.x << "," << pos.y << "," << pos.z << endl;
+//            	cout << " Vertex: " << setw(15) << fixed << vtx[vidx].vx << "," << vtx[vidx].vy << "," << vtx[vidx].vz << endl;
+//            	cout << " Error:  " << setw(15) << fixed << vtx[vidx].ex << "," << vtx[vidx].ey << "," << vtx[vidx].ez << endl;
+//            }
 
             vidx++;
 

@@ -14,13 +14,22 @@ class VertexBuffer;
 class Texture;
 
 template <typename T>
-struct Vertex {
+struct Vertex32 {
     T vx, vy, vz;
     T nx, ny, nz;
     T tu, tv;
 };
 
-typedef Vertex<float> vtxf_t;
+template <typename T>
+struct Vertex64 {
+    T vx, vy, vz;
+    T ex, ey, ez;
+    T nx, ny, nz;
+    T tu, tv;
+};
+
+//typedef Vertex32<float> vtxf_t;
+typedef Vertex64<float> vtxf_t;
 
 // Texture Coordination Range
 template <typename T>

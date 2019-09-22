@@ -60,7 +60,9 @@ void Scene::render(const Player *player, const Universe *universe)
 
 	prm.dmProj  = glm::perspective(glm::radians(DOFS_DEFAULT_FOV), double(gl.getWidth()) / double(gl.getHeight()), DDIST_NEAR, DDIST_FAR);
 	prm.dmView  = glm::transpose(glm::toMat4(prm.crot));
-	prm.dmPView = prm.dmProj * prm.dmView;
+//	prm.dmPView = prm.dmProj * prm.dmView;
+//	prm.mProj = mat4f_t(prm.dmProj);
+//	prm.mView = mat4f_t(prm.dmView);
 
 	// glDepthMask(GL_FALSE);
 	vobj->render(prm);

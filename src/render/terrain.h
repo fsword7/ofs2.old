@@ -102,6 +102,8 @@ public:
     static void ginit(Scene &scene);
     static void gexit();
 
+    void convertDoubleToTwoFloats(vec3d_t val, vec3f_t &high, vec3f_t &low);
+
     void process(TerrainTile *tile, renderParameter &prm);
     void render(TerrainTile *tile, renderParameter &prm);
     void render(renderParameter &prm);
