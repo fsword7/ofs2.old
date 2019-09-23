@@ -10,7 +10,10 @@
 
 void Universe::init()
 {
-    
+	// Loading star catalogue
+	std::string pname = "data/stars/xhip";
+	starlib.loadXHIPData(pname);
+
     earth = new CelestialBody();
     earth->setName("earth");
   

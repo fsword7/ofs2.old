@@ -55,6 +55,8 @@ namespace ofs::universe {
         static CelestialStar *create(double ra, double dec, double plx,
             const char *spType, double appMag, double ci, double lum);
 
+    	inline double getAbsMag() const { return absMag; }
+
     private:
     	// Star known flags
         uint32_t flags;

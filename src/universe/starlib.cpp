@@ -6,11 +6,13 @@
  */
 
 #include "main/core.h"
+#include "universe/astro.h"
 #include "universe/star.h"
 #include "universe/starlib.h"
 #include "universe/hygdata.h"
 #include "universe/xhipdata.h"
 
+using namespace ofs::astro;
 using namespace ofs::universe;
 
 bool StarCatalogue::loadHYGData(const string &fname)
@@ -131,7 +133,7 @@ bool StarCatalogue::loadXHIPData(const string &pname)
 
     // Create the Sun (Sol)
 	star = CelestialStar::createSun();
-	// unsortedStars.push_back(star);
+	uStars.push_back(star);
 
 	lineno = 0;
 	cnplx = 0;
@@ -175,7 +177,7 @@ bool StarCatalogue::loadXHIPData(const string &pname)
 //		if (hip != phip || hip != bhip)
 //			continue;
 		if (hip != phip || hip != bhip) {
-			std::cout << "HIP " << hip << " != " << phip << std::endl;
+			cout << "HIP " << hip << " != " << phip << endl;
 			break;
 		}
 
@@ -213,7 +215,7 @@ bool StarCatalogue::loadXHIPData(const string &pname)
 		// star->setHIPNumber(hip);
 		star->setName(bcells[XHIP_B_nNAME]);
 
-		// unsortedStars.push_back(star);
+		uStars.push_back(star);
 	}
 
 	mdata.close();
@@ -221,10 +223,112 @@ bool StarCatalogue::loadXHIPData(const string &pname)
 	bdata.close();
 //	gdata.close();
 
-	std::cout << "Total " << cnplx << " stars with negative parallax." << std::endl;
-	std::cout << "Total " << czplx << " stars with zero parallax." << std::endl;
+	cout << "Total " << cnplx << " stars with negative parallax." << endl;
+	cout << "Total " << czplx << " stars with zero parallax." << endl;
 
-    // finish();
+    finish();
 
 	return false;
 }
+
+void StarCatalogue::initOctreeData(vector<CelestialStar*> stars)
+{
+	double absMag = convertAppToAbsMag(STARTREE_MAGNITUDE,
+			STARTREE_ROOTSIZE * sqrt(3.0));
+
+//	cout << "Star Tree: " << absMag << " magnitude" << endl;
+
+	starTree = new StarTree(vec3d_t(1000.0, 1000.0, 1000.0), absMag);
+	for (int idx = 0; idx < uStars.size(); idx++)
+		starTree->insert(*uStars[idx], STARTREE_ROOTSIZE);
+
+	cout << "Star Database has " << starTree->countNodes() << " nodes and "
+			  << starTree->countObjects() << " objects" << endl;
+}
+
+void StarCatalogue::finish()
+{
+    cout << "Total star count: " << uStars.size() << endl;
+
+    initOctreeData(uStars);
+}
+
+//void StarDatabase::findVisibleStars(const ofsHandler& handle, const Player& player,
+//		double faintestMag)
+//{
+//	vec3d_t vpos = player.getPosition();
+//	double brightestMag = 1000.0;
+//
+//	for (uint32_t idx = 0; idx < uStars.size(); idx++) {
+//		CelestialStar *star = uStars[idx];
+//		vec3d_t spos = star->getPosition(0);
+//		double  dist = (spos - vpos).norm();
+//		double  appMag = star->getAppMag(convertKilometerToParsec(dist));
+//
+////		std::cout << "Star ID: " << idx << " Apparent Mag: " << appMag << " Distance: " << dist << std::endl;
+//
+////		if (appMag < brightestMag)
+////			brightestMag = appMag;
+//
+//		if (appMag < faintestMag)
+//			handle.process(*star, dist, appMag);
+//	}
+////	std::cout << "%%% Brightest Magnitude = " << brightestMag << std::endl;
+//}
+//
+//int StarDatabase::findNearStars(const vec3d_t& obs, double mdist,
+//		vector<const CelestialStar *>& stars) const
+//{
+////	double dist = astro::convertKilometerToParsec(mdist);
+//
+//	stars.clear();
+//	for (int idx = 0; idx < uStars.size(); idx++) {
+//		CelestialStar *star = uStars[idx];
+//		double dist = (obs - star->getPosition(0)).norm();
+//		if (dist < mdist)
+//			stars.push_back(star);
+//	}
+//
+//	return stars.size();
+//}
+
+//void StarCatalogue::findVisibleStars(const ofsHandler& handle, const vec3d_t& obs,
+//		const quatd_t &rot, double fov, double aspect, double limitMag) const
+//{
+//	planed_t frustum[5];
+//	vec3d_t  plane[5];
+//
+//	mat3d_t  mrot = rot.toRotationMatrix();
+//	double   h    = tan(fov / 2.0);
+//	double   w    = h * aspect;
+//
+//	plane[0] = vec3d_t(0.0, 1.0, -h);
+//	plane[1] = vec3d_t(0.0, -1.0, -h);
+//	plane[2] = vec3d_t(1.0, 0.0, -w);
+//	plane[3] = vec3d_t(-1.0, 0.0, -w);
+//	plane[4] = vec3d_t(0.0, 0.0, -1.0);
+//
+//	for (int idx = 0; idx < 5; idx++) {
+//		plane[idx] = mrot.transpose() * plane[idx].normalized();
+//		frustum[idx] = planed_t(plane[idx], obs);
+//	}
+//
+////	std::cout << "Find visible stars by using octree..." << std::endl;
+//	starTree->processVisibleStars(handle, obs, frustum, limitMag, STARTREE_ROOTSIZE);
+//}
+//
+//void StarCatalogue::findNearStars(const ofsHandler& handle, const vec3d_t& obs,
+//		double radius) const
+//{
+//	starTree->processNearStars(handle, obs, radius, STARTREE_ROOTSIZE);
+//}
+//
+//CelestialStar *StarCatalogue::find(const std::string& name) const
+//{
+//	for (int idx = 0; idx < uStars.size(); idx++) {
+//		CelestialStar *star = uStars[idx];
+//		if (star->getName() == name)
+//			return star;
+//	}
+//	return nullptr;
+//}
