@@ -14,16 +14,10 @@ void Universe::init()
 	std::string pname = "data/stars/xhip";
 	starlib.loadXHIPData(pname);
 
+	// To removed later...
     earth = new CelestialBody();
     earth->setName("earth");
   
     earth->setPosition(vec3f_t(0.0f, 0.0f, -20000.0f));
     earth->setRadius(6371.0f);
-  
-    // earth->setPosition(vec3f_t(0.0f, 0.0f, -3000.0f));
-    // earth->setRadius(1000.0f);
-  
-    // earth->setPosition(vec3f_t(0.0f, 0.0f, -3.0f));
-    // earth->setRadius(1.0f);
-
 }
