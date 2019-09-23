@@ -18,7 +18,7 @@ vec3d_t ofs::astro::convertEquatorialToEcliptic(double ra, double dec, double pc
 {
 	double  theta, phi;
 	double  x, y, z;
-//	double  km = convertParsecToKilometer(pc);
+	double  km = pc * KM_PER_PC;
 	vec3d_t rot(-J2000Obliquity, 0, 0);
 	vec3d_t opos;
 
@@ -27,5 +27,5 @@ vec3d_t ofs::astro::convertEquatorialToEcliptic(double ra, double dec, double pc
 
 	opos = vec3d_t(sin(phi)*cos(theta), cos(phi), sin(phi)*-sin(theta));
 
-	return glm::normalize(opos * glm::dquat(rot)) * pc;
+	return (opos * km); // * glm::dquat(rot);
 }
