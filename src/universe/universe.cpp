@@ -131,10 +131,9 @@ int Universe::findNearStars(const vec3d_t& obs, double mdist,
 		vector<const CelestialStar *>& stars) const
 {
 //	NearStarHandler handle(mdist, stars);
-	vec3d_t lobs = obs / KM_PER_PC;
 	int count;
 
-	starlib.findNearStars(lobs, mdist, stars);
+	starlib.findNearStars(obs, mdist * KM_PER_PC, stars);
 
 //	cout << "Near stars: " << count << " stars" << std::endl;
 //	if (count > 0)

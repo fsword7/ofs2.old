@@ -77,6 +77,10 @@ public:
 
 	void render(const Player *player, const Universe *universe);
 
+protected:
+	void initVisibleStars();
+	void renderStars(StarCatalogue &starlib, const Player& player, double faintestMag);
+
 private:
 	Context gl;
 

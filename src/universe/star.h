@@ -56,6 +56,9 @@ namespace ofs::universe {
             const char *spType, double appMag, double ci, double lum);
 
     	inline double getAbsMag() const { return absMag; }
+    	inline int getHIPNumber() const { return hip; }
+
+    	inline void setHIPNumber(int id) { hip = id; };
 
     private:
     	// Star known flags

@@ -13,6 +13,8 @@ set(ofs_cpp_SRCS
 	render/loader.cpp
 	render/mesh.cpp
 	render/render.cpp
+	render/starcolors.cpp
+	render/stars.cpp
 	render/object.cpp
 	render/planet.cpp
 	render/terrain.cpp
@@ -54,6 +56,8 @@ set(ofs_h_SRCS
 	render/render.h
 	render/object.h
 	render/planet.h
+	render/starcolors.h
+	render/stars.h
 	render/terrain.h
 	universe/astro.h
 	universe/body.h

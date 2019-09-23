@@ -9,8 +9,9 @@
 
 class Color
 {
+public:
 	Color() = default;
-	Color(float red, float green, float blue, float alpha)
+	Color(float red, float green, float blue, float alpha = 1.0f)
 	: red(red), green(green), blue(blue), alpha(alpha) {}
 	~Color() = default;
 
@@ -28,8 +29,8 @@ class Color
 
 private:
 	// RGBA 32-bit values for SDR/HDR purposes
-	float red   = 0.0;
-	float green = 0.0;
-	float blue  = 0.0;
-	float alpha = 0.0;
+	float red   = 0.0f;
+	float green = 0.0f;
+	float blue  = 0.0f;
+	float alpha = 1.0f;
 };

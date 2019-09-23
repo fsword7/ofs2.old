@@ -212,7 +212,7 @@ bool StarCatalogue::loadXHIPData(const string &pname)
 		}
 
 		star = CelestialStar::create(ra, de, dist, spType, vMag, ci, lum);
-		// star->setHIPNumber(hip);
+		star->setHIPNumber(hip);
 		star->setName(bcells[XHIP_B_nNAME]);
 
 		uStars.push_back(star);

@@ -21,6 +21,8 @@ void Scene::init(int w, int h)
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
+
+	initVisibleStars();
 }
 
 void Scene::cleanup()
@@ -52,13 +54,15 @@ void Scene::render(const Player *player, const Universe *universe)
 	}
 
 	// Find closest stars within desired distance
-	vec3d_t obs = player->getPosition();
-	universe->findNearStars(obs, 1.0, nearStars);
+//	vec3d_t obs = player->getPosition();
+//	universe->findNearStars(obs, 1.0, nearStars);
 //	setupLightSources(nearStars, obs, jdTime, lightSources);
 
-	cout << "Closest star list: (" << nearStars.size() << " stars)" << endl;
+//	cout << "Closest star list: (" << nearStars.size() << " stars)" << endl;
 //	for(const CelestialStar *star : nearStars) {
-//		cout << star->getName() << endl;
+//		if (star->getHIPNumber() == 0)
+//			cout << "HIP " << star->getHIPNumber() << " " << star->getName()
+//			<< " Distance: " << glm::length(star->getPosition(0)) << endl;
 //	}
 
 	gl.start();
@@ -76,6 +80,11 @@ void Scene::render(const Player *player, const Universe *universe)
 //	prm.dmPView = prm.dmProj * prm.dmView;
 //	prm.mProj = mat4f_t(prm.dmProj);
 //	prm.mView = mat4f_t(prm.dmView);
+
+//	// Render visible stars
+//	renderStars(universe.getStarDatabase(), player, 6.0);
+//	// Render constellation lines
+//	renderConstellations(universe, player);
 
 	// glDepthMask(GL_FALSE);
 	vobj->render(prm);
