@@ -82,6 +82,8 @@ private:
 
 	const Player *player;
 
+	vector<const CelestialStar *> nearStars;
+
 	renderParameter prm;
 
 	ShaderManager smgr;

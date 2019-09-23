@@ -20,7 +20,7 @@ public:
     Object(ObjectType type, const string &name);
     virtual ~Object();
 	
-    inline string getName(uint32_t idx = 0) { return idx < objNames.size() ? objNames[idx] : string(); }
+    inline string getName(uint32_t idx = 0) const { return idx < objNames.size() ? objNames[idx] : string(); }
 
     inline void setName(const string &name) { objNames[0] = name; }
 

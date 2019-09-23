@@ -70,13 +70,13 @@ bool StarCatalogue::loadHYGData(const string &fname)
 //		std::cout << "ID: " << id << " RA: " << ra << " DEC: " << dec << " PLX: " << dist << std::endl;
 
 		star = CelestialStar::create(ra, de, dist, spType, vMag, ci, lum);
-		// unsortedStars.push_back(star);
+		uStars.push_back(star);
 	}
 
 	data.close();
 //	std::cout << cname << " named stars" << std::endl;
 
-    // finish();
+    finish();
 
 	return false;
 }
@@ -316,19 +316,19 @@ void StarCatalogue::finish()
 ////	std::cout << "Find visible stars by using octree..." << std::endl;
 //	starTree->processVisibleStars(handle, obs, frustum, limitMag, STARTREE_ROOTSIZE);
 //}
-//
-//void StarCatalogue::findNearStars(const ofsHandler& handle, const vec3d_t& obs,
-//		double radius) const
-//{
-//	starTree->processNearStars(handle, obs, radius, STARTREE_ROOTSIZE);
-//}
-//
-//CelestialStar *StarCatalogue::find(const std::string& name) const
-//{
-//	for (int idx = 0; idx < uStars.size(); idx++) {
-//		CelestialStar *star = uStars[idx];
-//		if (star->getName() == name)
-//			return star;
-//	}
-//	return nullptr;
-//}
+
+void StarCatalogue::findNearStars(const vec3d_t& obs, double radius,
+		vector<const CelestialStar *>& stars) const
+{
+	starTree->processNearStars(obs, radius, STARTREE_ROOTSIZE, stars);
+}
+
+CelestialStar *StarCatalogue::find(const std::string& name) const
+{
+	for (int idx = 0; idx < uStars.size(); idx++) {
+		CelestialStar *star = uStars[idx];
+		if (star->getName() == name)
+			return star;
+	}
+	return nullptr;
+}

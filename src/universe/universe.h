@@ -21,6 +21,12 @@ namespace ofs::universe {
 
         void init();
         
+        Object *find(const string& name) const;
+        CelestialStar *findStar(const std::string& name) const;
+
+        int findNearStars(const vec3d_t& obs, double mdist,
+        		vector<const CelestialStar *>& stars) const;
+
         CelestialBody *getEarth() const { return earth; }
 
     private:

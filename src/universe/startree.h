@@ -13,10 +13,10 @@
 #define STARTREE_ROOTSIZE    (10000000.0 / LY_PER_PARSEC)
 #define STARTREE_THRESHOLD   75
 
-class ofsHandler;
-
 namespace ofs::universe {
 	class CelestialStar;
+
+#include "universe/handler.h"
 
 	class StarTree : public Tree<StarTree, OTREE_NODES>
 	{
@@ -40,9 +40,9 @@ namespace ofs::universe {
 	//    void processVisibleStars(const ofsHandler &handle, const vec3d_t &obs,
 	//    		const planed_t* frustum, const double limitingFactor,
 	//    		const double scale);
-	//
-	//    void processNearStars(const ofsHandler &handle, const vec3d_t &obs,
-	//    		const double radius, const double scale);
+
+	    void processNearStars(const vec3d_t &obs, const double radius, const double scale,
+	    		vector<const CelestialStar *>& stars);
 
 	private:
 		double   decay(double factor);

@@ -8,9 +8,12 @@
 #include "universe/star.h"
 #include "universe/startree.h"
 
+
 namespace ofs::universe {
 
-    class StarCatalogue
+#include "universe/handler.h"
+
+	class StarCatalogue
     {
     public:
         StarCatalogue() = default;
@@ -19,8 +22,15 @@ namespace ofs::universe {
         bool loadHYGData(const string &fname);
         bool loadXHIPData(const string &fname);
 
+        CelestialStar *find(const string& name) const;
+
+//        void findVisibleStars(const ofsHandler& handle, const vec3d_t& obs,
+//        		const quatd_t &rot, double fov, double aspect, double limitMag) const;
+        void findNearStars(const vec3d_t& obs, double radius,
+        	vector<const CelestialStar *>& stars) const;
+
     protected:
-        void initOctreeData(std::vector<CelestialStar*> stars);
+        void initOctreeData(vector<CelestialStar*> stars);
         void finish();
         
     private:
