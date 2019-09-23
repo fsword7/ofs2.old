@@ -51,7 +51,8 @@ void Scene::render(const Player *player, const Universe *universe)
 
 	gl.start();
 
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+//	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 //	prm.mproj = glm::perspective(glm::radians(OFS_DEFAULT_FOV), float(gl.getWidth()) / float(gl.getHeight()), DIST_NEAR, DIST_FAR);
