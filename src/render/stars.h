@@ -12,6 +12,22 @@
 #include "render/starcolors.h"
 //#include "render/texture.h"
 
+//class glStarVertex : public StarVertex
+//{
+//public:
+//	glStarVertex(const Scene &scene, int maxStars = 1000);
+//	~glStarVertex();
+//
+//	// Render routines
+//	void startPoints() override;
+//	void startSprites() override;
+//	void render() override;
+//	void finish() override;
+//
+//private:
+//	glShaderPackage *pkg;
+//};
+
 class StarVertex
 {
 public:
@@ -29,13 +45,13 @@ public:
 	};
 
 	StarVertex(const Scene &scene, int maxStars = 1000);
-	virtual ~StarVertex();
+	~StarVertex();
 
 	// Render routines
-	virtual void startPoints() = 0;
-	virtual void startSprites() = 0;
-	virtual void render() = 0;
-	virtual void finish() = 0;
+	void startPoints();
+	void startSprites();
+	void render();
+	void finish();
 
 	void addStar(const vec3d_t &pos, const Color &color, double size);
 //	void setTexture(Texture *image);
@@ -69,11 +85,12 @@ public:
 	// Star buffer for rendering
 	StarVertex *starBuffer = nullptr;
 
-	Scene  *scene = nullptr;     // Scene handler
-	vec3d_t cpos;    // Current camera/player position
-	double  pxSize;  // Pixel size
-	double  faintestMag;
-	double  size;
+	Scene   *scene = nullptr;     // Scene handler
+	Context *context = nullptr;
+	vec3d_t  cpos;    // Current camera/player position
+	double   pxSize;  // Pixel size
+	double   faintestMag;
+	double   size;
 
 	StarColors *starColors = nullptr;
 

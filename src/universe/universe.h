@@ -21,6 +21,8 @@ namespace ofs::universe {
 
         void init();
         
+        inline const StarCatalogue *getStarCatalogue() const { return &starlib; }
+
         Object *find(const string& name) const;
         CelestialStar *findStar(const std::string& name) const;
 

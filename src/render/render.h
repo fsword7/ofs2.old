@@ -19,7 +19,9 @@
 #define DDIST_FAR	1.0e6
 
 class Player;
+class Camera;
 class vPlanet;
+class StarRenderer;
 
 struct renderParameter
 {
@@ -42,6 +44,7 @@ struct renderParameter
 	vec3d_t cpos;
 	quatd_t crot;
 	float   tanap;
+	double  aspect;
 
 	// Object parameters (reference frame)
 	struct {
@@ -88,17 +91,21 @@ public:
 
 	inline ShaderManager &getShaderManager() { return smgr; }
 	inline const Context *getContext() const { return &gl; }
+	inline double getAspect() const { return gl.getAspect(); }
 
 	void init(int width, int height);
 	void cleanup();
 	
 	void resize(int width, int height);
 
+	double calculatePixelSize(Camera *cam) const;
+
 	void render(const Player *player, const Universe *universe);
 
 protected:
-	void initVisibleStars();
-	void renderStars(StarCatalogue &starlib, const Player& player, double faintestMag);
+	void initStarVertex();
+
+	void renderStars(const StarCatalogue &starlib, const Player& player, double faintestMag);
 	void setupLightSources(const vector<const CelestialStar *> &nearStars,
 			const vec3d_t &obs, double now, vector<LightSource> &ls);
 
@@ -111,7 +118,8 @@ private:
 //	vector<vObject *> vobjList;
 	vector<LightSource> lightSources;
 
-	StarColors starColors;
+	StarColors *starColors = nullptr;
+	StarRenderer  *starRenderer = nullptr;
 
 	renderParameter prm;
 

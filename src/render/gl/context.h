@@ -28,9 +28,9 @@ public:
 	// initialization routines
 	void init(int width, int height);
 
-	inline int getWidth() const    { return width; }
-	inline int getHeight() const   { return height; }
-	inline float getAspect() const { return aspect; }
+	inline int getWidth() const     { return width; }
+	inline int getHeight() const    { return height; }
+	inline double getAspect() const { return aspect; }
 
 	void resize(int width, int height);
 
@@ -39,9 +39,9 @@ public:
 	void finish();
 
 protected:
-    int   width  = 1;
-	int   height = 1;
-	float aspect = float(width)/float(height);
+    int    width  = 1;
+	int    height = 1;
+	double aspect = double(width)/double(height);
 
 	unsigned int vao = 0;
 	unsigned int vbo = 0;

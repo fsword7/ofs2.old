@@ -22,7 +22,7 @@ void Scene::init(int w, int h)
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
 
-	initVisibleStars();
+	initStarVertex();
 }
 
 void Scene::cleanup()
@@ -34,6 +34,11 @@ void Scene::cleanup()
 void Scene::resize(int w, int h)
 {
 	gl.resize(w, h);
+}
+
+double Scene::calculatePixelSize(Camera *cam) const
+{
+	return 2 * tan(cam->getFOV()/2.0) / double(gl.getHeight());
 }
 
 void Scene::render(const Player *player, const Universe *universe)
@@ -83,7 +88,7 @@ void Scene::render(const Player *player, const Universe *universe)
 //	prm.mView = mat4f_t(prm.dmView);
 
 //	// Render visible stars
-//	renderStars(universe.getStarDatabase(), player, 6.0);
+//	renderStars(*universe->getStarCatalogue(), *player, 6.0);
 //	// Render constellation lines
 //	renderConstellations(universe, player);
 

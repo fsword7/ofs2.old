@@ -16,6 +16,7 @@
 using namespace ofs::astro;
 using namespace ofs::universe;
 
+
 StarVertex::StarVertex(const Scene &scene, int maxStars)
 : scene(scene),
   type(useNotUsed),
@@ -28,6 +29,7 @@ StarVertex::StarVertex(const Scene &scene, int maxStars)
 
 StarVertex::~StarVertex()
 {
+	finish();
 	buffer.clear();
 }
 
@@ -35,6 +37,97 @@ StarVertex::~StarVertex()
 //{
 //	txImage = image;
 //}
+
+void StarVertex::startPoints()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisable(GL_VERTEX_PROGRAM_POINT_SIZE);
+	glDisable(GL_TEXTURE_2D);
+
+	uint32_t stride = sizeof(starVertex);
+	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
+	glColorPointer(4, GL_UNSIGNED_SHORT, stride, &buffer[0].color);
+	glPointSize(1.0);
+
+	nStars = 0;
+	type = usePoints;
+	flagStarted = true;
+}
+
+void StarVertex::startSprites()
+{
+//	ShaderProperties prop;
+//
+//	prop.starShader = true;
+//	prop.type = ShaderProperties::shrPointStar;
+//
+//	if (pkg == nullptr) {
+//		pkg = dynamic_cast<glShaderPackage*>(scene.getShaderManager()->createShader("star"));
+//	}
+//	pkg->use();
+////	pkg->pointScale = 1.0;
+//	pkg->setSamplerParam("starTex") = 0;
+//
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glEnableClientState(GL_COLOR_ARRAY);
+//	glDisableClientState(GL_NORMAL_ARRAY);
+//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//
+//	glEnableVertexAttribArray(glShaderPackage::PointSizeAttributeIndex);
+//	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+//	glEnable(GL_POINT_SPRITE);
+//	glEnable(GL_TEXTURE_2D);
+//
+//	uint32_t stride = sizeof(starVertex);
+//	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
+//	glColorPointer(4, GL_UNSIGNED_SHORT, stride, &buffer[0].color);
+//	glVertexAttribPointer(glShaderPackage::PointSizeAttributeIndex,
+//		1, GL_FLOAT, GL_FALSE, stride, &buffer[0].size);
+//
+//	nStars = 0;
+//	type = useSprites;
+//	flagStarted = true;
+}
+
+void StarVertex::render()
+{
+	if (nStars == 0)
+		return;
+
+	// Now rendering stars
+//	if (txImage != nullptr)
+//		txImage->bind();
+	glDrawArrays(GL_POINTS, 0, nStars);
+	nStars = 0;
+}
+
+void StarVertex::finish()
+{
+
+	render();
+
+	flagStarted = false;
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	switch (type) {
+	case useSprites:
+		glUseProgram(0);
+		glDisable(GL_VERTEX_PROGRAM_POINT_SIZE);
+		glDisable(GL_POINT_SPRITE);
+		glDisable(GL_TEXTURE_2D);
+		break;
+	case usePoints:
+	default:
+		break;
+	}
+	type = useNotUsed;
+}
 
 void StarVertex::addStar(const vec3d_t &pos, const Color &color, double size)
 {
@@ -104,39 +197,178 @@ void Scene::setupLightSources(const vector<const CelestialStar *> &nearStars,
 		ls.pos        = star->getPosition(now) - (obs / KM_PER_PC);
 		ls.luminosity = star->getLuminosity();
 		ls.radius     = star->getRadius();
-		ls.color      = starColors.lookup(star->getTemperature());
+		ls.color      = starColors->lookup(star->getTemperature());
 
 		lightSources.push_back(ls);
 	}
 }
 
-void Scene::initVisibleStars()
+void Scene::initStarVertex()
 {
+	StarVertex *starBuffer;
 	std::string fname = "data/stars/bbr_color_D58.txt";
-	starColors.load(fname);
+
+	starColors = new StarColors();
+	starColors->load(fname);
+
+	// Create Gaussian star/glare texture mapping
+//	starTexture = createStarTexture(8);
+//	glareTexture = createGlareTexture(8);
+
+	starBuffer = new StarVertex(*this, 2048);
+//	starBuffer->setTexture(starTexture);
+
+	starRenderer = new StarRenderer();
+	starRenderer->scene = this;
+	starRenderer->context = &gl;
+	starRenderer->starBuffer = starBuffer;
+	starRenderer->starColors = starColors;
 }
 
-void Scene::renderStars(StarCatalogue &starlib, const Player& player, double faintestMag)
+void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
+	double faintest)
 {
-	StarRenderer starHandler;
 	vec3d_t obs = player.getPosition();
 	quatd_t rot = player.getRotation();
 	Camera *cam = player.getCamera(0);
 	double  fov = cam->getFOV();
-	double  aspect = cam->getAspect();
+	double  aspect = gl.getAspect();
 
-	starHandler.scene = this;
-	starHandler.cpos = cam->getPosition();
-//	starHandler.pxSize = calculatePixelSize();
-	starHandler.faintestMag = faintestMag;
-	starHandler.starColors = &starColors;
+	starRenderer->cpos = cam->getPosition();
+	starRenderer->pxSize = calculatePixelSize(cam);
+	starRenderer->faintestMag = faintest;
+//	starRenderer->starColors = starColors;
+	starRenderer->starBuffer->startPoints();
+//	starRenderer->starBuffer->startSprites();
 
-//	glEnable(GL_BLEND);
-//	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 ////	std::cout << "### Starting star renderer..." << std::endl;
-//	starHandler.starVertex->start();
 ////	stardb.findVisibleStars(starHandler, player, faintestMag);
-//	stardb.findVisibleStars(starHandler, obs, rot, fov, aspect, faintestMag);
-//	starHandler.starVertex->finish();
-//	glDisable(GL_BLEND);
+	starlib.findVisibleStars(*starRenderer, obs, rot, fov, aspect, faintest);
+	starRenderer->starBuffer->finish();
+	glDisable(GL_BLEND);
 }
+
+//void glScene::renderConstellations(const Universe &universe, const Player &player)
+//{
+//	const Constellations &constellations = universe.getConstellations();
+//	const StarDatabase &stardb = universe.getStarDatabase();
+//
+//	Camera *cam = player.getCamera(0);
+//	vec3d_t cpos = cam->position();
+//	vec3d_t buffer[2];
+//
+//	const std::vector<Asterism *> &asterisms = constellations.getAsterisms();
+//
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glVertexPointer(3, GL_DOUBLE, 0, &buffer[0]);
+//	glColor4f(0.2, 0.2, 0.2, 1.0);
+//
+//	for (int idx = 0; idx < asterisms.size(); idx++) {
+//		Asterism *aster = asterisms[idx];
+//		for (int sidx = 0; sidx < aster->hip.size(); sidx += 2) {
+//			CelestialStar *star1 = stardb.getHIPStar(aster->hip[sidx]);
+//			CelestialStar *star2 = stardb.getHIPStar(aster->hip[sidx+1]);
+//
+//			if (star1 == nullptr)
+//				std::cout << "HIP " << aster->hip[sidx] << " Missing" << std::endl;
+//			if (star2 == nullptr)
+//				std::cout << "HIP " << aster->hip[sidx+1] << " Missing" << std::endl;
+//			if (star1 == nullptr || star2 == nullptr)
+//				continue;
+//
+//			buffer[0] = star1->getPosition(0) * KM_PER_PC;
+//			buffer[1] = star2->getPosition(0) * KM_PER_PC;
+////			std::cout << "HIP: " << aster->hip[sidx]
+////					  << " Name: " << star->name(0) << std::endl;
+//			glDrawArrays(GL_LINES, 0, 2);
+//		}
+////		std::cout << std::endl;
+//	}
+//
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//}
+
+
+//void glScene::createStarTexture(uint8_t *data, int mip, int scale)
+//{
+//	int size = 1 << mip;
+//	float fwhm = (float)scale * 0.3f;
+//	float sigma = fwhm / 2.3548f;
+//	float isig2 = 1.0f / (2.0f * sigma * sigma);
+//	float s = 1.0f / (sigma * (float)sqrt(2.0 * 3.14159));
+//
+////	printf("FWHM: %f\n", fwhm);
+////	printf("Sigma: %f\n", sigma);
+////	printf("isig2: %f\n", isig2);
+////	printf("s: %f\n", s);
+//
+//	for (int i = 0; i < size; i++) {
+//		float y = (float)i - size/2.0;
+//		for (int j = 0; j < size; j++) {
+//			float x = (float)j - size/2.0;
+//			float r2 = x * x + y * y;
+//			float f = s * (float)exp(-r2 * isig2) * (float)scale;
+//
+//			data[i * size + j] = std::min(f, 1.0f) * 255.99;
+////			printf("%03d ", (unsigned int)(std::min(f, 1.0f) * 255.99));
+//		}
+////		printf("\n");
+//	}
+////	printf("\n");
+//}
+//
+//void glScene::createGlareTexture(uint8_t *data, int mip, int scale)
+//{
+//	int size = 1 << mip;
+//	float s = 25.0f / (float)scale;
+//	float base = 0.66f;
+//
+//	for (int i = 0; i < size; i++) {
+//		float y = (float)i - size/2.0;
+//		for (int j = 0; j < size; j++) {
+//			float x = (float)j - size/2.0;
+//
+//			float r = sqrt(x * x + y * y);
+//			float f = pow(base, r * s);
+//
+//			data[i * size + j] = std::min(f, 1.0f) * 255.99;
+////			printf("%03d ", (unsigned int)(std::min(f, 1.0f) * 255.99));
+//		}
+////		printf("\n");
+//	}
+////	printf("\n");
+//}
+//
+//Texture *glScene::createStarTexture(int mip)
+//{
+//	int size = 1 << mip;
+//
+//	Texture *txImage = new glTexture(size, size, mip+1);
+//	txImage->setMipMode(Texture::FixedMipMaps);
+//	txImage->setFormat(GL_LUMINANCE);
+//
+//	for (int lod = 0; lod < mip; lod++) {
+//		int scale = pow(2.0, mip - lod);
+//		createStarTexture(txImage->getMipData(lod), mip - lod, scale);
+//	}
+//
+//	return txImage;
+//}
+//
+//Texture *glScene::createGlareTexture(int mip)
+//{
+//	int size = 1 << mip;
+//
+//	Texture *txImage = new glTexture(size, size, mip+1);
+//	txImage->setMipMode(Texture::FixedMipMaps);
+//	txImage->setFormat(GL_LUMINANCE);
+//
+//	for (int lod = 0; lod < mip; lod++) {
+//		int scale = pow(2.0, mip - lod);
+//		createGlareTexture(txImage->getMipData(lod), mip - lod, scale);
+//	}
+//
+//	return txImage;
+//}
