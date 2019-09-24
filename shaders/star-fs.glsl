@@ -3,7 +3,7 @@
 in vec4  starColor;
 out vec4 fragColor;
 
-uniform sampler2D starTex;
+layout (binding = 0) uniform sampler2D starTex;
 
 void main()
 {

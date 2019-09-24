@@ -44,7 +44,7 @@ public:
 		float		size;
 	};
 
-	StarVertex(const Scene &scene, int maxStars = 1000);
+	StarVertex(Scene &scene, int maxStars = 1000);
 	~StarVertex();
 
 	// Render routines
@@ -57,10 +57,14 @@ public:
 //	void setTexture(Texture *image);
 
 protected:
-	const Scene &scene;
+	Scene &scene;
+	Context &ctx;
 	pointType type;
 	int  maxStars, nStars;
 	bool flagStarted;
+
+	ShaderProgram *pgm = nullptr;
+    VertexBuffer *vbuf = nullptr;
 
 //	Texture *txImage = nullptr;
 

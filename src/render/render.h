@@ -13,10 +13,8 @@
 #include "render/gl/buffer.h"
 #include "render/gl/shader.h"
 
-#define DIST_NEAR	0.0001f
-#define DIST_FAR	1.0e6f
-#define DDIST_NEAR	0.0001
-#define DDIST_FAR	1.0e6
+#define DIST_NEAR	0.0001
+#define DIST_FAR	1.0e15
 
 class Player;
 class Camera;
@@ -91,6 +89,7 @@ public:
 
 	inline ShaderManager &getShaderManager() { return smgr; }
 	inline const Context *getContext() const { return &gl; }
+	inline Context *getContext() { return &gl; }
 	inline double getAspect() const { return gl.getAspect(); }
 
 	void init(int width, int height);

@@ -17,8 +17,9 @@ using namespace ofs::astro;
 using namespace ofs::universe;
 
 
-StarVertex::StarVertex(const Scene &scene, int maxStars)
+StarVertex::StarVertex(Scene &scene, int maxStars)
 : scene(scene),
+  ctx(*scene.getContext()),
   type(useNotUsed),
   maxStars(maxStars),
   nStars(0),
@@ -59,37 +60,46 @@ void StarVertex::startPoints()
 
 void StarVertex::startSprites()
 {
-//	ShaderProperties prop;
-//
-//	prop.starShader = true;
-//	prop.type = ShaderProperties::shrPointStar;
-//
-//	if (pkg == nullptr) {
-//		pkg = dynamic_cast<glShaderPackage*>(scene.getShaderManager()->createShader("star"));
-//	}
-//	pkg->use();
-////	pkg->pointScale = 1.0;
-//	pkg->setSamplerParam("starTex") = 0;
-//
-//	glEnableClientState(GL_VERTEX_ARRAY);
-//	glEnableClientState(GL_COLOR_ARRAY);
-//	glDisableClientState(GL_NORMAL_ARRAY);
-//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//
-//	glEnableVertexAttribArray(glShaderPackage::PointSizeAttributeIndex);
-//	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-//	glEnable(GL_POINT_SPRITE);
-//	glEnable(GL_TEXTURE_2D);
-//
+	if (pgm == nullptr) {
+		ShaderManager &smgr = scene.getShaderManager();
+
+		pgm = smgr.createShader("star");
+
+	    vbuf = new VertexBuffer(ctx, 1);
+	   	vbuf->createBuffer(VertexBuffer::VBO, 1);
+	}
+
+	pgm->use();
+
+    vbuf->bind();
+	vbuf->assign(VertexBuffer::VBO, &buffer[0], maxStars*sizeof(starVertex));
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(4 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+	glEnable(GL_TEXTURE_2D);
+
 //	uint32_t stride = sizeof(starVertex);
 //	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
 //	glColorPointer(4, GL_UNSIGNED_SHORT, stride, &buffer[0].color);
 //	glVertexAttribPointer(glShaderPackage::PointSizeAttributeIndex,
 //		1, GL_FLOAT, GL_FALSE, stride, &buffer[0].size);
-//
-//	nStars = 0;
-//	type = useSprites;
-//	flagStarted = true;
+
+	nStars = 0;
+	type = useSprites;
+	flagStarted = true;
 }
 
 void StarVertex::render()
@@ -241,6 +251,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	starRenderer->starBuffer->startPoints();
 //	starRenderer->starBuffer->startSprites();
 
+	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 ////	std::cout << "### Starting star renderer..." << std::endl;
@@ -248,6 +259,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	starlib.findVisibleStars(*starRenderer, obs, rot, fov, aspect, faintest);
 	starRenderer->starBuffer->finish();
 	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 }
 
 //void glScene::renderConstellations(const Universe &universe, const Player &player)

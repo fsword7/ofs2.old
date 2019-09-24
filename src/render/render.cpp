@@ -81,7 +81,7 @@ void Scene::render(const Player *player, const Universe *universe)
 //	prm.mview = glm::toMat4(prm.crot);
 //	prm.mview = glm::translate(prm.mview, prm.cpos);
 
-	prm.dmProj  = glm::perspective(glm::radians(DOFS_DEFAULT_FOV), double(gl.getWidth()) / double(gl.getHeight()), DDIST_NEAR, DDIST_FAR);
+	prm.dmProj  = glm::perspective(glm::radians(DOFS_DEFAULT_FOV), double(gl.getWidth()) / double(gl.getHeight()), DIST_NEAR, DIST_FAR);
 	prm.dmView  = glm::transpose(glm::toMat4(prm.crot));
 //	prm.dmPView = prm.dmProj * prm.dmView;
 //	prm.mProj = mat4f_t(prm.dmProj);
