@@ -62,6 +62,24 @@ struct renderParameter
 
 };
 
+#define MAX_LIGHTS  8
+
+struct LightSource
+{
+	vec3d_t pos;
+	double  luminosity;
+	double  radius;
+	Color   color;
+};
+
+struct DirectLight
+{
+};
+
+struct LightState
+{
+};
+
 class Scene
 {
 public:
@@ -81,6 +99,8 @@ public:
 protected:
 	void initVisibleStars();
 	void renderStars(StarCatalogue &starlib, const Player& player, double faintestMag);
+	void setupLightSources(const vector<const CelestialStar *> &nearStars,
+			const vec3d_t &obs, double now, vector<LightSource> &ls);
 
 private:
 	Context gl;
@@ -88,6 +108,8 @@ private:
 	const Player *player;
 
 	vector<const CelestialStar *> nearStars;
+//	vector<vObject *> vobjList;
+	vector<LightSource> lightSources;
 
 	StarColors starColors;
 

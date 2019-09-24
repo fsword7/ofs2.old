@@ -93,22 +93,22 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 //
 //	return appMag;
 //}
-//
-//void Scene::setupLightSources(const std::vector<const CelestialStar *> &nearStars,
-//		const vec3d_t &obs, double now, std::vector<LightSource> &ls)
-//{
-//	for (int idx = 0; idx < nearStars.size(); idx++) {
-//		const CelestialStar *star = nearStars[idx];
-//		LightSource ls;
-//
-//		ls.pos        = star->getPosition(now) - obs;
-//		ls.luminosity = star->getLuminosity();
-//		ls.radius     = star->getRadius();
-//		ls.color      = starColors->lookup(star->getTemperature());
-//
-//		lightSources.push_back(ls);
-//	}
-//}
+
+void Scene::setupLightSources(const vector<const CelestialStar *> &nearStars,
+		const vec3d_t &obs, double now, vector<LightSource> &ls)
+{
+	for (int idx = 0; idx < nearStars.size(); idx++) {
+		const CelestialStar *star = nearStars[idx];
+		LightSource ls;
+
+		ls.pos        = star->getPosition(now) - (obs / KM_PER_PC);
+		ls.luminosity = star->getLuminosity();
+		ls.radius     = star->getRadius();
+		ls.color      = starColors.lookup(star->getTemperature());
+
+		lightSources.push_back(ls);
+	}
+}
 
 void Scene::initVisibleStars()
 {

@@ -48,6 +48,7 @@ void Scene::render(const Player *player, const Universe *universe)
 	this->player = player;
 	
 	nearStars.clear();
+	lightSources.clear();
 
 	if (vobj == nullptr) {
 		vobj = new vPlanet(*this, *universe->getEarth());
@@ -56,7 +57,7 @@ void Scene::render(const Player *player, const Universe *universe)
 	// Find closest stars within desired distance
 	vec3d_t obs = player->getPosition();
 	universe->findNearStars(obs, 1.0, nearStars);
-//	setupLightSources(nearStars, obs, jdTime, lightSources);
+	setupLightSources(nearStars, obs, prm.jdTime, lightSources);
 
 //	cout << "Closest star list: (" << nearStars.size() << " stars)" << endl;
 //	for(const CelestialStar *star : nearStars) {
