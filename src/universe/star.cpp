@@ -41,15 +41,15 @@ CelestialStar *CelestialStar::createSun()
 	return star;
 }
 
-CelestialStar *CelestialStar::create(double ra, double dec, double plx,
+CelestialStar *CelestialStar::create(double ra, double dec, double pc,
     const char *spType, double appMag, double ci, double lum)
 {
     CelestialStar *star;
-    double pc;
+//    double pc;
     int    temp;
 
     star = new CelestialStar();
-    pc = 1000.0 / plx;
+//    pc = 1000.0 / plx;
     star->lpos = convertEquatorialToEcliptic(ra, dec, pc);
     star->objPosition = star->lpos;
 
@@ -57,7 +57,7 @@ CelestialStar *CelestialStar::create(double ra, double dec, double plx,
 
     star->ra  = ra;
     star->dec = dec;
-    star->plx = plx;
+//    star->plx = plx;
     star->absMag = convertAppToAbsMag(appMag, pc);
     star->bMag = appMag + ci;
     star->vMag = appMag;

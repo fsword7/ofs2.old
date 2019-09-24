@@ -216,6 +216,12 @@ bool StarCatalogue::loadXHIPData(const string &pname)
 		star->setName(bcells[XHIP_B_nNAME]);
 
 		uStars.push_back(star);
+
+//		if (glm::length(star->getPosition(0)) < 1.0) {
+//			vec3d_t pos = star->getPosition(0);
+//			cout << "HIP " << hip << " Position: " << setprecision(16) << fixed << pos.x << "," << pos.y << "," << pos.z
+//				 << " From origin: " << glm::length(pos) << endl;
+//		}
 	}
 
 	mdata.close();

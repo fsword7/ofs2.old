@@ -52,7 +52,7 @@ namespace ofs::universe {
         ~CelestialStar() = default;
 
         static CelestialStar *createSun();
-        static CelestialStar *create(double ra, double dec, double plx,
+        static CelestialStar *create(double ra, double dec, double pc,
             const char *spType, double appMag, double ci, double lum);
 
     	inline double getAbsMag() const { return absMag; }

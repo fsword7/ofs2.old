@@ -54,8 +54,8 @@ void Scene::render(const Player *player, const Universe *universe)
 	}
 
 	// Find closest stars within desired distance
-//	vec3d_t obs = player->getPosition();
-//	universe->findNearStars(obs, 1.0, nearStars);
+	vec3d_t obs = player->getPosition();
+	universe->findNearStars(obs, 1.0, nearStars);
 //	setupLightSources(nearStars, obs, jdTime, lightSources);
 
 //	cout << "Closest star list: (" << nearStars.size() << " stars)" << endl;
