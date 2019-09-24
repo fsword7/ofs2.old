@@ -281,7 +281,7 @@ void StarCatalogue::finish()
 //	}
 ////	std::cout << "%%% Brightest Magnitude = " << brightestMag << std::endl;
 //}
-//
+
 //int StarDatabase::findNearStars(const vec3d_t& obs, double mdist,
 //		vector<const CelestialStar *>& stars) const
 //{
@@ -298,9 +298,9 @@ void StarCatalogue::finish()
 //	return stars.size();
 //}
 
-//void StarCatalogue::findVisibleStars(const ofsHandler& handle, const vec3d_t& obs,
-//		const quatd_t &rot, double fov, double aspect, double limitMag) const
-//{
+void StarCatalogue::findVisibleStars(const ofsHandler& handle, const vec3d_t& obs,
+		const quatd_t &rot, double fov, double aspect, double limitMag) const
+{
 //	planed_t frustum[5];
 //	vec3d_t  plane[5];
 //
@@ -318,10 +318,10 @@ void StarCatalogue::finish()
 //		plane[idx] = mrot.transpose() * plane[idx].normalized();
 //		frustum[idx] = planed_t(plane[idx], obs);
 //	}
-//
-////	std::cout << "Find visible stars by using octree..." << std::endl;
-//	starTree->processVisibleStars(handle, obs, frustum, limitMag, STARTREE_ROOTSIZE);
-//}
+
+//	cout << "Find visible stars by using octree..." << endl;
+	starTree->processVisibleStars(handle, obs / KM_PER_PC, /* frustum, */ limitMag, STARTREE_ROOTSIZE);
+}
 
 void StarCatalogue::findNearStars(const vec3d_t& obs, double radius,
 		vector<const CelestialStar *>& stars) const

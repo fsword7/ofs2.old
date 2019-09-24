@@ -118,18 +118,19 @@ void Scene::initVisibleStars()
 
 void Scene::renderStars(StarCatalogue &starlib, const Player& player, double faintestMag)
 {
-//	StarHandler starHandler;
-//	vec3d_t obs = player.getPosition() / KM_PER_PC;
-//	quatd_t rot = player.getOrientation();
-//	double  fov = cam->getFOVRad();
-//	double  aspect = cam->getAspect();
-//
-//	starHandler.scn = this;
-//	starHandler.cpos = cam->getPosition();
+	StarRenderer starHandler;
+	vec3d_t obs = player.getPosition();
+	quatd_t rot = player.getRotation();
+	Camera *cam = player.getCamera(0);
+	double  fov = cam->getFOV();
+	double  aspect = cam->getAspect();
+
+	starHandler.scene = this;
+	starHandler.cpos = cam->getPosition();
 //	starHandler.pxSize = calculatePixelSize();
-//	starHandler.faintestMag = faintestMag;
-//	starHandler.starColors = starColors;
-//
+	starHandler.faintestMag = faintestMag;
+	starHandler.starColors = &starColors;
+
 //	glEnable(GL_BLEND);
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 ////	std::cout << "### Starting star renderer..." << std::endl;

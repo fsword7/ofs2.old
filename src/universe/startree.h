@@ -37,9 +37,9 @@ namespace ofs::universe {
 		uint32_t countNodes();
 		uint32_t countObjects();
 
-	//    void processVisibleStars(const ofsHandler &handle, const vec3d_t &obs,
-	//    		const planed_t* frustum, const double limitingFactor,
-	//    		const double scale);
+	    void processVisibleStars(const ofsHandler &handle, const vec3d_t &obs,
+	    		/* const planed_t* frustum, */ const double limitingFactor,
+	    		const double scale);
 
 	    void processNearStars(const vec3d_t &obs, const double radius, const double scale,
 	    		vector<const CelestialStar *>& stars);

@@ -19,6 +19,7 @@ public:
 	inline vec3d_t getPosition() const { return camPosition; }
 	inline quatd_t getRotation() const { return camRotation; }
 	inline double getFOV() const { return fov; }
+	inline double getAspect() const { return aspect; }
 	inline double getTanAp() const { return tanap; }
 	void setFOVrad(double fov);
 	void setFOVdeg(double fov);
@@ -31,6 +32,7 @@ private:
     vec3d_t  camPosition;
     quatd_t  camRotation;
     double   fov;
+    double   aspect;
 	double   tanap;
 };
 
