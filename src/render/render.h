@@ -9,6 +9,7 @@
 
 #include "universe/universe.h"
 #include "render/context.h"
+#include "render/starcolors.h"
 #include "render/gl/buffer.h"
 #include "render/gl/shader.h"
 
@@ -87,6 +88,8 @@ private:
 	const Player *player;
 
 	vector<const CelestialStar *> nearStars;
+
+	StarColors starColors;
 
 	renderParameter prm;
 

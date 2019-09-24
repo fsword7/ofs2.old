@@ -60,6 +60,13 @@ namespace ofs::universe {
 
     	inline void setHIPNumber(int id) { hip = id; };
 
+     	double getLuminosity() const;
+       	double getAppMag(double dist) const;
+       	int    getTemperature() const;
+
+    	double getRadius() const;
+    //	double getRadius();
+
     private:
     	// Star known flags
         uint32_t flags;

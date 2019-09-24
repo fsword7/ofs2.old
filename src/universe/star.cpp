@@ -67,3 +67,44 @@ CelestialStar *CelestialStar::create(double ra, double dec, double plx,
 
     return star;
 }
+
+double CelestialStar::getLuminosity() const
+{
+	return convertAbsMagToLum(absMag);
+}
+
+double CelestialStar::getAppMag(double dist) const
+{
+	return convertAbsToAppMag(absMag, dist);
+}
+
+int CelestialStar::getTemperature() const
+{
+	double ci = 0.92 * this->ci;
+
+	return (int)(4600 * ((1 / (ci + 1.7)) + (1 / (ci + 0.62))));
+}
+
+double CelestialStar::getRadius() const
+{
+	if (flags & knownRadius)
+		return radius;
+
+	// Determine estimate star radius by using that formula
+	// R/Rs = (Ts/T)^2 (L/Ls)^1/2
+	return square(SOLAR_TEMPERATURE / getTemperature()) *
+		sqrt(getLuminosity() / SOLAR_LUMINOSITY) *
+		SOLAR_RADIUS;
+}
+
+//double CelestialStar::getRadius()
+//{
+//	if (flags & knownRadius)
+//		return radius;
+//
+//	// Determine estimate star radius by using that formula
+//	// R/Rs = (Ts/T)^2 (L/Ls)^1/2
+//	return square(SOLAR_TEMPERATURE / getTemperature()) *
+//		sqrt(getLuminosity() / SOLAR_LUMINOSITY) *
+//		SOLAR_RADIUS;
+//}
