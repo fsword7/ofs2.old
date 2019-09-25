@@ -39,8 +39,8 @@ public:
 
 	struct starVertex
 	{
-		vec3d_t		posStar;
-		uint16_t	color[4];
+		vec3f_t		posStar;
+		Color		color;
 		float		size;
 	};
 
@@ -59,8 +59,10 @@ public:
 protected:
 	Scene &scene;
 	Context &ctx;
+	renderParameter &prm;
+
 	pointType type;
-	int  maxStars, nStars;
+	int  maxStars, nStars, cStars;
 	bool flagStarted;
 
 	ShaderProgram *pgm = nullptr;

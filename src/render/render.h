@@ -90,6 +90,7 @@ public:
 	inline ShaderManager &getShaderManager() { return smgr; }
 	inline const Context *getContext() const { return &gl; }
 	inline Context *getContext() { return &gl; }
+	inline renderParameter *getParameter() { return &prm; }
 	inline double getAspect() const { return gl.getAspect(); }
 
 	void init(int width, int height);

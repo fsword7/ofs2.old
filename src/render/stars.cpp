@@ -20,6 +20,7 @@ using namespace ofs::universe;
 StarVertex::StarVertex(Scene &scene, int maxStars)
 : scene(scene),
   ctx(*scene.getContext()),
+  prm(*scene.getParameter()),
   type(useNotUsed),
   maxStars(maxStars),
   nStars(0),
@@ -54,6 +55,7 @@ void StarVertex::startPoints()
 	glPointSize(1.0);
 
 	nStars = 0;
+	cStars = 0;
 	type = usePoints;
 	flagStarted = true;
 }
@@ -71,25 +73,32 @@ void StarVertex::startSprites()
 
 	pgm->use();
 
-    vbuf->bind();
-	vbuf->assign(VertexBuffer::VBO, &buffer[0], maxStars*sizeof(starVertex));
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(4 * sizeof(float)));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)(7 * sizeof(float)));
 	glEnableVertexAttribArray(2);
+
+//	cout << "starVertex size: " << sizeof(starVertex) << endl;
+//	cout << "  vec3f_t size:  " << sizeof(vec3f_t) << endl;
+//	cout << "  Color size:    " << sizeof(Color) << endl;
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_PROGRAM_POINT_SIZE);
+//	glEnable(GL_TEXTURE_2D);
+
+	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
+
+	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
+    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 
 //	uint32_t stride = sizeof(starVertex);
 //	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
@@ -98,6 +107,7 @@ void StarVertex::startSprites()
 //		1, GL_FLOAT, GL_FALSE, stride, &buffer[0].size);
 
 	nStars = 0;
+	cStars = 0;
 	type = useSprites;
 	flagStarted = true;
 }
@@ -107,11 +117,15 @@ void StarVertex::render()
 	if (nStars == 0)
 		return;
 
+    vbuf->bind();
+	vbuf->assign(VertexBuffer::VBO, &buffer[0], nStars*sizeof(starVertex));
+
 	// Now rendering stars
 //	if (txImage != nullptr)
 //		txImage->bind();
 	glDrawArrays(GL_POINTS, 0, nStars);
-	nStars = 0;
+	cStars += nStars;
+	nStars  = 0;
 }
 
 void StarVertex::finish()
@@ -121,6 +135,9 @@ void StarVertex::finish()
 
 	flagStarted = false;
 
+//	cout << "Total " << cStars << " rendered stars." << endl;
+	cStars = 0;
+
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -128,9 +145,9 @@ void StarVertex::finish()
 	switch (type) {
 	case useSprites:
 		glUseProgram(0);
-		glDisable(GL_VERTEX_PROGRAM_POINT_SIZE);
-		glDisable(GL_POINT_SPRITE);
+		glDisable(GL_PROGRAM_POINT_SIZE);
 		glDisable(GL_TEXTURE_2D);
+		glEnable(GL_DEPTH_TEST);
 		break;
 	case usePoints:
 	default:
@@ -145,11 +162,8 @@ void StarVertex::addStar(const vec3d_t &pos, const Color &color, double size)
 		render();
 
 	buffer[nStars].posStar = pos;
+	buffer[nStars].color = color;
 	buffer[nStars].size = size;
-	buffer[nStars].color[0] = color.getRed();
-	buffer[nStars].color[1] = color.getGreen();
-	buffer[nStars].color[2] = color.getBlue();
-	buffer[nStars].color[3] = color.getAlpha();
 
 	nStars++;
 }
@@ -181,7 +195,7 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 
 	// Finally, now display star
 //	cout << "@@@ Adding a star..." << endl;
-	starBuffer->addStar(spos, color, ptSize);
+	starBuffer->addStar(spos / KM_PER_PC, color, ptSize);
 }
 
 // ************************************************************************
@@ -248,8 +262,8 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	starRenderer->pxSize = calculatePixelSize(cam);
 	starRenderer->faintestMag = faintest;
 //	starRenderer->starColors = starColors;
-	starRenderer->starBuffer->startPoints();
-//	starRenderer->starBuffer->startSprites();
+//	starRenderer->starBuffer->startPoints();
+	starRenderer->starBuffer->startSprites();
 
 	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
