@@ -8,6 +8,7 @@
 #include "main/core.h"
 #include "engine/player.h"
 #include "universe/astro.h"
+#include "universe/universe.h"
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
 #include "render/render.h"
@@ -271,7 +272,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 
 	starRenderer->cpos = cam->getPosition();
 	starRenderer->pxSize = calculatePixelSize(cam);
-	starRenderer->baseSize = 4.0; // default base star size
+	starRenderer->baseSize = 5.0; // default base star size
 	starRenderer->faintestMag = faintestMag;
 	starRenderer->faintestMagNight = faintest;
 	starRenderer->saturationMag = saturationMag;
@@ -290,45 +291,45 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 //	glEnable(GL_DEPTH_TEST);
 }
 
-//void glScene::renderConstellations(const Universe &universe, const Player &player)
-//{
-//	const Constellations &constellations = universe.getConstellations();
-//	const StarDatabase &stardb = universe.getStarDatabase();
-//
-//	Camera *cam = player.getCamera(0);
-//	vec3d_t cpos = cam->position();
-//	vec3d_t buffer[2];
-//
-//	const std::vector<Asterism *> &asterisms = constellations.getAsterisms();
-//
-//	glEnableClientState(GL_VERTEX_ARRAY);
-//	glVertexPointer(3, GL_DOUBLE, 0, &buffer[0]);
-//	glColor4f(0.2, 0.2, 0.2, 1.0);
-//
-//	for (int idx = 0; idx < asterisms.size(); idx++) {
-//		Asterism *aster = asterisms[idx];
-//		for (int sidx = 0; sidx < aster->hip.size(); sidx += 2) {
-//			CelestialStar *star1 = stardb.getHIPStar(aster->hip[sidx]);
-//			CelestialStar *star2 = stardb.getHIPStar(aster->hip[sidx+1]);
-//
-//			if (star1 == nullptr)
-//				std::cout << "HIP " << aster->hip[sidx] << " Missing" << std::endl;
-//			if (star2 == nullptr)
-//				std::cout << "HIP " << aster->hip[sidx+1] << " Missing" << std::endl;
-//			if (star1 == nullptr || star2 == nullptr)
-//				continue;
-//
-//			buffer[0] = star1->getPosition(0) * KM_PER_PC;
-//			buffer[1] = star2->getPosition(0) * KM_PER_PC;
-////			std::cout << "HIP: " << aster->hip[sidx]
-////					  << " Name: " << star->name(0) << std::endl;
-//			glDrawArrays(GL_LINES, 0, 2);
-//		}
-////		std::cout << std::endl;
-//	}
-//
-//	glDisableClientState(GL_VERTEX_ARRAY);
-//}
+void Scene::renderConstellations(const Universe &universe, const Player &player)
+{
+	const Constellations &constellations = universe.getAsterism();
+	const StarCatalogue &starlib = *universe.getStarCatalogue();
+
+	Camera *cam = player.getCamera(0);
+	vec3d_t cpos = cam->getPosition();
+	vec3d_t buffer[2];
+
+	const vector<Asterism *> &asterisms = constellations.getAsterisms();
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_DOUBLE, 0, &buffer[0]);
+	glColor4f(0.2, 0.2, 0.2, 1.0);
+
+	for (int idx = 0; idx < asterisms.size(); idx++) {
+		Asterism *aster = asterisms[idx];
+		for (int sidx = 0; sidx < aster->hip.size(); sidx += 2) {
+			CelestialStar *star1 = starlib.getHIPStar(aster->hip[sidx]);
+			CelestialStar *star2 = starlib.getHIPStar(aster->hip[sidx+1]);
+
+			if (star1 == nullptr)
+				std::cout << "HIP " << aster->hip[sidx] << " Missing" << std::endl;
+			if (star2 == nullptr)
+				std::cout << "HIP " << aster->hip[sidx+1] << " Missing" << std::endl;
+			if (star1 == nullptr || star2 == nullptr)
+				continue;
+
+			buffer[0] = star1->getPosition(0) * KM_PER_PC;
+			buffer[1] = star2->getPosition(0) * KM_PER_PC;
+//			std::cout << "HIP: " << aster->hip[sidx]
+//					  << " Name: " << star->name(0) << std::endl;
+			glDrawArrays(GL_LINES, 0, 2);
+		}
+//		std::cout << std::endl;
+	}
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
 
 
 //void glScene::createStarTexture(uint8_t *data, int mip, int scale)

@@ -19,6 +19,8 @@ namespace ofs::universe {
         StarCatalogue() = default;
         ~StarCatalogue() = default;
 
+        inline CelestialStar *getHIPStar(int hip) const { return hipCatalogue[hip]; }
+
         bool loadHYGData(const string &fname);
         bool loadXHIPData(const string &fname);
 
@@ -35,6 +37,9 @@ namespace ofs::universe {
         
     private:
         vector<CelestialStar *> uStars;
+
+    	// Star catalogues
+    	CelestialStar **hipCatalogue = nullptr;
 
     	StarTree *starTree;
     };

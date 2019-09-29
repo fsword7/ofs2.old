@@ -106,6 +106,7 @@ protected:
 	void initStarVertex();
 
 	void renderStars(const StarCatalogue &starlib, const Player& player, double faintestMag);
+	void renderConstellations(const Universe &universe, const Player &player);
 	void setupLightSources(const vector<const CelestialStar *> &nearStars,
 			const vec3d_t &obs, double now, vector<LightSource> &ls);
 

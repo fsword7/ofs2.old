@@ -257,6 +257,23 @@ void StarCatalogue::finish()
     cout << "Total star count: " << uStars.size() << endl;
 
     initOctreeData(uStars);
+
+	// Initialize HIP star catalogue
+	int hip, maxhip = 0;
+	for (int idx = 0; idx < uStars.size(); idx++) {
+		hip = uStars[idx]->getHIPNumber();
+		if (hip > maxhip)
+			maxhip = hip;
+	}
+	hipCatalogue = new CelestialStar*[maxhip];
+	for (int idx = 0; idx < maxhip; idx++)
+		hipCatalogue[idx] = nullptr;
+	for (int idx = 0; idx < uStars.size(); idx++) {
+		CelestialStar *star = uStars[idx];
+		hip = star->getHIPNumber();
+		hipCatalogue[hip] = star;
+	}
+
 }
 
 //void StarDatabase::findVisibleStars(const ofsHandler& handle, const Player& player,
