@@ -177,6 +177,8 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 	double  srad;
 	double  rdist;
 	double  objSize;
+	double  discSize;
+	double  discScale;
 	double  alpha, ptSize;
 	Color   color;
 
@@ -187,16 +189,24 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 
 	// Calculate apparent size of star in view field
 	srad    = star.getRadius();
-	objSize = (srad / (dist * KM_PER_PC)) / pxSize;
+//	objSize = (srad / (dist * KM_PER_PC)) / pxSize;
+	objSize = srad / (dist * pxSize * KM_PER_PC);
 
-	alpha  = clamp(faintestMag - appMag);
-	ptSize = 10.0; // objSize * 20.0;
+	alpha  = faintestMag - appMag;
+	discSize = baseSize;
+	if (alpha > 1.0) {
+		discScale = min(pow(2.0, 0.3 * (saturationMag - appMag)), 100.0);
+		discSize *= discScale;
+		alpha = 1.0;
+	} else if (alpha < 0.0)
+		alpha = 0.0;
+
 	color  = starColors->lookup(star.getTemperature());
 	color.setAlpha(alpha);
 
 	// Finally, now display star
 //	cout << "@@@ Adding a star..." << endl;
-	starBuffer->addStar(spos / KM_PER_PC, color, ptSize);
+	starBuffer->addStar(spos / KM_PER_PC, color, discSize);
 }
 
 // ************************************************************************
@@ -261,7 +271,10 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 
 	starRenderer->cpos = cam->getPosition();
 	starRenderer->pxSize = calculatePixelSize(cam);
-	starRenderer->faintestMag = faintest;
+	starRenderer->baseSize = 4.0; // default base star size
+	starRenderer->faintestMag = faintestMag;
+	starRenderer->faintestMagNight = faintest;
+	starRenderer->saturationMag = saturationMag;
 //	starRenderer->starColors = starColors;
 //	starRenderer->starBuffer->startPoints();
 	starRenderer->starBuffer->startSprites();

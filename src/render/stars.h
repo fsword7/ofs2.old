@@ -95,8 +95,11 @@ public:
 	Context *context = nullptr;
 	vec3d_t  cpos;    // Current camera/player position
 	double   pxSize;  // Pixel size
-	double   faintestMag;
-	double   size;
+	double   baseSize;
+
+	float    faintestMag = 0.0f;
+	float    faintestMagNight = 0.0f;
+	float    saturationMag = 0.0f;
 
 	StarColors *starColors = nullptr;
 

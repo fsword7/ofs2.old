@@ -132,5 +132,9 @@ private:
 	uint32_t myColor;
 	uint32_t texture1, texture2;
 
+	float faintestMag      = 6.0f;
+	float faintestMagNight = faintestMag;
+	float saturationMag    = 1.0f;
+
 	vPlanet *vobj = nullptr;
 };
