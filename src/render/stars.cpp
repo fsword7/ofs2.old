@@ -86,14 +86,15 @@ void StarVertex::startSprites()
 //	cout << "  vec3f_t size:  " << sizeof(vec3f_t) << endl;
 //	cout << "  Color size:    " << sizeof(Color) << endl;
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glEnableClientState(GL_COLOR_ARRAY);
+//	glDisableClientState(GL_NORMAL_ARRAY);
+//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glDisable(GL_DEPTH_TEST);
+//	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_PROGRAM_POINT_SIZE);
 //	glEnable(GL_TEXTURE_2D);
+	glPointSize(1.0);
 
 	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
 
@@ -138,16 +139,16 @@ void StarVertex::finish()
 //	cout << "Total " << cStars << " rendered stars." << endl;
 	cStars = 0;
 
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//	glDisableClientState(GL_COLOR_ARRAY);
+//	glDisableClientState(GL_VERTEX_ARRAY);
+//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	switch (type) {
 	case useSprites:
-		glUseProgram(0);
+//		glUseProgram(0);
 		glDisable(GL_PROGRAM_POINT_SIZE);
 		glDisable(GL_TEXTURE_2D);
-		glEnable(GL_DEPTH_TEST);
+//		glEnable(GL_DEPTH_TEST);
 		break;
 	case usePoints:
 	default:
@@ -186,10 +187,10 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 
 	// Calculate apparent size of star in view field
 	srad    = star.getRadius();
-	objSize = (srad / dist) / pxSize;
+	objSize = (srad / (dist * KM_PER_PC)) / pxSize;
 
 	alpha  = clamp(faintestMag - appMag);
-	ptSize = objSize * 5.0;
+	ptSize = 10.0; // objSize * 20.0;
 	color  = starColors->lookup(star.getTemperature());
 	color.setAlpha(alpha);
 
@@ -265,7 +266,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 //	starRenderer->starBuffer->startPoints();
 	starRenderer->starBuffer->startSprites();
 
-	glDisable(GL_DEPTH_TEST);
+//	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 ////	std::cout << "### Starting star renderer..." << std::endl;
@@ -273,7 +274,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	starlib.findVisibleStars(*starRenderer, obs, rot, fov, aspect, faintest);
 	starRenderer->starBuffer->finish();
 	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
+//	glEnable(GL_DEPTH_TEST);
 }
 
 //void glScene::renderConstellations(const Universe &universe, const Player &player)

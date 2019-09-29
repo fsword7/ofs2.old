@@ -16,8 +16,8 @@ void Scene::init(int w, int h)
 {
 	gl.init(w, h);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
+//	glEnable(GL_DEPTH_TEST);
+//	glDepthFunc(GL_LEQUAL);
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
@@ -88,13 +88,13 @@ void Scene::render(const Player *player, const Universe *universe)
 //	prm.mView = mat4f_t(prm.dmView);
 
 //	// Render visible stars
-	renderStars(*universe->getStarCatalogue(), *player, 6.0);
+	renderStars(*universe->getStarCatalogue(), *player, 4.0);
 //	// Render constellation lines
 //	renderConstellations(universe, player);
 
-	// glDepthMask(GL_FALSE);
-	vobj->render(prm);
-	// glDepthMask(GL_TRUE);
+//	 glDepthMask(GL_FALSE);
+//	vobj->render(prm);
+//	 glDepthMask(GL_TRUE);
 
 	gl.finish();
 }

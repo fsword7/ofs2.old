@@ -132,8 +132,8 @@ bool StarCatalogue::loadXHIPData(const string &pname)
 	}
 
     // Create the Sun (Sol)
-	star = CelestialStar::createSun();
-	uStars.push_back(star);
+//	star = CelestialStar::createSun();
+//	uStars.push_back(star);
 
 	lineno = 0;
 	cnplx = 0;

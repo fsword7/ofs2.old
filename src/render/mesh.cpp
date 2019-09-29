@@ -62,6 +62,8 @@ void Mesh::render(const Context *gl, renderParameter &prm)
 	glDrawElements(GL_TRIANGLES, nidx, GL_UNSIGNED_SHORT, 0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     vbuf->unbind();
+
+    glDisable(GL_CULL_FACE);
 }
 
 void Mesh::allocate(const Context *ctx)
