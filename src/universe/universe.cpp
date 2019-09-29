@@ -18,6 +18,10 @@ void Universe::init()
 	std::string pname = "data/stars/xhip";
 	starlib.loadXHIPData(pname);
 
+	std::string cname = "../data/constellations/western/constellationship.fab";
+//	std::string cname = "../data/constellations/western_rey/constellationship.fab";
+	asterism.load(cname);
+
 	// To removed later...
     earth = new CelestialBody();
     earth->setName("earth");

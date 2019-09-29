@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "universe/asterisms.h"
 #include "universe/starlib.h"
 #include "universe/body.h"
 
@@ -22,6 +23,7 @@ namespace ofs::universe {
         void init();
         
         inline const StarCatalogue *getStarCatalogue() const { return &starlib; }
+        inline const Constellations &getAsterism() const { return asterism; }
 
         Object *find(const string& name) const;
         CelestialStar *findStar(const std::string& name) const;
@@ -33,6 +35,7 @@ namespace ofs::universe {
 
     private:
         StarCatalogue starlib;
+        Constellations asterism;
 
         CelestialBody *earth;
     };
