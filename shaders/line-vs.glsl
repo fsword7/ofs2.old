@@ -7,7 +7,7 @@ uniform mat4 mvp;
 
 out vec4 lineColor;
 
-int main()
+void main()
 {
 	gl_Position = mvp * vec4(vPosition, 1.0);
 	lineColor = vColor;

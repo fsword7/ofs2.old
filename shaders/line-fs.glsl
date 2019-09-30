@@ -3,7 +3,7 @@
 in vec4 lineColor;
 out vec4 fragColor;
 
-int main()
+void main()
 {
 	fragColor = lineColor;
 }

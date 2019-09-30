@@ -102,7 +102,7 @@ target_link_libraries(ofs
 	${SDL2_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}
 	${OPENGL_LIBRARIES}
-	${GLEW_LIBRARIES}
+	GLEW::GLEW
 	${ZLIB_LIBRARIES}
 #	${fmt_LIBRARIES}
 	-lfmt

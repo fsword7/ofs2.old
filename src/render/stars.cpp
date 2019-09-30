@@ -76,13 +76,11 @@ void StarVertex::startSprites()
 
 	pgm->use();
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(3 * sizeof(float)));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(7 * sizeof(float)));
 	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void *)(7 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
 //	cout << "starVertex size: " << sizeof(starVertex) << endl;
@@ -92,7 +90,6 @@ void StarVertex::startSprites()
 //	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_PROGRAM_POINT_SIZE);
 //	glEnable(GL_TEXTURE_2D);
-	glPointSize(1.0);
 
 	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
 
@@ -131,15 +128,11 @@ void StarVertex::finish()
 //	cout << "Total " << cStars << " rendered stars." << endl;
 	cStars = 0;
 
-//	glDisableClientState(GL_COLOR_ARRAY);
-//	glDisableClientState(GL_VERTEX_ARRAY);
-//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
 	switch (type) {
 	case useSprites:
 //		glUseProgram(0);
 		glDisable(GL_PROGRAM_POINT_SIZE);
-		glDisable(GL_TEXTURE_2D);
+//		glDisable(GL_TEXTURE_2D);
 //		glEnable(GL_DEPTH_TEST);
 		break;
 	case usePoints:
@@ -288,6 +281,8 @@ void Scene::initConstellations(const Universe &universe)
 		cLines += aster->hip.size();
 	}
 	bufAsterism = new VertexLine[cLines];
+
+	cout << "VertexLine Size: " << sizeof(VertexLine) << endl;
 }
 
 void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
@@ -328,13 +323,12 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 
 	Camera *cam = player.getCamera(0);
 	vec3d_t cpos = cam->getPosition();
-	vec3d_t buffer[2];
 	int cLines = 0;
 
 	pgmAsterism->use();
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)(3 * sizeof(float)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexLine), (void *)0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexLine), (void *)(3 * sizeof(float)));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
@@ -360,10 +354,12 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 			if (star1 == nullptr || star2 == nullptr)
 				continue;
 
-			bufAsterism[rLines].lpos     = star1->getPosition(0) * KM_PER_PC;
-			bufAsterism[rLines++].color  = Color(0.2, 0.2, 0.2, 1.0);
-			bufAsterism[rLines].lpos     = star2->getPosition(0) * KM_PER_PC;
-			bufAsterism[rLines++].color  = Color(0.2, 0.2, 0.2, 1.0);
+			bufAsterism[rLines].lpos   = vec3f_t(star1->getPosition(0) * KM_PER_PC);
+			bufAsterism[rLines].color  = Color(0.2, 0.2, 0.2, 1.0);
+			rLines++;
+			bufAsterism[rLines].lpos   = vec3f_t(star2->getPosition(0) * KM_PER_PC);
+			bufAsterism[rLines].color  = Color(0.2, 0.2, 0.2, 1.0);
+			rLines++;
 
 //			std::cout << "HIP: " << aster->hip[sidx]
 //					  << " Name: " << star->name(0) << std::endl;
@@ -371,7 +367,7 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 //		std::cout << std::endl;
 	}
 
-	vbufAsterism->assign(VertexBuffer::VBO, bufAsterism, rLines);
+	vbufAsterism->assign(VertexBuffer::VBO, bufAsterism, sizeof(VertexLine)*rLines);
 
 	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
 
