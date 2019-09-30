@@ -70,7 +70,7 @@ protected:
 
 //	Texture *txImage = nullptr;
 
-	vector<starVertex> buffer;
+    starVertex *buffer = nullptr;
 };
 
 class StarRenderer : public ofsHandler

@@ -16,8 +16,9 @@ void Scene::init(int w, int h)
 {
 	gl.init(w, h);
 
-//	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 //	glDepthFunc(GL_LEQUAL);
+	glDepthFunc(GL_ALWAYS);
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
@@ -89,6 +90,7 @@ void Scene::render(const Player *player, const Universe *universe)
 
 	// Render visible stars
 	renderStars(*universe->getStarCatalogue(), *player, faintestMagNight);
+
 	// Render constellation lines
 //	renderConstellations(*universe, *player);
 

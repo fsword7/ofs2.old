@@ -9,14 +9,17 @@
 #include "main/date.h"
 #include "engine/engine.h"
 #include "engine/player.h"
+#include "universe/astro.h"
 
+using namespace ofs::astro;
 using namespace ofs::universe;
 
 Engine::Engine()
 : realTime(0), scaleTime(1.0)
 {
-	player.setPosition(vec3f_t(0.0f, 0.0f, 0.0f));
-	
+	player.setPosition(vec3f_t(0.0, 0.0, KM_PER_AU));
+//	player.setPosition(vec3f_t(0.0, 0.0, 0.0));
+
 	pdata = "data/";
 
 	universe.init();

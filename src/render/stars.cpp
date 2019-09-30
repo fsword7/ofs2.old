@@ -24,16 +24,17 @@ StarVertex::StarVertex(Scene &scene, int maxStars)
   prm(*scene.getParameter()),
   type(useNotUsed),
   maxStars(maxStars),
-  nStars(0),
+  nStars(0), cStars(0),
   flagStarted(false)
 {
-	buffer.resize(maxStars);
+	buffer = new starVertex[maxStars];
 }
 
 StarVertex::~StarVertex()
 {
 	finish();
-	buffer.clear();
+	if (buffer != nullptr)
+		delete []buffer;
 }
 
 //void StarVertex::setTexture(Texture *image)
@@ -43,22 +44,22 @@ StarVertex::~StarVertex()
 
 void StarVertex::startPoints()
 {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisable(GL_VERTEX_PROGRAM_POINT_SIZE);
-	glDisable(GL_TEXTURE_2D);
-
-	uint32_t stride = sizeof(starVertex);
-	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
-	glColorPointer(4, GL_UNSIGNED_SHORT, stride, &buffer[0].color);
-	glPointSize(1.0);
-
-	nStars = 0;
-	cStars = 0;
-	type = usePoints;
-	flagStarted = true;
+//	glEnableClientState(GL_VERTEX_ARRAY);
+//	glEnableClientState(GL_COLOR_ARRAY);
+//	glDisableClientState(GL_NORMAL_ARRAY);
+//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//	glDisable(GL_VERTEX_PROGRAM_POINT_SIZE);
+//	glDisable(GL_TEXTURE_2D);
+//
+//	uint32_t stride = sizeof(starVertex);
+//	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
+//	glColorPointer(4, GL_UNSIGNED_SHORT, stride, &buffer[0].color);
+//	glPointSize(1.0);
+//
+//	nStars = 0;
+//	cStars = 0;
+//	type = usePoints;
+//	flagStarted = true;
 }
 
 void StarVertex::startSprites()
@@ -87,11 +88,6 @@ void StarVertex::startSprites()
 //	cout << "  vec3f_t size:  " << sizeof(vec3f_t) << endl;
 //	cout << "  Color size:    " << sizeof(Color) << endl;
 
-//	glEnableClientState(GL_VERTEX_ARRAY);
-//	glEnableClientState(GL_COLOR_ARRAY);
-//	glDisableClientState(GL_NORMAL_ARRAY);
-//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
 //	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_PROGRAM_POINT_SIZE);
 //	glEnable(GL_TEXTURE_2D);
@@ -101,12 +97,6 @@ void StarVertex::startSprites()
 
 	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
-
-//	uint32_t stride = sizeof(starVertex);
-//	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
-//	glColorPointer(4, GL_UNSIGNED_SHORT, stride, &buffer[0].color);
-//	glVertexAttribPointer(glShaderPackage::PointSizeAttributeIndex,
-//		1, GL_FLOAT, GL_FALSE, stride, &buffer[0].size);
 
 	nStars = 0;
 	cStars = 0;
@@ -120,7 +110,7 @@ void StarVertex::render()
 		return;
 
     vbuf->bind();
-	vbuf->assign(VertexBuffer::VBO, &buffer[0], nStars*sizeof(starVertex));
+	vbuf->assign(VertexBuffer::VBO, buffer, nStars*sizeof(starVertex));
 
 	// Now rendering stars
 //	if (txImage != nullptr)
@@ -205,9 +195,18 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 	color  = starColors->lookup(star.getTemperature());
 	color.setAlpha(alpha);
 
+//	if (star.getHIPNumber() == 0) {
+//		cout << "Yes, Sun is here." << endl;
+//		cout << "Star size: " << discSize << " Position: " << rpos.x << "," << rpos.y << "," << rpos.z << endl;
+//		cout << "Star color: " << color.getRed() << "," << color.getGreen() << "," << color.getBlue() << "," << color.getAlpha() << endl;
+//		discSize = 20.0;
+////		rpos = -rpos;
+////		starBuffer->addStar(rpos, color, discSize);
+//	}
+
 	// Finally, now display star
 //	cout << "@@@ Adding a star..." << endl;
-	starBuffer->addStar(spos / KM_PER_PC, color, discSize);
+	starBuffer->addStar(rpos, color, discSize);
 }
 
 // ************************************************************************
