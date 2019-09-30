@@ -9,6 +9,7 @@
 #include "engine/player.h"
 #include "universe/astro.h"
 #include "universe/universe.h"
+#include "render/gl/context.h"
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
 #include "render/render.h"
@@ -263,6 +264,32 @@ void Scene::initStarVertex()
 	starRenderer->starColors = starColors;
 }
 
+void Scene::initConstellations(const Universe &universe)
+{
+	const Constellations &constellations = universe.getAsterism();
+	const StarCatalogue &starlib = *universe.getStarCatalogue();
+	const vector<Asterism *> &asterisms = constellations.getAsterisms();
+
+	pgmAsterism = smgr.createShader("line");
+
+	vbufAsterism = new VertexBuffer(gl, 1);
+	vbufAsterism->createBuffer(VertexBuffer::VBO, 1);
+
+//	pgmAsterism->use();
+//
+//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)0);
+//	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)(3 * sizeof(float)));
+//	glEnableVertexAttribArray(0);
+//	glEnableVertexAttribArray(1);
+
+	int cLines = 0;
+	for (int idx = 0; idx < asterisms.size(); idx++) {
+		Asterism *aster = asterisms[idx];
+		cLines += aster->hip.size();
+	}
+	bufAsterism = new VertexLine[cLines];
+}
+
 void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	double faintest)
 {
@@ -297,17 +324,29 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 {
 	const Constellations &constellations = universe.getAsterism();
 	const StarCatalogue &starlib = *universe.getStarCatalogue();
+	const vector<Asterism *> &asterisms = constellations.getAsterisms();
 
 	Camera *cam = player.getCamera(0);
 	vec3d_t cpos = cam->getPosition();
 	vec3d_t buffer[2];
+	int cLines = 0;
 
-	const vector<Asterism *> &asterisms = constellations.getAsterisms();
+	pgmAsterism->use();
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_DOUBLE, 0, &buffer[0]);
-	glColor4f(0.2, 0.2, 0.2, 1.0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 
+//	for (int idx = 0; idx < asterisms.size(); idx++) {
+//		Asterism *aster = asterisms[idx];
+//		cLines += aster->hip.size();
+//	}
+//	if (bufAsterism == nullptr) {
+//		bufAsterism = new VertexLine[cLines];
+//	}
+
+	int rLines = 0;
 	for (int idx = 0; idx < asterisms.size(); idx++) {
 		Asterism *aster = asterisms[idx];
 		for (int sidx = 0; sidx < aster->hip.size(); sidx += 2) {
@@ -321,16 +360,25 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 			if (star1 == nullptr || star2 == nullptr)
 				continue;
 
-			buffer[0] = star1->getPosition(0) * KM_PER_PC;
-			buffer[1] = star2->getPosition(0) * KM_PER_PC;
+			bufAsterism[rLines].lpos     = star1->getPosition(0) * KM_PER_PC;
+			bufAsterism[rLines++].color  = Color(0.2, 0.2, 0.2, 1.0);
+			bufAsterism[rLines].lpos     = star2->getPosition(0) * KM_PER_PC;
+			bufAsterism[rLines++].color  = Color(0.2, 0.2, 0.2, 1.0);
+
 //			std::cout << "HIP: " << aster->hip[sidx]
 //					  << " Name: " << star->name(0) << std::endl;
-			glDrawArrays(GL_LINES, 0, 2);
 		}
 //		std::cout << std::endl;
 	}
 
-	glDisableClientState(GL_VERTEX_ARRAY);
+	vbufAsterism->assign(VertexBuffer::VBO, bufAsterism, rLines);
+
+	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
+
+	uint32_t mvpLoc = glGetUniformLocation(pgmAsterism->getID(), "mvp");
+    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
+
+	glDrawArrays(GL_LINES, 0, rLines);
 }
 
 

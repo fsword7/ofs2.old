@@ -12,7 +12,7 @@
 #include "render/planet.h"
 #include "render/render.h"
 
-void Scene::init(int w, int h)
+void Scene::init(int w, int h, Universe &universe)
 {
 	gl.init(w, h);
 
@@ -23,6 +23,7 @@ void Scene::init(int w, int h)
 	TerrainManager::ginit(*this);
 
 	initStarVertex();
+	initConstellations(universe);
 }
 
 void Scene::cleanup()

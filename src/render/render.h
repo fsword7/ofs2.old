@@ -82,6 +82,12 @@ struct LightState
 {
 };
 
+struct VertexLine
+{
+	vec3f_t lpos;
+	Color   color;
+};
+
 class Scene
 {
 public:
@@ -94,7 +100,7 @@ public:
 	inline renderParameter *getParameter() { return &prm; }
 	inline double getAspect() const { return gl.getAspect(); }
 
-	void init(int width, int height);
+	void init(int width, int height, Universe &universe);
 	void cleanup();
 	
 	void resize(int width, int height);
@@ -105,6 +111,7 @@ public:
 
 protected:
 	void initStarVertex();
+	void initConstellations(const Universe &universe);
 
 	void renderStars(const StarCatalogue &starlib, const Player& player, double faintestMag);
 	void renderConstellations(const Universe &universe, const Player &player);
@@ -126,13 +133,17 @@ private:
 	renderParameter prm;
 
 	ShaderManager smgr;
-	ShaderProgram *demo = nullptr;
 
-	VertexBuffer *glBuffer;
+//	ShaderProgram *demo = nullptr;
+//	VertexBuffer *glBuffer;
 
-	uint32_t vao, vbo, ebo;
-	uint32_t myColor;
-	uint32_t texture1, texture2;
+	ShaderProgram *pgmAsterism = nullptr;
+	VertexBuffer *vbufAsterism = nullptr;
+	VertexLine *bufAsterism = nullptr;
+
+//	uint32_t vao, vbo, ebo;
+//	uint32_t myColor;
+//	uint32_t texture1, texture2;
 
 	float faintestMag      = 6.0f;
 	float faintestMagNight = faintestMag;

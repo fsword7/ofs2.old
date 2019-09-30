@@ -10,6 +10,7 @@
 #include "engine/engine.h"
 #include "engine/player.h"
 #include "universe/astro.h"
+#include "render/render.h"
 
 using namespace ofs::astro;
 using namespace ofs::universe;
@@ -27,6 +28,12 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+}
+
+void Engine::init(uint32_t height, uint32_t width)
+{
+	scene = new Scene();
+	scene->init(height, width, universe);
 }
 
 void Engine::start()

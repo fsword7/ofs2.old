@@ -13,6 +13,8 @@
 
 using namespace ofs::universe;
 
+class Scene;
+
 class Engine
 {
 public:
@@ -21,14 +23,17 @@ public:
 
 	inline Universe *getUniverse() { return &universe; }
 	inline Player *getPlayer() { return &player; }
+	inline Scene *getScene() { return scene; }
 	inline Date *getRealTime() { return &realDate; }
 
 //	inline string getDataFolder() const { return pdata; }
 
+	void init(uint32_t height, uint32_t width);
 	void start();
 	void update(double dt);
 
 private:
+	Scene   *scene = nullptr;
 	Player   player;
 	Universe universe;
 

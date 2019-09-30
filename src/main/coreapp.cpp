@@ -41,16 +41,18 @@ CoreApp::~CoreApp()
 void CoreApp::initRenderer()
 {
 	// Initialize OpenGL-based Renderer
-	scene = new Scene();
-	scene->init(width, height);
+//	scene = new Scene();
+//	scene->init(width, height);
 }
 
 void CoreApp::initEngine()
 {
-
 	engine = new Engine();
+	engine->init(width, height);
+
 	player = engine->getPlayer();
 	universe = engine->getUniverse();
+	scene = engine->getScene();
 }
 
 void CoreApp::pressKey(keyCode code, bool down)

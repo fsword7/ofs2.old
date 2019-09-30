@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 
 	app.init();
 	app.initEngine();
-	app.initRenderer();
+//	app.initRenderer();
 
 	app.run();
 
