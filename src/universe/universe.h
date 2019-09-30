@@ -31,12 +31,13 @@ namespace ofs::universe {
         int findNearStars(const vec3d_t& obs, double mdist,
         		vector<const CelestialStar *>& stars) const;
 
-        CelestialBody *getEarth() const { return earth; }
+        CelestialBody *getEarth1() const { return earth1; }
+        CelestialBody *getEarth2() const { return earth2; }
 
     private:
         StarCatalogue starlib;
         Constellations asterism;
 
-        CelestialBody *earth;
+        CelestialBody *earth1, *earth2;
     };
 }

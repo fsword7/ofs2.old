@@ -17,8 +17,8 @@ using namespace ofs::universe;
 Engine::Engine()
 : realTime(0), scaleTime(1.0)
 {
-	player.setPosition(vec3f_t(0.0, 0.0, KM_PER_AU));
-//	player.setPosition(vec3f_t(0.0, 0.0, 0.0));
+//	player.setPosition(vec3f_t(0.0, 0.0, KM_PER_AU));
+	player.setPosition(vec3f_t(0.0, 0.0, 0.0));
 
 	pdata = "data/";
 

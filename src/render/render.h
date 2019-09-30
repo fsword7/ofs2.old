@@ -14,7 +14,8 @@
 #include "render/gl/shader.h"
 
 #define DIST_NEAR	0.0001
-#define DIST_FAR	1.0e15
+//#define DIST_FAR	1.0e15
+#define DIST_FAR 1.0e10
 
 class Player;
 class Camera;
@@ -137,5 +138,6 @@ private:
 	float faintestMagNight = faintestMag;
 	float saturationMag    = 1.0f;
 
-	vPlanet *vobj = nullptr;
+	vPlanet *vobj1 = nullptr;
+	vPlanet *vobj2 = nullptr;
 };

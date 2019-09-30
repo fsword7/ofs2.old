@@ -17,8 +17,7 @@ void Scene::init(int w, int h)
 	gl.init(w, h);
 
 	glEnable(GL_DEPTH_TEST);
-//	glDepthFunc(GL_LEQUAL);
-	glDepthFunc(GL_ALWAYS);
+	glDepthFunc(GL_LEQUAL);
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
@@ -56,8 +55,9 @@ void Scene::render(const Player *player, const Universe *universe)
 	nearStars.clear();
 	lightSources.clear();
 
-	if (vobj == nullptr) {
-		vobj = new vPlanet(*this, *universe->getEarth());
+	if (vobj1 == nullptr) {
+		vobj1 = new vPlanet(*this, *universe->getEarth1());
+		vobj2 = new vPlanet(*this, *universe->getEarth2());
 	}
 
 	// Find closest stars within desired distance
@@ -94,9 +94,8 @@ void Scene::render(const Player *player, const Universe *universe)
 	// Render constellation lines
 //	renderConstellations(*universe, *player);
 
-//	 glDepthMask(GL_FALSE);
-//	vobj->render(prm);
-//	 glDepthMask(GL_TRUE);
+	vobj2->render(prm);
+	vobj1->render(prm);
 
 	gl.finish();
 }

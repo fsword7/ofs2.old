@@ -204,6 +204,9 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 ////		starBuffer->addStar(rpos, color, discSize);
 //	}
 
+//	if (spos == vec3d_t(0, 0, 0))
+//		cout << "HIP " << star.getHIPNumber() << " at origin" << endl;
+
 	// Finally, now display star
 //	cout << "@@@ Adding a star..." << endl;
 	starBuffer->addStar(rpos, color, discSize);

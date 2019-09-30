@@ -460,6 +460,8 @@ void TerrainManager::render(renderParameter &prm)
 		process(terrain[idx], prm);
 	for (int idx = 0; idx < 2; idx++)
 		render(terrain[idx], prm);
+
+	glUseProgram(0);
 }
 
 Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrd_t &tcr)
