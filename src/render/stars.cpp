@@ -75,6 +75,7 @@ void StarVertex::startSprites()
 	}
 
 	pgm->use();
+	vbuf->bind();
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(3 * sizeof(float)));
@@ -87,9 +88,7 @@ void StarVertex::startSprites()
 //	cout << "  vec3f_t size:  " << sizeof(vec3f_t) << endl;
 //	cout << "  Color size:    " << sizeof(Color) << endl;
 
-//	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_PROGRAM_POINT_SIZE);
-//	glEnable(GL_TEXTURE_2D);
 
 	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
 
@@ -107,7 +106,6 @@ void StarVertex::render()
 	if (nStars == 0)
 		return;
 
-    vbuf->bind();
 	vbuf->assign(VertexBuffer::VBO, buffer, nStars*sizeof(starVertex));
 
 	// Now rendering stars
@@ -130,10 +128,13 @@ void StarVertex::finish()
 
 	switch (type) {
 	case useSprites:
-//		glUseProgram(0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		vbuf->unbind();
+
+		glUseProgram(0);
 		glDisable(GL_PROGRAM_POINT_SIZE);
-//		glDisable(GL_TEXTURE_2D);
-//		glEnable(GL_DEPTH_TEST);
 		break;
 	case usePoints:
 	default:
@@ -265,15 +266,10 @@ void Scene::initConstellations(const Universe &universe)
 
 	pgmAsterism = smgr.createShader("line");
 
+	pgmAsterism->use();
+
 	vbufAsterism = new VertexBuffer(gl, 1);
 	vbufAsterism->createBuffer(VertexBuffer::VBO, 1);
-
-//	pgmAsterism->use();
-//
-//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)0);
-//	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7*sizeof(float), (void *)(3 * sizeof(float)));
-//	glEnableVertexAttribArray(0);
-//	glEnableVertexAttribArray(1);
 
 	int cLines = 0;
 	for (int idx = 0; idx < asterisms.size(); idx++) {
@@ -326,6 +322,7 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 	int cLines = 0;
 
 	pgmAsterism->use();
+	vbufAsterism->bind();
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexLine), (void *)0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexLine), (void *)(3 * sizeof(float)));
@@ -375,6 +372,12 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 
 	glDrawArrays(GL_LINES, 0, rLines);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	vbufAsterism->unbind();
+
+	glUseProgram(0);
 }
 
 

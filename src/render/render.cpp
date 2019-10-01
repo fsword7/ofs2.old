@@ -90,13 +90,13 @@ void Scene::render(const Player *player, const Universe *universe)
 //	prm.mView = mat4f_t(prm.dmView);
 
 //	// Render constellation lines
-//	renderConstellations(*universe, *player);
+	renderConstellations(*universe, *player);
 	// Render visible stars
 	renderStars(*universe->getStarCatalogue(), *player, faintestMagNight);
 
 
-//	vobj2->render(prm);
-//	vobj1->render(prm);
+	vobj2->render(prm);
+	vobj1->render(prm);
 
 	gl.finish();
 }
