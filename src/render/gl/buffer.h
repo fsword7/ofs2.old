@@ -26,7 +26,7 @@ public:
     inline void bind() const { glBindVertexArray(vao); };
     inline void unbind() const { glBindVertexArray(0); };
 
-    void createBuffer(BufferType type, uint32_t nBuffers);
+    uint32_t createBuffer(BufferType type, uint32_t nBuffers);
     void assign(BufferType type, void *data, uint32_t size);
 
 private:

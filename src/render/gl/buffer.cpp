@@ -24,17 +24,18 @@ VertexBuffer::~VertexBuffer()
         glDeleteVertexArrays(1, &vao);
 }
 
-void VertexBuffer::createBuffer(BufferType type, uint32_t nBuffers)
+uint32_t VertexBuffer::createBuffer(BufferType type, uint32_t nBuffers)
 {
 	bind();
 	switch (type) {
 	case VBO:
 		glGenBuffers(nBuffers, &vbo);
-		break;
+		return vbo;
 	case EBO:
 		glGenBuffers(nBuffers, &ebo);
-		break;
+		return ebo;
 	}
+	return 0;
 }
 
 void VertexBuffer::assign(BufferType type, void *data, uint32_t size)
