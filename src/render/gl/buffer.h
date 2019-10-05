@@ -26,6 +26,9 @@ public:
     inline void bind() const { glBindVertexArray(vao); };
     inline void unbind() const { glBindVertexArray(0); };
 
+    inline uint32_t getVBO() const { return vbo; }
+    inline uint32_t getEBO() const { return ebo; }
+
     uint32_t createBuffer(BufferType type, uint32_t nBuffers);
     void assign(BufferType type, void *data, uint32_t size);
 

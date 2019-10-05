@@ -44,11 +44,11 @@ void VertexBuffer::assign(BufferType type, void *data, uint32_t size)
 	switch (type) {
 	case VBO:
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STREAM_DRAW);
 		break;
 	case EBO:
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STREAM_DRAW);
 		break;
 	}
     // glBindBuffer(GL_ARRAY_BUFFER, 0);

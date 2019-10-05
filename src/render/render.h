@@ -139,7 +139,7 @@ private:
 
 	ShaderProgram *pgmAsterism = nullptr;
 	VertexBuffer *vbufAsterism = nullptr;
-	VertexLine *bufAsterism = nullptr;
+	uint32_t asterismLines = 0;
 
 //	uint32_t vao, vbo, ebo;
 //	uint32_t myColor;
