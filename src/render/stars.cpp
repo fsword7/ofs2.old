@@ -19,23 +19,18 @@ using namespace ofs::astro;
 using namespace ofs::universe;
 
 
-StarVertex::StarVertex(Scene &scene, int maxStars)
+StarVertex::StarVertex(Scene &scene)
 : scene(scene),
   ctx(*scene.getContext()),
   prm(*scene.getParameter()),
   type(useNotUsed),
-  maxStars(maxStars),
-  nStars(0), cStars(0),
+  nStars(0),
   flagStarted(false)
 {
-	buffer = new starVertex[maxStars];
 }
 
 StarVertex::~StarVertex()
 {
-	finish();
-	if (buffer != nullptr)
-		delete []buffer;
 }
 
 //void StarVertex::setTexture(Texture *image)
@@ -43,27 +38,7 @@ StarVertex::~StarVertex()
 //	txImage = image;
 //}
 
-void StarVertex::startPoints()
-{
-//	glEnableClientState(GL_VERTEX_ARRAY);
-//	glEnableClientState(GL_COLOR_ARRAY);
-//	glDisableClientState(GL_NORMAL_ARRAY);
-//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//	glDisable(GL_VERTEX_PROGRAM_POINT_SIZE);
-//	glDisable(GL_TEXTURE_2D);
-//
-//	uint32_t stride = sizeof(starVertex);
-//	glVertexPointer(3, GL_DOUBLE, stride, &buffer[0].posStar);
-//	glColorPointer(4, GL_UNSIGNED_SHORT, stride, &buffer[0].color);
-//	glPointSize(1.0);
-//
-//	nStars = 0;
-//	cStars = 0;
-//	type = usePoints;
-//	flagStarted = true;
-}
-
-void StarVertex::startSprites()
+void StarVertex::start()
 {
 	if (pgm == nullptr) {
 		ShaderManager &smgr = scene.getShaderManager();
@@ -71,22 +46,30 @@ void StarVertex::startSprites()
 		pgm = smgr.createShader("star");
 
 	    vbuf = new VertexBuffer(ctx, 1);
-	   	vbuf->createBuffer(VertexBuffer::VBO, 1);
+	   	vbo = vbuf->createBuffer(VertexBuffer::VBO, 1);
 	}
 
 	pgm->use();
 	vbuf->bind();
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)0);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(3 * sizeof(float)));
-	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(7 * sizeof(float)));
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
+//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)0);
+//	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(3 * sizeof(float)));
+//	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(7 * sizeof(float)));
+//	glEnableVertexAttribArray(0);
+//	glEnableVertexAttribArray(1);
+//	glEnableVertexAttribArray(2);
 
 //	cout << "starVertex size: " << sizeof(starVertex) << endl;
 //	cout << "  vec3f_t size:  " << sizeof(vec3f_t) << endl;
 //	cout << "  Color size:    " << sizeof(Color) << endl;
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, 120000 * sizeof(starVertex), nullptr, GL_STREAM_DRAW);
+	vertices = reinterpret_cast<starVertex *>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+	if (vertices == nullptr) {
+		cerr << "Can't render stars - aborted (error code: " << glGetError() << ")" << endl;
+		return;
+	}
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 
@@ -96,23 +79,28 @@ void StarVertex::startSprites()
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 
 	nStars = 0;
-	cStars = 0;
 	type = useSprites;
 	flagStarted = true;
 }
 
 void StarVertex::render()
 {
-	if (nStars == 0)
+	if (!glUnmapBuffer(GL_ARRAY_BUFFER)) {
+		cerr << "Buffer corrupted - aborted (error code: " << glGetError() << ")" << endl;
 		return;
+	}
 
-	vbuf->assign(VertexBuffer::VBO, buffer, nStars*sizeof(starVertex));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)0);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(3 * sizeof(float)));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(7 * sizeof(float)));
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 
 	// Now rendering stars
 //	if (txImage != nullptr)
 //		txImage->bind();
 	glDrawArrays(GL_POINTS, 0, nStars);
-	cStars += nStars;
 	nStars  = 0;
 }
 
@@ -124,7 +112,6 @@ void StarVertex::finish()
 	flagStarted = false;
 
 //	cout << "Total " << cStars << " rendered stars." << endl;
-	cStars = 0;
 
 	switch (type) {
 	case useSprites:
@@ -145,12 +132,9 @@ void StarVertex::finish()
 
 void StarVertex::addStar(const vec3d_t &pos, const Color &color, double size)
 {
-	if (nStars == maxStars)
-		render();
-
-	buffer[nStars].posStar = pos;
-	buffer[nStars].color = color;
-	buffer[nStars].size = size;
+	vertices[nStars].posStar = pos;
+	vertices[nStars].color = color;
+	vertices[nStars].size = size;
 
 	nStars++;
 }
@@ -248,7 +232,7 @@ void Scene::initStarVertex()
 //	starTexture = createStarTexture(8);
 //	glareTexture = createGlareTexture(8);
 
-	starBuffer = new StarVertex(*this, 2048);
+	starBuffer = new StarVertex(*this);
 //	starBuffer->setTexture(starTexture);
 
 	starRenderer = new StarRenderer();
@@ -296,9 +280,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	starRenderer->faintestMag = faintestMag;
 	starRenderer->faintestMagNight = faintest;
 	starRenderer->saturationMag = saturationMag;
-//	starRenderer->starColors = starColors;
-//	starRenderer->starBuffer->startPoints();
-	starRenderer->starBuffer->startSprites();
+	starRenderer->starBuffer->start();
 
 //	glDisable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
@@ -352,10 +334,10 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 				continue;
 
 			bufAsterism[rLines].lpos   = vec3f_t(star1->getPosition(0) * KM_PER_PC);
-			bufAsterism[rLines].color  = Color(0.2, 0.2, 0.2, 1.0);
+			bufAsterism[rLines].color  = Color(0.5, 0.5, 0.5, 1.0);
 			rLines++;
 			bufAsterism[rLines].lpos   = vec3f_t(star2->getPosition(0) * KM_PER_PC);
-			bufAsterism[rLines].color  = Color(0.2, 0.2, 0.2, 1.0);
+			bufAsterism[rLines].color  = Color(0.5, 0.5, 0.5, 1.0);
 			rLines++;
 
 //			std::cout << "HIP: " << aster->hip[sidx]

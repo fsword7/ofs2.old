@@ -44,12 +44,11 @@ public:
 		float		size;
 	};
 
-	StarVertex(Scene &scene, int maxStars = 1000);
+	StarVertex(Scene &scene);
 	~StarVertex();
 
 	// Render routines
-	void startPoints();
-	void startSprites();
+	void start();
 	void render();
 	void finish();
 
@@ -62,7 +61,7 @@ protected:
 	renderParameter &prm;
 
 	pointType type;
-	int  maxStars, nStars, cStars;
+	int  nStars;
 	bool flagStarted;
 
 	ShaderProgram *pgm = nullptr;
@@ -70,7 +69,8 @@ protected:
 
 //	Texture *txImage = nullptr;
 
-    starVertex *buffer = nullptr;
+    starVertex *vertices = nullptr;
+    GLuint vbo;
 };
 
 class StarRenderer : public ofsHandler
