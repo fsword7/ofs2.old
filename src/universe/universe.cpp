@@ -23,8 +23,7 @@ void Universe::init()
 	asterism.load(cname);
 
 	// To removed later...
-    earth = new CelestialBody();
-    earth->setName("earth");
+    earth = new CelestialBody("earth");
 
 //    earth->setPosition(vec3f_t(0.0, 0.0, -40000.0));
     earth->setPosition(vec3f_t(0.0, 0.0, -149.6e6));
