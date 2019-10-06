@@ -149,6 +149,5 @@ private:
 	float faintestMagNight = faintestMag;
 	float saturationMag    = 1.0f;
 
-	vPlanet *vobj1 = nullptr;
-	vPlanet *vobj2 = nullptr;
+	vPlanet *vobj = nullptr;
 };

@@ -56,9 +56,8 @@ void Scene::render(const Player *player, const Universe *universe)
 	nearStars.clear();
 	lightSources.clear();
 
-	if (vobj1 == nullptr) {
-		vobj1 = new vPlanet(*this, *universe->getEarth1());
-		vobj2 = new vPlanet(*this, *universe->getEarth2());
+	if (vobj == nullptr) {
+		vobj = new vPlanet(*this, *universe->getEarth());
 	}
 
 	// Find closest stars within desired distance
@@ -94,9 +93,7 @@ void Scene::render(const Player *player, const Universe *universe)
 	// Render visible stars
 	renderStars(*universe->getStarCatalogue(), *player, faintestMagNight);
 
-
-	vobj2->render(prm);
-//	vobj1->render(prm);
+	vobj->render(prm);
 
 	gl.finish();
 }
