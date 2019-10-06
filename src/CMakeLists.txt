@@ -2,6 +2,7 @@ set(ofs_cpp_SRCS
 	engine/engine.cpp
 	engine/object.cpp
 	engine/player.cpp
+	ephem/orbit.cpp
 	main/coreapp.cpp
 	main/date.cpp
 	render/gl/buffer.cpp
@@ -44,6 +45,7 @@ set(ofs_h_SRCS
 	engine/engine.h
 	engine/object.h
 	engine/player.h
+	ephem/orbit.h
 	main/core.h
 	main/coreapp.h
 	main/date.h
