@@ -329,10 +329,10 @@ void Scene::renderConstellations(const Universe &universe, const Player &player)
 			if (star1 == nullptr || star2 == nullptr)
 				continue;
 
-			vertices[rLines].lpos   = vec3f_t(star1->getPosition(0) * KM_PER_PC);
+			vertices[rLines].lpos   = vec3f_t((star1->getPosition(0) * KM_PER_PC) - cpos);
 			vertices[rLines].color  = Color(0.5, 0.5, 0.5, 1.0);
 			rLines++;
-			vertices[rLines].lpos   = vec3f_t(star2->getPosition(0) * KM_PER_PC);
+			vertices[rLines].lpos   = vec3f_t((star2->getPosition(0) * KM_PER_PC) - cpos);
 			vertices[rLines].color  = Color(0.5, 0.5, 0.5, 1.0);
 			rLines++;
 
