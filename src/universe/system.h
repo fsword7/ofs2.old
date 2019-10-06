@@ -22,7 +22,7 @@ namespace ofs::universe
 
 	private:
 		vector<CelestialStar *> stars;
-	//	PlanetarySystem *bodies = nullptr;
+		PlanetarySystem *bodies = nullptr;
 	//	SystemTree *systemTree  = nullptr;
 	};
 }
