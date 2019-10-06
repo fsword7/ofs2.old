@@ -26,6 +26,7 @@ Object::Object(ObjectType type, const string &name)
   objPosition(0, 0, 0),
   objVelocity(0, 0, 0)
 {
+	objNames.clear();
     objNames[0] = name;
 }
 

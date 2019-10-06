@@ -37,7 +37,7 @@ namespace ofs::universe {
 		vector<CelestialBody *> bodies;
 	};
 
-    class CelestialBody : public Object, public PlanetarySystem
+    class CelestialBody : public Object /*, public PlanetarySystem */
     {
     public:
         CelestialBody();
