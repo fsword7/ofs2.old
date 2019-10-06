@@ -26,7 +26,8 @@ public:
 
     inline void setName(const string &name) { objNames[0] = name; }
 
-    inline void setPosition(vec3f_t pos) { objPosition = pos; }
+    inline void setPosition(vec3d_t pos) { objPosition = pos; }
+    inline void setVelocity(vec3d_t vel) { objVelocity = vel; }
     inline void setRadius(float rad) { objRadius = rad; }
     inline double getRadius() const { return objRadius; }
 
@@ -46,6 +47,7 @@ protected:
 	double  objAlbedo;		// Object albedo
 
 	vec3d_t objPosition;	// Object current position
+	vec3d_t objVelocity;    // Object current velocity
 	quatd_t objRotation;	// Object orientation
 
 	Orbit *orbit = nullptr;

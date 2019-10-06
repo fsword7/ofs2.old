@@ -13,7 +13,8 @@ Object::Object(ObjectType type)
 : objType(type), objNames(1),
   objRadius(0), objSemiAxes(0, 0, 0),
   objMass(0), objAlbedo(1.0),
-  objPosition(0, 0, 0)
+  objPosition(0, 0, 0),
+  objVelocity(0, 0, 0)
 {
     objNames.clear();
 }
@@ -22,7 +23,8 @@ Object::Object(ObjectType type, const string &name)
 : objType(type), objNames(1),
   objRadius(0), objSemiAxes(0, 0, 0),
   objMass(0), objAlbedo(1.0),
-  objPosition(0, 0, 0)
+  objPosition(0, 0, 0),
+  objVelocity(0, 0, 0)
 {
     objNames[0] = name;
 }
@@ -43,7 +45,7 @@ vec3d_t Object::getVelocity(double tjd) const
 {
 	if (orbit != nullptr)
 		return orbit->getVelocity(tjd);
-	return vec3d_t(0, 0, 0);
+	return objVelocity;
 }
 
 quatd_t Object::getRotation(double) const
