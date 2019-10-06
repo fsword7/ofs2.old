@@ -30,7 +30,7 @@ void Camera::setFOVrad(double _fov)
 
 void Camera::setFOVdeg(double _fov)
 {
-	fov = toRadian(_fov);
+	fov = glm::radians(_fov);
 	tanap = tan(fov);
 }
 

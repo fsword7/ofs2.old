@@ -152,17 +152,21 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 
 	// Calculate apparent size of star in view field
 	srad    = star.getRadius();
-//	objSize = (srad / (dist * KM_PER_PC)) / pxSize;
-	objSize = srad / (dist * pxSize * KM_PER_PC);
+	objSize = srad / (rdist * pxSize);
 
-	alpha  = faintestMag - appMag;
-	discSize = baseSize;
-	if (alpha > 1.0) {
-		discScale = min(pow(2.0, 0.3 * (saturationMag - appMag)), 100.0);
-		discSize *= discScale;
+	if (objSize > pxSize) {
+		discSize = objSize * 8.0;
 		alpha = 1.0;
-	} else if (alpha < 0.0)
-		alpha = 0.0;
+	} else {
+		alpha  = faintestMag - appMag;
+		discSize = baseSize;
+		if (alpha > 1.0) {
+			discScale = min(pow(2.0, 0.3 * (saturationMag - appMag)), 100.0);
+			discSize *= discScale;
+			alpha = 1.0;
+		} else if (alpha < 0.0)
+			alpha = 0.0;
+	}
 
 	color  = starColors->lookup(star.getTemperature());
 	color.setAlpha(alpha);
