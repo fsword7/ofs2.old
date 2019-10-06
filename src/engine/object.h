@@ -13,6 +13,8 @@ enum ObjectType {
     objCelestialStar
 };
 
+class Orbit;
+
 class Object
 {
 public:
@@ -28,8 +30,9 @@ public:
     inline void setRadius(float rad) { objRadius = rad; }
     inline double getRadius() const { return objRadius; }
 
-    vec3d_t getPosition(double jd = 0) const;
-	quatd_t getRotation(double jd = 0) const;
+    vec3d_t getPosition(double tjd = 0) const;
+    vec3d_t getVelocity(double tjd = 0) const;
+	quatd_t getRotation(double tjd = 0) const;
 
 private:
     ObjectType objType = objUnknown;
@@ -44,4 +47,6 @@ protected:
 
 	vec3d_t objPosition;	// Object current position
 	quatd_t objRotation;	// Object orientation
+
+	Orbit *orbit = nullptr;
 };

@@ -6,6 +6,7 @@
  */
 
 #include "main/core.h"
+#include "ephem/orbit.h"
 #include "engine/object.h"
 
 Object::Object(ObjectType type)
@@ -31,9 +32,18 @@ Object::~Object()
     objNames.clear();
 }
 
-vec3d_t Object::getPosition(double) const
+vec3d_t Object::getPosition(double tjd) const
 {
+	if (orbit != nullptr)
+		return orbit->getPosition(tjd);
 	return objPosition;
+}
+
+vec3d_t Object::getVelocity(double tjd) const
+{
+	if (orbit != nullptr)
+		return orbit->getVelocity(tjd);
+	return vec3d_t(0, 0, 0);
 }
 
 quatd_t Object::getRotation(double) const
