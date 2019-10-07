@@ -112,13 +112,8 @@ void Scene::render(const Player *player, const Universe *universe)
 
 	gl.start();
 
-//	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//	prm.mproj = glm::perspective(glm::radians(OFS_DEFAULT_FOV), float(gl.getWidth()) / float(gl.getHeight()), DIST_NEAR, DIST_FAR);
-//	prm.mview = glm::toMat4(prm.crot);
-//	prm.mview = glm::translate(prm.mview, prm.cpos);
 
 	prm.dmProj  = glm::perspective(cam->getFOV(), double(gl.getWidth()) / double(gl.getHeight()), DIST_NEAR, DIST_FAR);
 	prm.dmView  = glm::transpose(glm::toMat4(prm.crot));
@@ -126,8 +121,9 @@ void Scene::render(const Player *player, const Universe *universe)
 //	prm.mProj = mat4f_t(prm.dmProj);
 //	prm.mView = mat4f_t(prm.dmView);
 
-//	// Render constellation lines
+	// Render constellation lines
 	renderConstellations(*universe, *player);
+
 	// Render visible stars
 	renderStars(*universe->getStarCatalogue(), *player, faintestMagNight);
 
