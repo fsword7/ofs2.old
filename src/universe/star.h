@@ -10,6 +10,7 @@
 #include "engine/object.h"
 
 namespace ofs::universe {
+	class System;
 
     enum SpectralClass
     {
@@ -55,10 +56,14 @@ namespace ofs::universe {
         static CelestialStar *create(double ra, double dec, double pc,
             const char *spType, double appMag, double ci, double lum);
 
+        inline System *getSystem() const { return system; }
     	inline double getAbsMag() const { return absMag; }
     	inline int getHIPNumber() const { return hip; }
 
-    	inline void setHIPNumber(int id) { hip = id; };
+    	inline bool hasSystem() const { return system != nullptr; }
+
+    	inline void setSystem(System *sys) { system = sys; }
+    	inline void setHIPNumber(int id)   { hip = id; };
 
      	double getLuminosity() const;
        	double getAppMag(double dist) const;
@@ -89,6 +94,8 @@ namespace ofs::universe {
         double ci, lum;
         int    temp;
 
+        // Solar system parameters
+        System *system = nullptr;
     };
 }
 

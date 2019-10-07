@@ -22,6 +22,7 @@ set(ofs_cpp_SRCS
 	universe/asterisms.cpp
 	universe/astro.cpp
 	universe/body.cpp
+	universe/frame.cpp
 	universe/star.cpp
 	universe/starlib.cpp
 	universe/system.cpp
@@ -66,6 +67,7 @@ set(ofs_h_SRCS
 	universe/asterisms.h
 	universe/astro.h
 	universe/body.h
+	universe/frame.h
 	universe/hygdata.h
 	universe/star.h
 	universe/starlib.h

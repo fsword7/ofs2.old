@@ -7,12 +7,18 @@
 
 #pragma once
 
+#include "universe/body.h"
+#include "universe/star.h"
+#include "universe/frame.h"
+
 namespace ofs::universe
 {
+	class CelestialStar;
+
 	class System
 	{
 	public:
-		System() = default;
+		System(CelestialStar *star);
 		~System() = default;
 
 		inline CelestialStar *getStar(int idx)
@@ -21,8 +27,9 @@ namespace ofs::universe
 		void addObject(Object *object);
 
 	private:
+		SystemTree systemTree;
+		PlanetarySystem objects;
+
 		vector<CelestialStar *> stars;
-		PlanetarySystem *bodies = nullptr;
-	//	SystemTree *systemTree  = nullptr;
 	};
 }

@@ -36,19 +36,19 @@ namespace ofs::universe {
 		vector<CelestialBody *> bodies;
 	};
 
-    class CelestialBody : public Object /*, public PlanetarySystem */
+    class CelestialBody : public Object
     {
     public:
         CelestialBody();
         CelestialBody(const string &name, PlanetarySystem *system = nullptr);
         ~CelestialBody() = default;
 
-        inline PlanetarySystem *getOwnSystem() { return &ownSystem; }
+        inline PlanetarySystem *getOwnSystem() { return ownSystem; }
         inline PlanetarySystem *getInSystem()  { return inSystem; }
 
     private:
-        PlanetarySystem ownSystem;
-//        PlanetarySystem *ownSystem = nullptr;
+//        PlanetarySystem ownSystem;
+        PlanetarySystem *ownSystem = nullptr;
         PlanetarySystem *inSystem = nullptr;
     };
 }

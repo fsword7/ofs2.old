@@ -7,6 +7,7 @@
 
 #include "main/core.h"
 #include "universe/astro.h"
+#include "universe/system.h"
 #include "universe/universe.h"
 
 using namespace ofs::astro;
@@ -22,6 +23,9 @@ void Universe::init()
 //	std::string cname = "data/constellations/western_rey/constellationship.fab";
 	asterism.load(cname);
 
+	CelestialStar *sun = findStar("Sol");
+	System *solSystem = new System(sun);
+
 	// To removed later...
 	earth = new CelestialBody("earth");
 //    earth = new CelestialBody();
@@ -30,6 +34,8 @@ void Universe::init()
 //    earth->setPosition(vec3d_t(0.0, 0.0, -40000.0));
     earth->setPosition(vec3d_t(0.0, 0.0, -149.6e6));
     earth->setRadius(6371.0);
+
+    solSystem->addObject(earth);
 }
 
 //SolarSystem *Universe::createSolarSystem(CelestialStar *star)

@@ -29,7 +29,9 @@ public:
     inline void setPosition(vec3d_t pos) { objPosition = pos; }
     inline void setVelocity(vec3d_t vel) { objVelocity = vel; }
     inline void setRadius(float rad) { objRadius = rad; }
+
     inline double getRadius() const { return objRadius; }
+    inline ObjectType getType() const { return objType; }
 
     vec3d_t getPosition(double tjd = 0) const;
     vec3d_t getVelocity(double tjd = 0) const;
