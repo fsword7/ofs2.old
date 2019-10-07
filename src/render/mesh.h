@@ -62,5 +62,5 @@ public:
 
     bool allocatedFlag = false;
     VertexBuffer *vbuf = nullptr;
-    Texture *texImage;
+    Texture *texImage = nullptr;
 };

@@ -118,7 +118,7 @@ private:
     Scene &scene;
     Object &body;
 
-    ShaderProgram *pgm;
+    ShaderProgram *pgm = nullptr;
 
     static TerrainHandler *loader;
 

@@ -24,8 +24,6 @@ Mesh::~Mesh()
 
 void Mesh::render(const Context *gl, renderParameter &prm)
 {
-
-//    pgm->use();
     if (isAllocated() == false)
         allocate(gl);
     vbuf->bind();
@@ -33,10 +31,10 @@ void Mesh::render(const Context *gl, renderParameter &prm)
 	vbuf->assign(VertexBuffer::VBO, vtx, nvtx*sizeof(vtxf_t));
     vbuf->assign(VertexBuffer::EBO, idx, nidx*sizeof(uint16_t));
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 11*sizeof(float), (void *)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 11*sizeof(float), (void *)(3 * sizeof(float)));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 11*sizeof(float), (void *)(6 * sizeof(float)));
-	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, 11*sizeof(float), (void *)(9 * sizeof(float)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vtxf_t), (void *)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vtxf_t), (void *)(3 * sizeof(float)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vtxf_t), (void *)(6 * sizeof(float)));
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(vtxf_t), (void *)(9 * sizeof(float)));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
@@ -76,9 +74,6 @@ void Mesh::allocate(const Context *ctx)
 
    	vbuf->createBuffer(VertexBuffer::VBO, 1);
 	vbuf->createBuffer(VertexBuffer::EBO, 1);
-
-	// vbuf->assign(VertexBuffer::VBO, vtx, nvtx*sizeof(vtxf_t));
-    // vbuf->assign(VertexBuffer::EBO, idx, nidx*sizeof(uint16_t));
 
     allocatedFlag = true;
 }
