@@ -13,14 +13,21 @@ using namespace ofs::universe;
 
 // ******** Planetary System ********
 
+//PlanetarySystem::PlanetarySystem()
+//{
+//	bodies.clear();
+//}
+
 PlanetarySystem::PlanetarySystem(CelestialBody *body)
 : body(body)
 {
+	bodies.clear();
 }
 
 PlanetarySystem::PlanetarySystem(CelestialStar *star)
 : star(star)
 {
+	bodies.clear();
 }
 
 void PlanetarySystem::addBody(CelestialBody *body)
@@ -35,15 +42,17 @@ void PlanetarySystem::removeBody(CelestialBody *body)
 // ********** Celestial Body ************
 
 CelestialBody::CelestialBody()
-: Object(ObjectType::objCelestialBody)// , PlanetarySystem(this)
+: Object(ObjectType::objCelestialBody)
+  // ownSystem(this) // , PlanetarySystem(this)
 {
-
+	ownSystem = new PlanetarySystem(this);
 }
 
 CelestialBody::CelestialBody(const string &name, PlanetarySystem *system)
 : Object(ObjectType::objCelestialBody, name), // PlanetarySystem(this),
-  system(system)
+  /* ownSystem(this), */ inSystem(system)
 {
-	if (system != nullptr)
-		system->addBody(this);
+	ownSystem = new PlanetarySystem(this);
+	if (inSystem != nullptr)
+		inSystem->addBody(this);
 }

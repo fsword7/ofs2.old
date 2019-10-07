@@ -19,7 +19,7 @@ namespace ofs::universe {
 	public:
 		PlanetarySystem(CelestialBody *body = nullptr);
 		PlanetarySystem(CelestialStar *star);
-		PlanetarySystem() = default;
+//		PlanetarySystem();
 		~PlanetarySystem() = default;
 
 		inline CelestialBody *getPrimaryBody() { return body; }
@@ -44,9 +44,11 @@ namespace ofs::universe {
         CelestialBody(const string &name, PlanetarySystem *system = nullptr);
         ~CelestialBody() = default;
 
-        inline PlanetarySystem *getSystem() { return system; }
+//        inline PlanetarySystem *getOwnSystem() { return &ownSystem; }
 
     private:
-        PlanetarySystem *system = nullptr;
+//        PlanetarySystem ownSystem;
+        PlanetarySystem *ownSystem = nullptr;
+        PlanetarySystem *inSystem = nullptr;
     };
 }
