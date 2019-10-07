@@ -41,7 +41,54 @@ namespace ofs::universe
 	class ReferenceFrame
 	{
 	public:
-		ReferenceFrame() = default;
-		~ReferenceFrame() = default;
+		ReferenceFrame(const Object *object = nullptr);
+		virtual ~ReferenceFrame() = default;
+
+		inline const Object *getCenter() const { return center; }
+
+		// Handling reference count
+		int lock() const;
+		int release() const;
+
+//		vec3d_t fromUniversal(const vec3d_t& upos, double tjd);
+//		vec3d_t toUniversal(const vec3d_t& lpos, double tjd);
+//		quatd_t fromUniversal(const quatd_t& urot, double tjd);
+//		quatd_t toUniversal(const quatd_t& lrot, double tjd);
+
+		virtual quatd_t getRotation(double tjd) = 0;
+
+	private:
+		mutable int refCount = 0;
+
+	protected:
+		const Object *center = nullptr;
 	};
+
+//class EclipticFrame : public ReferenceFrame
+//{
+//public:
+//	EclipticFrame(const Object *obj);
+//	~EclipticFrame();
+//
+//	quatd_t getRotation(double tjd) { return quatd_t::Identity(); }
+//};
+//
+//class EquatorFrame : public ReferenceFrame
+//{
+//public:
+//	EquatorFrame(const Object *obj, const Object *tgt);
+//	~EquatorFrame();
+//
+//	quatd_t getRotation(double tjd) { return quatd_t::Identity(); }
+//};
+//
+//class BodyMeanFrame : public ReferenceFrame
+//{
+//public:
+//	BodyMeanFrame(const Object *obj, const Object *tgt);
+//	~BodyMeanFrame();
+//
+//	quatd_t getRotation(double tjd) { return quatd_t::Identity(); }
+//};
+
 }
