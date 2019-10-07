@@ -24,7 +24,7 @@ StarVertex::StarVertex(Scene &scene)
   ctx(*scene.getContext()),
   prm(*scene.getParameter()),
   type(useNotUsed),
-  nStars(0),
+  nStars(0), vbo(0),
   flagStarted(false)
 {
 }
@@ -82,6 +82,7 @@ void StarVertex::render()
 		cerr << "Buffer corrupted - aborted (error code: " << glGetError() << ")" << endl;
 		return;
 	}
+	vertices = nullptr;
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)0);
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(3 * sizeof(float)));

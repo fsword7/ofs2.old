@@ -12,22 +12,6 @@
 #include "render/starcolors.h"
 //#include "render/texture.h"
 
-//class glStarVertex : public StarVertex
-//{
-//public:
-//	glStarVertex(const Scene &scene, int maxStars = 1000);
-//	~glStarVertex();
-//
-//	// Render routines
-//	void startPoints() override;
-//	void startSprites() override;
-//	void render() override;
-//	void finish() override;
-//
-//private:
-//	glShaderPackage *pkg;
-//};
-
 class StarVertex
 {
 public:
