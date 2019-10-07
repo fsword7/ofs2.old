@@ -36,6 +36,7 @@ SystemTree::~SystemTree()
 
 void SystemTree::addObject(Object *object)
 {
+	object->setOrbitFrame(defaultFrame);
 	objects.push_back(object);
 }
 
