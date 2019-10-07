@@ -12,6 +12,44 @@
 
 using namespace ofs::universe;
 
+// ******** System Tree ********
+
+SystemTree::SystemTree(Object *object)
+{
+	switch (object->getType()) {
+	case ObjectType::objCelestialStar:
+		starParent   = dynamic_cast<CelestialStar *>(object);
+		defaultFrame = new EclipticFrame(object);
+		break;
+	case ObjectType::objCelestialBody:
+		bodyParent   = dynamic_cast<CelestialBody *>(object);
+		defaultFrame = new BodyMeanFrame(object, object);
+		break;
+	}
+}
+
+SystemTree::~SystemTree()
+{
+	if (defaultFrame != nullptr)
+		defaultFrame->release();
+}
+
+void SystemTree::addObject(Object *object)
+{
+	objects.push_back(object);
+}
+
+Object *SystemTree::getObject(int idx) const
+{
+	if (idx < 0)
+		return nullptr;
+	if (idx <= objects.size())
+		return objects[idx];
+	return nullptr;
+}
+
+// ******** Solar System ********
+
 System::System(CelestialStar *star)
 : systemTree(star), objects(star)
 {

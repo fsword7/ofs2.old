@@ -13,34 +13,6 @@
 
 using namespace ofs::universe;
 
-// ******** System Tree ********
-
-SystemTree::SystemTree(Object *object)
-{
-	switch (object->getType()) {
-	case ObjectType::objCelestialStar:
-		starParent = dynamic_cast<CelestialStar *>(object);
-		break;
-	case ObjectType::objCelestialBody:
-		bodyParent = dynamic_cast<CelestialBody *>(object);
-		break;
-	}
-}
-
-void SystemTree::addObject(Object *object)
-{
-	objects.push_back(object);
-}
-
-Object *SystemTree::getObject(int idx) const
-{
-	if (idx < 0)
-		return nullptr;
-	if (idx <= objects.size())
-		return objects[idx];
-	return nullptr;
-}
-
 // ******** Reference Frame ********
 
 ReferenceFrame::ReferenceFrame(const Object *object)
@@ -161,21 +133,21 @@ std::string PlayerFrame::name() const
 	return frame->getCenter()->getName();
 }
 
-// *******************************************
+// **** **** Elliptic Reference Frame ********
 
 EclipticFrame::EclipticFrame(const Object *obj)
 : ReferenceFrame(obj)
 {
 }
 
-// *******************************************
+// ******** Equator Reference Frame ********
 
 EquatorFrame::EquatorFrame(const Object *obj, const Object *tgt)
 : ReferenceFrame(obj)
 {
 }
 
-// *******************************************
+// ******** Body Mean Reference Frame ********
 
 BodyMeanFrame::BodyMeanFrame(const Object *obj, const Object *tgt)
 : ReferenceFrame(obj)

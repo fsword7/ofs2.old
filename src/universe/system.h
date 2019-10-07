@@ -13,7 +13,30 @@
 
 namespace ofs::universe
 {
-	class CelestialStar;
+	class SystemTree
+	{
+	public:
+		SystemTree(Object *object);
+		~SystemTree();
+
+		inline CelestialStar *getStar() const { return starParent; }
+		inline CelestialBody *getBody() const { return bodyParent; }
+		inline int getSystemSize() const { return objects.size(); }
+
+		inline bool isRoot() const { return bodyParent == nullptr; }
+
+		void addObject(Object *object);
+
+		Object *getObject(int idx) const;
+
+	private:
+		CelestialStar *starParent = nullptr;
+		CelestialBody *bodyParent = nullptr;
+
+		vector<Object *> objects;
+
+		ReferenceFrame *defaultFrame = nullptr;
+	};
 
 	class System
 	{
