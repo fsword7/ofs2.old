@@ -170,3 +170,42 @@ void Player::follow(const Object &obj)
 	setFrame(PlayerFrame::csEcliptical, &obj);
 	std::cout << "Reference Frame: " << frame->name() << std::endl;
 }
+
+void Player::look(const Object &obj)
+{
+	vec3d_t opos = obj.getPosition(jdTime);
+	vec3d_t up   = vec3d_t(0, 1, 0);
+
+	uqrot = glm::lookAt(upos, opos, up);
+	lqrot = frame->fromUniversal(uqrot, jdTime);
+
+//	std::cout << std::fixed << std::setprecision(10);
+//	std::cout << "Universal Rotation: (" << uqrot.w() << "," << uqrot.x() << "," << uqrot.y() << "," << uqrot.z() << ")" << std::endl;
+//	std::cout << "Local Rotation:     (" << lqrot.w() << "," << lqrot.x() << "," << lqrot.y() << "," << lqrot.z() << ")" << std::endl;
+}
+
+void Player::go(const Object &obj)
+{
+	vec3d_t opos = obj.getPosition(jdTime);
+
+	upos = opos;
+	upos.z += obj.getRadius() * 4;
+	lpos = frame->fromUniversal(upos, jdTime);
+
+	look(obj);
+
+	// Update all cameras
+	for (auto cam : camera)
+		cam->update();
+
+//	lvel.x() = -astro::getOrbitalVelocity(obj.getMass(), lpos.norm())  * 0.71;
+//	lvel.y() = -astro::getOrbitalVelocity(obj.getMass(), lpos.norm())  * 0.71;
+
+//	std::cout << "Orbital velocity: " << std::fixed << (lvel.norm() * 3600 * 0.62) << std::endl;
+//	std::cout << "Radius: " << lpos.norm() << std::endl;
+
+//	orbit = new EllipticalOrbit(lpos, lvel, obj.getMass(), jdTime);
+
+//	std::cout << "Universal: (" << std::fixed << upos.x() << "," << upos.y() << "," << upos.z() << ")" << std::endl;
+//	std::cout << "Local:     (" << std::fixed << lpos.x() << "," << lpos.y() << "," << lpos.z() << ")" << std::endl;
+}

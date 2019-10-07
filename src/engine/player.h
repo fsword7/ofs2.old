@@ -66,6 +66,8 @@ public:
     void setFrame(PlayerFrame::CoordType cs, const Object *obj);
 
     void follow(const Object &obj);
+    void look(const Object &obj);
+    void go(const Object &obj);
 
     void update(double dt, double timeTravel);
 	void updateFrame(PlayerFrame *nfame);

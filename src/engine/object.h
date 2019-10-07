@@ -7,6 +7,10 @@
 
 #pragma once
 
+#include "universe/frame.h"
+
+using namespace ofs::universe;
+
 enum ObjectType {
     objUnknown = 0,
     objCelestialBody,
@@ -30,8 +34,15 @@ public:
     inline void setVelocity(vec3d_t vel) { objVelocity = vel; }
     inline void setRadius(float rad) { objRadius = rad; }
 
+    inline void setOrbitFrame(ReferenceFrame *frame)  { orbitFrame = frame; }
+    inline void setObjectFrame(ReferenceFrame *frame) { objectFrame = frame; }
+    inline void setOrbit(Orbit *orbit)                { this->orbit = orbit; }
+
     inline double getRadius() const { return objRadius; }
     inline ObjectType getType() const { return objType; }
+//    inline SystemTree *getSystemTree() const { return sysTree; }
+
+//    SystemTree *createSystemTree();
 
     vec3d_t getPosition(double tjd = 0) const;
     vec3d_t getVelocity(double tjd = 0) const;
@@ -52,5 +63,14 @@ protected:
 	vec3d_t objVelocity;    // Object current velocity
 	quatd_t objRotation;	// Object orientation
 
-	Orbit *orbit = nullptr;
+//	// Planetary system parameters
+//	SystemTree     *sysTree = nullptr;
+
+	// Orbital parameters
+	ReferenceFrame *orbitFrame = nullptr;
+	Orbit          *orbit = nullptr;
+
+	// Orientation parameters
+	ReferenceFrame *objectFrame = nullptr;
+//	Rotation       *rot = nullptr;
 };

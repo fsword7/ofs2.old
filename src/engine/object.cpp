@@ -53,3 +53,10 @@ quatd_t Object::getRotation(double) const
 {
 	return objRotation;
 }
+
+//SystemTree *Object::createSystemTree()
+//{
+//	if (sysTree == nullptr)
+//		sysTree = new SystemTree(this);
+//	return sysTree;
+//}
