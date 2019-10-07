@@ -12,12 +12,16 @@
 
 class vObject {
 public:
-    vObject(const Scene &scene, const Object &object);
+    vObject(Scene &scene, const Object &object);
     virtual ~vObject() = default;
+
+    static vObject *create(const Object *object, Scene *scene);
+
+    inline const Object *getObject() const { return &object; }
 
     virtual void render(renderParameter &prm) = 0;
 
 protected:
-    const Scene  &scene;
+    Scene  &scene;
     const Object &object;
 };

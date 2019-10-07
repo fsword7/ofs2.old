@@ -13,7 +13,7 @@
 class vPlanet : public vObject
 {
     public:
-        vPlanet(Scene &scene, Object &object);
+        vPlanet(Scene &scene, const Object &object);
         ~vPlanet() = default;
 
         void render(renderParameter &prm);

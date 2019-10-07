@@ -23,6 +23,7 @@ namespace ofs::universe
 
 		inline CelestialStar *getStar(int idx)
 			{ return (idx < stars.size()) ? stars[idx] : nullptr; }
+		inline const SystemTree *getSystemTree() const { return &systemTree; }
 
 		void addObject(Object *object);
 

@@ -171,7 +171,7 @@ void TerrainTile::render(renderParameter &prm)
 
 // **************************************************
 
-TerrainManager::TerrainManager(Scene &scene, Object &object)
+TerrainManager::TerrainManager(Scene &scene, const Object &object)
 : scene(scene), body(object)
 {
 	ShaderManager &smgr = scene.getShaderManager();

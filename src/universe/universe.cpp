@@ -23,15 +23,13 @@ void Universe::init()
 //	std::string cname = "data/constellations/western_rey/constellationship.fab";
 	asterism.load(cname);
 
+	// To removed later...
+
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = new System(sun);
 
-	// To removed later...
-	earth = new CelestialBody("earth");
-//    earth = new CelestialBody();
-//    earth->setName("earth");
+	CelestialBody *earth = new CelestialBody("earth");
 
-//    earth->setPosition(vec3d_t(0.0, 0.0, -40000.0));
     earth->setPosition(vec3d_t(0.0, 0.0, -149.6e6));
     earth->setRadius(6371.0);
 

@@ -7,10 +7,13 @@
 
 #include "main/core.h"
 #include "engine/player.h"
+#include "universe/system.h"
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
 #include "render/planet.h"
 #include "render/render.h"
+
+using namespace ofs::universe;
 
 void Scene::init(int w, int h, Universe &universe)
 {
@@ -42,6 +45,45 @@ double Scene::calculatePixelSize(Camera *cam) const
 	return 2 * tan(cam->getFOV()/2.0) / double(gl.getHeight());
 }
 
+vObject *Scene::addVisualObject(Object *object)
+{
+//	vObjectList *pvo = new vObjectList();
+	vObject *vobj;
+
+	cout << "Adding visual object '" << object->getName() << "'..." << endl;
+
+	vobj = vObject::create(object, this);
+
+	vobjList.push_back(vobj);
+
+//	pvo = new vObjectList();
+//	pvo->vobj = vobj;
+
+	// Add visual object to list
+//	pvo->prev = vobjFirst;
+//	pvo->next = nullptr;
+//	if (vobjLast != nullptr)
+//		vobjLast->next = pvo;
+//	else
+//		vobjFirst = pvo;
+//	vobjLast = pvo;
+
+	return vobj;
+}
+
+vObject *Scene::getVisualObject(Object *object, bool createFlag)
+{
+	if (object == nullptr)
+		return nullptr;
+	for (int idx = 0; idx < vobjList.size(); idx++) {
+		if (vobjList[idx]->getObject() == object)
+			return vobjList[idx];
+	}
+	if (createFlag == true)
+		return addVisualObject(object);
+	return nullptr;
+}
+
 void Scene::render(const Player *player, const Universe *universe)
 {
 	Camera *cam = player->getCamera(0);
@@ -55,10 +97,6 @@ void Scene::render(const Player *player, const Universe *universe)
 	
 	nearStars.clear();
 	lightSources.clear();
-
-	if (vobj == nullptr) {
-		vobj = new vPlanet(*this, *universe->getEarth());
-	}
 
 	// Find closest stars within desired distance
 	vec3d_t obs = player->getPosition();
@@ -93,7 +131,14 @@ void Scene::render(const Player *player, const Universe *universe)
 	// Render visible stars
 	renderStars(*universe->getStarCatalogue(), *player, faintestMagNight);
 
-	vobj->render(prm);
+	// Render planetary systems
+	for (int idx = 0; idx < nearStars.size(); idx++) {
+		const CelestialStar *sun = nearStars[idx];
+
+		if (!sun->hasSystem())
+			continue;
+		renderPlanetarySystem(sun);
+	}
 
 	gl.finish();
 }

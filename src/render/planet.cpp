@@ -8,7 +8,7 @@
 #include "main/core.h"
 #include "render/planet.h"
 
-vPlanet::vPlanet(Scene &scene, Object &object)
+vPlanet::vPlanet(Scene &scene, const Object &object)
 : vObject(scene, object)
 {
     tmgr = new TerrainManager(scene, object);

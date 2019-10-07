@@ -100,7 +100,7 @@ class TerrainManager
     friend class TerrainTile;
 
 public:
-    TerrainManager(Scene &scene, Object &object);
+    TerrainManager(Scene &scene, const Object &object);
     ~TerrainManager();
 
     static void ginit(Scene &scene);
@@ -115,8 +115,8 @@ public:
     Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrd_t &tcr);
     
 private:
-    Scene &scene;
-    Object &body;
+    const Scene &scene;
+    const Object &body;
 
     ShaderProgram *pgm = nullptr;
 

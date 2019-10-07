@@ -16,6 +16,7 @@ set(ofs_cpp_SRCS
 	render/render.cpp
 	render/starcolors.cpp
 	render/stars.cpp
+	render/system.cpp
 	render/object.cpp
 	render/planet.cpp
 	render/terrain.cpp

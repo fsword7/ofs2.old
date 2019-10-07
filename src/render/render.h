@@ -19,6 +19,7 @@
 
 class Player;
 class Camera;
+class vObject;
 class vPlanet;
 class StarRenderer;
 
@@ -107,6 +108,9 @@ public:
 
 	double calculatePixelSize(Camera *cam) const;
 
+	vObject *addVisualObject(Object *object);
+	vObject *getVisualObject(Object *object, bool createFlag);
+
 	void render(const Player *player, const Universe *universe);
 
 protected:
@@ -115,6 +119,8 @@ protected:
 
 	void renderStars(const StarCatalogue &starlib, const Player& player, double faintestMag);
 	void renderConstellations(const Universe &universe, const Player &player);
+	void renderPlanetarySystem(const CelestialStar *sun);
+
 	void setupLightSources(const vector<const CelestialStar *> &nearStars,
 			const vec3d_t &obs, double now, vector<LightSource> &ls);
 
@@ -124,7 +130,7 @@ private:
 	const Player *player;
 
 	vector<const CelestialStar *> nearStars;
-//	vector<vObject *> vobjList;
+	vector<vObject *> vobjList;
 	vector<LightSource> lightSources;
 
 	StarColors *starColors = nullptr;
@@ -134,20 +140,11 @@ private:
 
 	ShaderManager smgr;
 
-//	ShaderProgram *demo = nullptr;
-//	VertexBuffer *glBuffer;
-
 	ShaderProgram *pgmAsterism = nullptr;
 	VertexBuffer *vbufAsterism = nullptr;
 	uint32_t asterismLines = 0;
 
-//	uint32_t vao, vbo, ebo;
-//	uint32_t myColor;
-//	uint32_t texture1, texture2;
-
 	float faintestMag      = 6.0f;
 	float faintestMagNight = faintestMag;
 	float saturationMag    = 1.0f;
-
-	vPlanet *vobj = nullptr;
 };
