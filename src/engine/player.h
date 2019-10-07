@@ -7,6 +7,10 @@
 
 #pragma once
 
+#include "universe/frame.h"
+
+using namespace ofs::universe;
+
 class Object;
 class Player;
 
@@ -59,9 +63,18 @@ public:
 	void setTravelVelocity(vec3d_t tv);
 	void setTravelSpeed(double ts);
 
+    void setFrame(PlayerFrame::CoordType cs, const Object *obj);
+
+    void follow(const Object &obj);
+
     void update(double dt, double timeTravel);
+	void updateFrame(PlayerFrame *nfame);
+	void updateUniversal();
 
 private:
+    // Reference frame
+    PlayerFrame *frame = nullptr;
+
 	// Universe position, orientation, and velocity
 	vec3d_t	upos, uvec;
 	quatd_t	uqrot;

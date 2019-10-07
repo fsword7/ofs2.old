@@ -7,8 +7,13 @@
 
 #include "main/core.h"
 #include "main/date.h"
+#include "universe/frame.h"
 #include "engine/object.h"
 #include "engine/player.h"
+
+using namespace ofs::universe;
+
+// ******** Camera ********
 
 Camera::Camera(Player *_player)
 : player(_player),
@@ -56,7 +61,7 @@ void Camera::update()
 	camRotation = player->getRotation();
 }
 
-// *****************************************************
+// ******** Player ********
 
 Player::Player()
 : upos(0, 0, 0), uvec(0, 0, 0), uqrot(1, 0, 0, 0),
@@ -69,6 +74,10 @@ Player::Player()
 	// Initialize velocity controls
 	tv = vec3d_t(0, 0, 0);
 	av = vec3d_t(0, 0, 0);
+
+	// Reference frame - universal as default
+	frame = new PlayerFrame();
+	updateFrame(frame);
 }
 
 Player::~Player()
@@ -123,6 +132,41 @@ void Player::update(double dt, double timeTravel)
 	lqrot += lqrot * wv * (dt / 2.0f);
 	lpos  -= lqrot * tv * dt;
 
+	// Updating current universal coordinates
+	updateUniversal();
 	for (auto cam : camera)
 		cam->update();
+}
+
+void Player::updateUniversal()
+{
+	upos  = frame->toUniversal(lpos, jdTime);
+	uqrot = frame->toUniversal(lqrot, jdTime);
+}
+
+void Player::updateFrame(PlayerFrame *nframe)
+{
+	lpos = nframe->fromUniversal(upos, jdTime);
+	lqrot = nframe->fromUniversal(uqrot, jdTime);
+}
+
+void Player::setFrame(PlayerFrame::CoordType cs, const Object *obj)
+{
+	PlayerFrame *nframe = new PlayerFrame(cs, obj);
+	if (nframe == nullptr) {
+		std::cout << "Something wrong..." << std::endl;
+		return;
+	}
+	if (frame != nullptr)
+		delete frame;
+
+	updateFrame(nframe);
+	frame = nframe;
+}
+
+
+void Player::follow(const Object &obj)
+{
+	setFrame(PlayerFrame::csEcliptical, &obj);
+	std::cout << "Reference Frame: " << frame->name() << std::endl;
 }
