@@ -51,6 +51,14 @@ public:
     void load();
     void render(renderParameter &prm);
 
+    // Elevation function calls
+    int16_t *readElevation(int lod, int ilng, int ilat, double eres);
+    bool     loadElevation();
+    int16_t *getElevationData();
+
+    inline bool     hasElevData() const { return elevOwn; }
+    inline int16_t *getElevData() const { return elev; }
+
 private:
     TerrainManager &tmgr;
 
@@ -58,14 +66,19 @@ private:
 
     uint32_t lod;
     uint32_t ilat, ilng;
-    tcrd_t   tcRange;
     vec3d_t  center;
     
     Mesh *mesh = nullptr;
-    Texture *texImage = nullptr;
-    bool texOwn = false;
 
+    // Texture image parameters
+    bool     texOwn = false;
+    tcrd_t   tcRange;
+    Texture *texImage = nullptr;
+
+    // Elevation data parameters
+    bool     elevOwn = false;
     int16_t *elev = nullptr;
+    int16_t *ggelev = nullptr;
 };
 
 class TerrainHandler
@@ -117,6 +130,9 @@ public:
 private:
     const Scene &scene;
     const Object &body;
+
+    double   resElev;  // Elevation Resolution
+    int      resGrid;  // Grid resolution
 
     ShaderProgram *pgm = nullptr;
 
