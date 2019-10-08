@@ -73,7 +73,7 @@ namespace ofs::universe
 		EclipticFrame(const Object *obj);
 		~EclipticFrame() = default;
 
-		quatd_t getRotation(double tjd) { return quatd_t(); }
+		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
 	};
 
 	class EquatorFrame : public ReferenceFrame
@@ -82,7 +82,7 @@ namespace ofs::universe
 		EquatorFrame(const Object *obj, const Object *tgt);
 		~EquatorFrame() = default;
 
-		quatd_t getRotation(double tjd) { return quatd_t(); }
+		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
 	};
 
 	class BodyMeanFrame : public ReferenceFrame
@@ -91,7 +91,7 @@ namespace ofs::universe
 		BodyMeanFrame(const Object *obj, const Object *tgt);
 		~BodyMeanFrame() = default;
 
-		quatd_t getRotation(double tjd) { return quatd_t(); }
+		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
 	};
 
 }

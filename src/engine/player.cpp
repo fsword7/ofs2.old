@@ -96,7 +96,16 @@ Camera *Player::getCamera(int idx) const
 
 void Player::setPosition(vec3d_t pos)
 {
-	lpos = pos;
+	upos = pos;
+	lpos = frame->fromUniversal(pos, jdTime);
+	for (auto cam : camera)
+		cam->update();
+}
+
+void Player::setRotation(quatd_t rot)
+{
+	uqrot = rot;
+	lqrot = frame->fromUniversal(rot, jdTime);
 	for (auto cam : camera)
 		cam->update();
 }
@@ -189,7 +198,7 @@ void Player::go(const Object &obj)
 	vec3d_t opos = obj.getPosition(jdTime);
 
 	upos = opos;
-	upos.z += obj.getRadius() * 4;
+	upos.z -= obj.getRadius() * 6;
 	lpos = frame->fromUniversal(upos, jdTime);
 
 	look(obj);
@@ -206,6 +215,6 @@ void Player::go(const Object &obj)
 
 //	orbit = new EllipticalOrbit(lpos, lvel, obj.getMass(), jdTime);
 
-//	std::cout << "Universal: (" << std::fixed << upos.x() << "," << upos.y() << "," << upos.z() << ")" << std::endl;
-//	std::cout << "Local:     (" << std::fixed << lpos.x() << "," << lpos.y() << "," << lpos.z() << ")" << std::endl;
+	cout << "Universal: (" << std::fixed << upos.x << "," << upos.y << "," << upos.z << ")" << endl;
+	cout << "Local:     (" << std::fixed << lpos.x << "," << lpos.y << "," << lpos.z << ")" << endl;
 }

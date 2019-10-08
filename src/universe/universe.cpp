@@ -28,7 +28,7 @@ void Universe::init()
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = new System(sun);
 
-	CelestialBody *earth = new CelestialBody("earth");
+	earth = new CelestialBody("earth");
 
     earth->setPosition(vec3d_t(0.0, 0.0, -149.6e6));
     earth->setRadius(6371.0);
