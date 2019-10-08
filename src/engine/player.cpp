@@ -43,7 +43,7 @@ void Camera::focus(Object *obj)
 {
 	vec3d_t opos = obj->getPosition();
 	vec3d_t up   = vec3d_t(0, 1, 0);
-	mat4d_t m    = glm::lookAt(camPosition, opos, up);
+	mat4d_t m    = glm::lookAt(opos, camPosition, up);
 
 	camRotation = glm::conjugate(glm::quat_cast(m));
 
@@ -177,7 +177,7 @@ void Player::setFrame(PlayerFrame::CoordType cs, const Object *obj)
 void Player::follow(const Object &obj)
 {
 	setFrame(PlayerFrame::csEcliptical, &obj);
-	std::cout << "Reference Frame: " << frame->name() << std::endl;
+//	std::cout << "Reference Frame: " << frame->name() << std::endl;
 }
 
 void Player::look(const Object &obj)
@@ -185,7 +185,7 @@ void Player::look(const Object &obj)
 	vec3d_t opos = obj.getPosition(jdTime);
 	vec3d_t up   = vec3d_t(0, 1, 0);
 
-	uqrot = glm::lookAt(upos, opos, up);
+	uqrot = glm::lookAt(opos, upos, up);
 	lqrot = frame->fromUniversal(uqrot, jdTime);
 
 //	std::cout << std::fixed << std::setprecision(10);
@@ -215,6 +215,6 @@ void Player::go(const Object &obj)
 
 //	orbit = new EllipticalOrbit(lpos, lvel, obj.getMass(), jdTime);
 
-	cout << "Universal: (" << std::fixed << upos.x << "," << upos.y << "," << upos.z << ")" << endl;
-	cout << "Local:     (" << std::fixed << lpos.x << "," << lpos.y << "," << lpos.z << ")" << endl;
+//	cout << "Universal: (" << std::fixed << upos.x << "," << upos.y << "," << upos.z << ")" << endl;
+//	cout << "Local:     (" << std::fixed << lpos.x << "," << lpos.y << "," << lpos.z << ")" << endl;
 }
