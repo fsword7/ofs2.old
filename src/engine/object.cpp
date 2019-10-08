@@ -9,6 +9,8 @@
 #include "ephem/orbit.h"
 #include "engine/object.h"
 
+using namespace ofs::ephem;
+
 Object::Object(ObjectType type)
 : objType(type), objNames(1),
   objRadius(0), objSemiAxes(0, 0, 0),

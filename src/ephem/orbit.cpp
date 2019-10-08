@@ -8,6 +8,8 @@
 #include "main/core.h"
 #include "ephem/orbit.h"
 
+using namespace ofs::ephem;
+
 vec3d_t EllipticalOrbit::getPosition(double jd)
 {
 	return vec3d_t(0, 0, 0);

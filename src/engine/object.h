@@ -7,17 +7,18 @@
 
 #pragma once
 
+#include "ephem/orbit.h"
+#include "ephem/rotation.h"
 #include "universe/frame.h"
 
 using namespace ofs::universe;
+using namespace ofs::ephem;
 
 enum ObjectType {
     objUnknown = 0,
     objCelestialBody,
     objCelestialStar
 };
-
-class Orbit;
 
 class Object
 {
@@ -72,5 +73,5 @@ protected:
 
 	// Orientation parameters
 	ReferenceFrame *objectFrame = nullptr;
-//	Rotation       *rot = nullptr;
+	RotationModel  *rot = nullptr;
 };
