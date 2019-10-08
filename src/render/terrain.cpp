@@ -153,6 +153,8 @@ void TerrainTile::load()
 	} else
 		texOwn = true;
 
+	elev = getElevationData();
+
 	mesh = tmgr.createSphere(lod, ilat, ilng, 32, tcRange);
 	if (mesh != nullptr) {
 		// mesh->allocate(tmgr.scene.getContext());
@@ -172,7 +174,7 @@ void TerrainTile::render(renderParameter &prm)
 // **************************************************
 
 TerrainManager::TerrainManager(Scene &scene, const Object &object)
-: scene(scene), body(object)
+: scene(scene), body(object), maxLOD(20), resGrid(32), resElev(1.0)
 {
 	ShaderManager &smgr = scene.getShaderManager();
 

@@ -131,6 +131,7 @@ private:
     const Scene &scene;
     const Object &body;
 
+    int      maxLOD;
     double   resElev;  // Elevation Resolution
     int      resGrid;  // Grid resolution
 

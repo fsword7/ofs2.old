@@ -183,12 +183,12 @@ int16_t *TerrainTile::getElevationData()
 	while ((1u << (8 - glod)) < tmgr.resGrid)
 		glod--;
 
-	cout << "Current LOD: " << lod+4 << " Elev LOD: " << glod << endl;
+	cout << "Current LOD: " << lod+3 << " Elev LOD: " << glod << endl;
 
 	if (lod >= glod) {
 		// Find parent tile (LOD level 3+)
 		ptile = this;
-//		cout << "LOD: " << ptile->lod+4 << " Block Resolution: " << resBlock << endl;
+//		cout << "LOD: " << ptile->lod+3 << " Block Resolution: " << resBlock << endl;
 		while (resBlock > tmgr.resGrid && ptile != nullptr) {
 			ptile = ptile->getParent();
 			resBlock >>= 1;
@@ -198,17 +198,17 @@ int16_t *TerrainTile::getElevationData()
 	}
 
 	if (ptile != nullptr) {
-		cout << "Block Resolution: " << resBlock << " Parent Tile LOD: " << ptile->lod+4 << endl;
+		cout << "Block Resolution: " << resBlock << " Parent Tile LOD: " << ptile->lod+3 << endl;
 
-		if (ptile->loadElevation()) {
-			mask = (ELEV_RES / resBlock) - 1;
-			ofs  = ((mask - ilat & mask)*ELEV_STRIDE + (mask - ilng & mask)) * resBlock;
-			cout << "Tile Lat: " << ilat << " Lng: " << ilng << endl;
-			cout << "GG Tile Lat: " << ptile->ilat << " Lng: " << ptile->ilng
-			     << "Elev X: " << (ilng & mask) << " Y: " << (ilat & mask) << endl;
-			ggelev = ptile->elev + ofs;
-			cout << "Got new elevation data ready" << endl;
-		}
+//		if (ptile->loadElevation()) {
+//			mask = (ELEV_RES / resBlock) - 1;
+//			ofs  = ((mask - ilat & mask)*ELEV_STRIDE + (mask - ilng & mask)) * resBlock;
+//			cout << "Tile Lat: " << ilat << " Lng: " << ilng << endl;
+//			cout << "GG Tile Lat: " << ptile->ilat << " Lng: " << ptile->ilng
+//			     << "Elev X: " << (ilng & mask) << " Y: " << (ilat & mask) << endl;
+//			ggelev = ptile->elev + ofs;
+//			cout << "Got new elevation data ready" << endl;
+//		}
 	}
 
 	return ggelev;
