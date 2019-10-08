@@ -49,3 +49,24 @@ template<class T> inline T clamp(T x)
 
 #define square(val) ((val) * (val))
 #define cube(val)   ((val) * (val) * (val))
+
+template <class T>
+glm::tquat<T> xrot(T radians)
+{
+	T ang = radians * T(0.5); // half angle
+	return glm::tquat<T>(cos(ang), sin(ang), 0, 0);
+}
+
+template <class T>
+glm::tquat<T> yrot(T radians)
+{
+	T ang = radians * T(0.5); // half angle
+	return glm::tquat<T>(cos(ang), 0, sin(ang), 0);
+}
+
+template <class T>
+glm::tquat<T> zrot(T radians)
+{
+	T ang = radians * T(0.5); // half angle
+	return glm::tquat<T>(cos(ang), 0, 0, sin(ang));
+}
