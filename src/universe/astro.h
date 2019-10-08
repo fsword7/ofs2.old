@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "main/date.h"
+
 #define LN_MAG          1.085736
 #define J2000Obliquity  glm::radians(23.4392911)
 

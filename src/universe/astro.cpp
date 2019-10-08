@@ -12,7 +12,8 @@
 
 using namespace ofs::astro;
 
-constexpr double G = 6.673889e-11; // Official gravitational constant [N (m/kg)^2]
+// Official gravitational constant [N (m/kg)^2]
+constexpr double ofs::astro::G = 6.673889e-11;
 
 vec3d_t ofs::astro::convertEquatorialToEcliptic(double ra, double dec, double pc)
 {
@@ -21,8 +22,8 @@ vec3d_t ofs::astro::convertEquatorialToEcliptic(double ra, double dec, double pc
 	vec3d_t rot(-J2000Obliquity, 0, 0);
 	vec3d_t opos;
 
-	theta = toRadian(ra) + PI;
-	phi   = toRadian(dec - 90.0);
+	theta = glm::radians(ra) + PI;
+	phi   = glm::radians(dec - 90.0);
 
 	opos = vec3d_t(sin(phi)*cos(theta), cos(phi), sin(phi)*-sin(theta));
 
