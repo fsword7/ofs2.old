@@ -16,6 +16,12 @@ namespace ofs::universe
 	class ReferenceFrame
 	{
 	public:
+		enum FrameType {
+			UnknownFrame     = 0,
+			PositionFrame    = 1,
+			OrientationFrame = 2
+		};
+
 		ReferenceFrame(const Object *object = nullptr);
 		virtual ~ReferenceFrame() = default;
 
@@ -25,12 +31,19 @@ namespace ofs::universe
 		int lock() const;
 		int release() const;
 
+		// Universal/Astrocentric/Orientation coordination conversions
 		vec3d_t fromUniversal(const vec3d_t& upos, double tjd);
 		vec3d_t toUniversal(const vec3d_t& lpos, double tjd);
+
 		quatd_t fromUniversal(const quatd_t& urot, double tjd);
 		quatd_t toUniversal(const quatd_t& lrot, double tjd);
 
+		vec3d_t fromAstrocentric(const vec3d_t& upos, double tjd);
+		vec3d_t toAstrocentric(const vec3d_t& lpos, double tjd);
+
 		virtual quatd_t getRotation(double tjd) = 0;
+//		virtual vec3d_t getAngularVelocity(double tdb) = 0;
+//		virtual bool isInertial() const = 0;
 
 	private:
 		mutable int refCount = 0;
@@ -67,20 +80,20 @@ namespace ofs::universe
 		ReferenceFrame *frame;
 	};
 
-	class EclipticFrame : public ReferenceFrame
+	class J2000EclipticFrame : public ReferenceFrame
 	{
 	public:
-		EclipticFrame(const Object *obj);
-		~EclipticFrame() = default;
+		J2000EclipticFrame(const Object *obj);
+		~J2000EclipticFrame() = default;
 
 		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
 	};
 
-	class EquatorFrame : public ReferenceFrame
+	class J2000EquatorFrame : public ReferenceFrame
 	{
 	public:
-		EquatorFrame(const Object *obj, const Object *tgt);
-		~EquatorFrame() = default;
+		J2000EquatorFrame(const Object *obj, const Object *tgt);
+		~J2000EquatorFrame() = default;
 
 		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
 	};

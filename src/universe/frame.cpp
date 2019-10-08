@@ -39,7 +39,7 @@ vec3d_t ReferenceFrame::fromUniversal(const vec3d_t& upos, double tjd)
 
 	if (center == nullptr)
 		return upos;
-	return glm::conjugate(getRotation(tjd)) * (center->getPosition(tjd) - upos);
+	return getRotation(tjd) * (center->getPosition(tjd) - upos);
 
 //	std::cout << std::fixed << std::setprecision(10);
 //	std::cout << "Time: (from) " << tjd << " (" << pos.x() << "," << pos.y() << "," << pos.z() << ")" << std::endl;
@@ -52,7 +52,35 @@ vec3d_t ReferenceFrame::toUniversal(const vec3d_t& lpos, double tjd)
 
 	if (center == nullptr)
 		return lpos;
-	return center->getPosition(tjd) + (getRotation(tjd) * lpos);
+	return center->getPosition(tjd) + (glm::conjugate(getRotation(tjd)) * lpos);
+
+//	pos = center->getPosition(tjd) + lpos;
+//	std::cout << std::fixed << std::setprecision(10);
+//	std::cout << "Time: (to) " << tjd << " (" << pos.x() << "," << pos.y() << "," << pos.z() << ")" << std::endl;
+//	std::cout << "Time:      " << tjd << " (" << lpos.x() << "," << lpos.y() << "," << lpos.z() << ")" << std::endl;
+//	return pos;
+}
+
+vec3d_t ReferenceFrame::fromAstrocentric(const vec3d_t& upos, double tjd)
+{
+//	vec3d_t pos;
+
+	if (center == nullptr)
+		return upos;
+	return getRotation(tjd) * (center->getPosition(tjd) - upos);
+
+//	std::cout << std::fixed << std::setprecision(10);
+//	std::cout << "Time: (from) " << tjd << " (" << pos.x() << "," << pos.y() << "," << pos.z() << ")" << std::endl;
+//	return pos;
+}
+
+vec3d_t ReferenceFrame::toAstrocentric(const vec3d_t& lpos, double tjd)
+{
+//	vec3d_t pos;
+
+	if (center == nullptr)
+		return lpos;
+	return center->getPosition(tjd) + (glm::conjugate(getRotation(tjd)) * lpos);
 
 //	pos = center->getPosition(tjd) + lpos;
 //	std::cout << std::fixed << std::setprecision(10);
@@ -119,12 +147,12 @@ ReferenceFrame *PlayerFrame::create(CoordType cs, const Object *obj)
 {
 	switch (cs) {
 	case csUniversal:
-		return new EclipticFrame(nullptr);
+		return new J2000EclipticFrame(nullptr);
 	case csEcliptical:
-		return new EclipticFrame(obj);
+		return new J2000EclipticFrame(obj);
 	case csEquatorial:
 	default:
-		return new EclipticFrame(nullptr);
+		return new J2000EclipticFrame(nullptr);
 	}
 }
 
@@ -133,16 +161,16 @@ std::string PlayerFrame::name() const
 	return frame->getCenter()->getName();
 }
 
-// **** **** Elliptic Reference Frame ********
+// ******** J2000 Earth Elliptic Reference Frame ********
 
-EclipticFrame::EclipticFrame(const Object *obj)
+J2000EclipticFrame::J2000EclipticFrame(const Object *obj)
 : ReferenceFrame(obj)
 {
 }
 
-// ******** Equator Reference Frame ********
+// ******** J2000 Earth Equator Reference Frame ********
 
-EquatorFrame::EquatorFrame(const Object *obj, const Object *tgt)
+J2000EquatorFrame::J2000EquatorFrame(const Object *obj, const Object *tgt)
 : ReferenceFrame(obj)
 {
 }

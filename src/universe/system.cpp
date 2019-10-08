@@ -19,7 +19,7 @@ SystemTree::SystemTree(Object *object)
 	switch (object->getType()) {
 	case ObjectType::objCelestialStar:
 		starParent   = dynamic_cast<CelestialStar *>(object);
-		defaultFrame = new EclipticFrame(object);
+		defaultFrame = new J2000EclipticFrame(object);
 		break;
 	case ObjectType::objCelestialBody:
 		bodyParent   = dynamic_cast<CelestialBody *>(object);
