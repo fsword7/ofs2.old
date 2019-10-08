@@ -183,7 +183,7 @@ int16_t *TerrainTile::getElevationData()
 	while ((1u << (8 - glod)) < tmgr.resGrid)
 		glod--;
 
-	cout << "Current LOD: " << lod+3 << " Elev LOD: " << glod << endl;
+//	cout << "Current LOD: " << lod+3 << " Elev LOD: " << glod << endl;
 
 	if (lod >= glod) {
 		// Find parent tile (LOD level 3+)
@@ -198,7 +198,7 @@ int16_t *TerrainTile::getElevationData()
 	}
 
 	if (ptile != nullptr) {
-		cout << "Block Resolution: " << resBlock << " Parent Tile LOD: " << ptile->lod+3 << endl;
+//		cout << "Block Resolution: " << resBlock << " Parent Tile LOD: " << ptile->lod+3 << endl;
 
 //		if (ptile->loadElevation()) {
 //			mask = (ELEV_RES / resBlock) - 1;
