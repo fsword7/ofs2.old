@@ -175,9 +175,16 @@ J2000EquatorFrame::J2000EquatorFrame(const Object *obj, const Object *tgt)
 {
 }
 
-// ******** Body Mean Reference Frame ********
+// ******** Body Fixed Reference Frame ********
 
-BodyMeanFrame::BodyMeanFrame(const Object *obj, const Object *tgt)
+BodyFixedFrame::BodyFixedFrame(const Object *obj, const Object *tgt)
+: ReferenceFrame(obj)
+{
+}
+
+// ******** Body Mean Equator Reference Frame ********
+
+BodyMeanEquatorFrame::BodyMeanEquatorFrame(const Object *obj, const Object *tgt)
 : ReferenceFrame(obj)
 {
 }

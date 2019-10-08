@@ -98,11 +98,20 @@ namespace ofs::universe
 		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
 	};
 
-	class BodyMeanFrame : public ReferenceFrame
+	class BodyFixedFrame : public ReferenceFrame
 	{
 	public:
-		BodyMeanFrame(const Object *obj, const Object *tgt);
-		~BodyMeanFrame() = default;
+		BodyFixedFrame(const Object *obj, const Object *tgt);
+		~BodyFixedFrame() = default;
+
+		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
+	};
+
+	class BodyMeanEquatorFrame : public ReferenceFrame
+	{
+	public:
+		BodyMeanEquatorFrame(const Object *obj, const Object *tgt);
+		~BodyMeanEquatorFrame() = default;
 
 		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
 	};

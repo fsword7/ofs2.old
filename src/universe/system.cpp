@@ -23,7 +23,7 @@ SystemTree::SystemTree(Object *object)
 		break;
 	case ObjectType::objCelestialBody:
 		bodyParent   = dynamic_cast<CelestialBody *>(object);
-		defaultFrame = new BodyMeanFrame(object, object);
+		defaultFrame = new BodyMeanEquatorFrame(object, object);
 		break;
 	}
 }
