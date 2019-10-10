@@ -126,6 +126,12 @@ void Player::setTravelSpeed(double ts)
 	tv.z = ts;
 }
 
+void Player::start(double jd)
+{
+	realTime = jd;
+	jdTime   = jd;
+}
+
 void Player::update(double dt, double timeTravel)
 {	
 	realTime += dt / SECONDS_PER_DAY;

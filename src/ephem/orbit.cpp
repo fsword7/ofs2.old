@@ -170,8 +170,8 @@ vec3d_t EllipticalOrbit::getPosition(double jd)
 
 	p = plane * vec3d_t(x, y, 0);
 
-	cout << fixed << setprecision(10) << "Orbit Position: JD "
-		 << jd << " (" << p.x << "," << p.z << "," << -p.y << ")" << endl;
+//	cout << fixed << setprecision(10) << "Orbit Position: JD "
+//		 << jd << " (" << p.x << "," << p.z << "," << -p.y << ")" << endl;
 
 	return vec3d_t(p.x, p.z, -p.y);
 }

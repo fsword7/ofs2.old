@@ -40,6 +40,13 @@ void Engine::start()
 	realDate.reset();
 	realTime = realDate;
 
+	cout << "Start date: " << realDate.getString() << endl;
+	cout << " Real Time: " << Date(realTime).getString() << endl;
+
+	// Initialize real julian time
+	scaleTime = 1.0;
+	player.start(realTime);
+
 	// To removed later
 
 	CelestialBody *earth = universe.getEarth();

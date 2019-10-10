@@ -68,6 +68,7 @@ public:
     void look(const Object &obj);
     void go(const Object &obj);
 
+    void start(double jd);
     void update(double dt, double timeTravel);
 	void updateFrame(PlayerFrame *nfame);
 	void updateUniversal();
