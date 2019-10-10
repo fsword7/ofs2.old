@@ -12,9 +12,9 @@
 using namespace ofs::astro;
 using namespace ofs::ephem;
 
-EllipticalOrbit::EllipticalOrbit(double a, double e, double i,
-		double Om, double w, double M0, double P, double mass, double ep)
-: P(P), a(a), e(e), q(0.0), i(i), Om(Om), w(w), M0(M0),
+EllipticalOrbit::EllipticalOrbit(double _a, double _e, double _i,
+		double _Om, double _w, double _M0, double _P, double mass, double ep)
+: P(_P), a(_a), e(_e), q(0.0), i(_i), Om(_Om), w(_w), M0(_M0),
   perigee(0), epoch(ep), GM(0.0),
   plane(quatd_t(1,0,0,0))
 {
@@ -170,8 +170,9 @@ vec3d_t EllipticalOrbit::getPosition(double jd)
 
 	p = plane * vec3d_t(x, y, 0);
 
-//	cout << fixed << setprecision(10) << "Orbit Position: JD "
-//		 << jd << " (" << p.x << "," << p.z << "," << -p.y << ")" << endl;
+	cout << fixed << setprecision(10) << "Orbit Position: JD "
+		 << jd << " (" << p.x << "," << p.z << "," << -p.y << ")" << endl;
+
 	return vec3d_t(p.x, p.z, -p.y);
 }
 

@@ -48,8 +48,7 @@ void Universe::init()
 	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
 
-//	earth->setOrbit(orbit);
-    earth->setPosition(vec3d_t(0.0, 0.0, -149.6e6));
+	earth->setOrbit(orbit);
     earth->setRadius(6371.0);
 
     solSystem->addObject(earth);
