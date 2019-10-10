@@ -75,12 +75,37 @@ struct LightSource
 	Color   color;
 };
 
+// Reflected object
+struct SecondaryLight
+{
+	const Object *object;
+	vec3d_t viewPosition;
+	double  radius;
+	double  reflected;
+};
+
 struct DirectLight
 {
+	vec3d_t sunPosition;
+	vec3d_t directObject;
+	vec3d_t directEye;
+	Color   color;
+	double  irradiance;
+	double  apparentSize;
+	bool	castShadows;
 };
 
 struct LightState
 {
+	LightState()
+	: nLights(0), eyeDirObject(0, 0, -1), eyePosObject(0, 0, -1)
+	{}
+
+	vec3d_t     eyeDirObject;
+	vec3d_t     eyePosObject;
+	vec3d_t     ambientColor;
+	uint32_t    nLights;
+	DirectLight lights[MAX_LIGHTS];
 };
 
 struct VertexLine
