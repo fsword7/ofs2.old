@@ -13,6 +13,8 @@
 
 using namespace ofs::universe;
 
+class Engine;
+
 namespace ofs::universe {
     class Universe
     {
@@ -24,6 +26,10 @@ namespace ofs::universe {
         
         inline const StarCatalogue *getStarCatalogue() const { return &starlib; }
         inline const Constellations &getAsterism() const { return asterism; }
+
+        inline const Engine *getEngine() const { return engine; }
+
+        inline void setEngine(Engine *engine) { this->engine = engine; }
 
         Object *find(const string& name) const;
         CelestialStar *findStar(const std::string& name) const;
@@ -37,6 +43,8 @@ namespace ofs::universe {
         StarCatalogue starlib;
         Constellations asterism;
 
-        CelestialBody *earth;
+        Engine *engine = nullptr;
+
+        CelestialBody *earth = nullptr;
     };
 }

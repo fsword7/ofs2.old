@@ -126,6 +126,8 @@ public:
 	inline renderParameter *getParameter() { return &prm; }
 	inline double getAspect() const { return gl.getAspect(); }
 
+	inline const Engine *getEngine() const { return universe->getEngine(); }
+
 	void init(int width, int height, Universe &universe);
 	void cleanup();
 	
@@ -152,7 +154,8 @@ protected:
 private:
 	Context gl;
 
-	const Player *player;
+	const Player   *player = nullptr;
+	const Universe *universe = nullptr;
 
 	vector<const CelestialStar *> nearStars;
 	vector<vObject *> vobjList;

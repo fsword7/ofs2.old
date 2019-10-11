@@ -19,8 +19,11 @@ using namespace ofs::universe;
 Engine::Engine()
 : realTime(0), scaleTime(1.0)
 {
-	pdata = "data/";
+	// Initialize database parameters
+	dataFolder   = "data";
+	systemFolder = dataFolder + "/systems";
 
+	universe.setEngine(this);
 	universe.init();
 }
 

@@ -94,6 +94,7 @@ void Scene::render(const Player *player, const Universe *universe)
 	prm.tanap   = cam->getTanAp();
 	
 	this->player = player;
+	this->universe = universe;
 	
 	nearStars.clear();
 	lightSources.clear();

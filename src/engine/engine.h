@@ -26,7 +26,8 @@ public:
 	inline Scene *getScene() { return scene; }
 	inline Date *getRealTime() { return &realDate; }
 
-//	inline string getDataFolder() const { return pdata; }
+	inline string getDataFolder() const   { return dataFolder; }
+	inline string getSystemFolder() const { return systemFolder; }
 
 	void init(uint32_t height, uint32_t width);
 	void start();
@@ -41,5 +42,7 @@ private:
 	double	realTime;	// System time in Julian clock
 	double	scaleTime;	// Time-travel scale time [Julian date]
 
-	string	pdata; // data folders for file access
+	// Database parameters
+	string	dataFolder;   // data folder for file access
+	string  systemFolder; // system folder
 };

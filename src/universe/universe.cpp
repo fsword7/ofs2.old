@@ -28,7 +28,7 @@ void Universe::init()
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = new System(sun);
 
-	earth = new CelestialBody("earth");
+	earth = new CelestialBody("Earth");
 
 	// Earth orbit parameters
 	double T     = 365.256;     // Period (T) [days]
