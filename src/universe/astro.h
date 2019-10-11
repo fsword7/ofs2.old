@@ -41,6 +41,11 @@ namespace ofs::astro {
 		return pc * (T)KM_PER_PC;
 	}
 
+	template <class T> T convertKilometerToAU(T km)
+	{
+		return km / (T)KM_PER_AU;
+	}
+
 	template <class T> T convertAUToKilometer(T au)
 	{
 		return au * (T)KM_PER_AU;

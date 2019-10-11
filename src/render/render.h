@@ -150,6 +150,8 @@ protected:
 
 	void setupLightSources(const vector<const CelestialStar *> &nearStars,
 			const vec3d_t &obs, double now, vector<LightSource> &ls);
+	void setupLightingObject(vector<LightSource> &suns, const vec3d_t opos,
+			const quatd_t orot, LightState &ls);
 
 private:
 	Context gl;
