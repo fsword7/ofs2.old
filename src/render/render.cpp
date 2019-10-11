@@ -7,7 +7,9 @@
 
 #include "main/core.h"
 #include "engine/player.h"
-#include "universe/system.h"
+#include "universe/body.h"
+#include "universe/star.h"
+
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
 #include "render/planet.h"
@@ -88,10 +90,10 @@ void Scene::render(const Player *player, const Universe *universe)
 {
 	Camera *cam = player->getCamera(0);
 	
-	prm.jdTime  = player->getJulianTime();
-	prm.cpos    = cam->getPosition();
-	prm.crot    = cam->getRotation();
-	prm.tanap   = cam->getTanAp();
+	prm.now   = player->getJulianTime();
+	prm.cpos  = cam->getPosition();
+	prm.crot  = cam->getRotation();
+	prm.tanap = cam->getTanAp();
 	
 	this->player = player;
 	this->universe = universe;
@@ -102,7 +104,7 @@ void Scene::render(const Player *player, const Universe *universe)
 	// Find closest stars within desired distance
 	vec3d_t obs = player->getPosition();
 	universe->findNearStars(obs, 1.0, nearStars);
-	setupLightSources(nearStars, obs, prm.jdTime, lightSources);
+	setupPrimaryLightSources(nearStars, obs, prm.now, lightSources);
 
 //	cout << "Closest star list: (" << nearStars.size() << " stars)" << endl;
 //	for(const CelestialStar *star : nearStars) {
@@ -134,7 +136,11 @@ void Scene::render(const Player *player, const Universe *universe)
 
 		if (!sun->hasSystem())
 			continue;
-		renderPlanetarySystem(sun);
+
+		const System *system = sun->getSystem();
+		const SystemTree *tree = system->getSystemTree();
+
+		renderPlanetarySystem(tree);
 	}
 
 	gl.finish();

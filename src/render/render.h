@@ -8,6 +8,9 @@
 #pragma once
 
 #include "universe/universe.h"
+#include "universe/frame.h"
+#include "universe/system.h"
+
 #include "render/context.h"
 #include "render/starcolors.h"
 #include "render/gl/buffer.h"
@@ -25,7 +28,7 @@ class StarRenderer;
 
 struct renderParameter
 {
-	double jdTime;    // Current julian time
+	double  now;    // Current julian time
 
 	mat4f_t mProj;  // Projection matrix
 	mat4f_t mView;  // View matrix
@@ -69,7 +72,7 @@ struct renderParameter
 
 struct LightSource
 {
-	vec3d_t pos;
+	vec3d_t spos;
 	double  luminosity;
 	double  radius;
 	Color   color;
@@ -146,11 +149,15 @@ protected:
 
 	void renderStars(const StarCatalogue &starlib, const Player& player, double faintestMag);
 	void renderConstellations(const Universe &universe, const Player &player);
-	void renderPlanetarySystem(const CelestialStar *sun);
 
-	void setupLightSources(const vector<const CelestialStar *> &nearStars,
+	void renderPlanet(vObject *vobj);
+	void renderPlanetarySystem(const SystemTree *tree);
+
+	// Light source function calls
+	void setupPrimaryLightSources(const vector<const CelestialStar *> &nearStars,
 			const vec3d_t &obs, double now, vector<LightSource> &ls);
-	void setupLightingObject(vector<LightSource> &suns, const vec3d_t opos,
+	void setupSecondaryLightSources();
+	void setupObjectLighting(vector<LightSource> &suns, const vec3d_t opos,
 			const quatd_t orot, LightState &ls);
 
 private:

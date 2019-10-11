@@ -10,8 +10,6 @@
 #include "universe/astro.h"
 #include "universe/body.h"
 #include "universe/star.h"
-#include "universe/frame.h"
-#include "universe/system.h"
 
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
@@ -21,7 +19,17 @@
 using namespace ofs::astro;
 using namespace ofs::universe;
 
-void Scene::setupLightingObject(vector<LightSource> &sun,
+struct LightIrradiancePredicate
+{
+	LightIrradiancePredicate() {};
+
+	bool operator ()(const DirectLight& l0, const DirectLight& l1) const
+	{
+		return l0.irradiance > l1.irradiance;
+	}
+};
+
+void Scene::setupObjectLighting(vector<LightSource> &sun,
 	const vec3d_t objPosition, const quatd_t objRotation,
 	LightState &ls)
 {
@@ -31,7 +39,7 @@ void Scene::setupLightingObject(vector<LightSource> &sun,
 		return;
 	for (int idx = 0; idx < nLights; idx++)
 	{
-		vec3d_t spos  = sun[idx].pos - objPosition;
+		vec3d_t spos  = sun[idx].spos - objPosition;
 		double  dist  = glm::length(spos);
 		double  au    = convertKilometerToAU(dist);
 
@@ -44,15 +52,49 @@ void Scene::setupLightingObject(vector<LightSource> &sun,
 		ls.lights[idx].castShadows  = true;
 	}
 
+	// for multi-star systems
+	if (nLights > 1) {
+		// Calculating total irradiance from multi-star systems
+		double totalIrradiance = 0.0;
+		for (int idx = 0; idx < nLights; idx++)
+			totalIrradiance += ls.lights[idx].irradiance;
+
+		// Determines first brightest light sources
+		sort(ls.lights, ls.lights + nLights, LightIrradiancePredicate());
+
+//		double minVisibleFraction   = 1.0 / 10000.0;
+//		double minDisplayableValue  = 1.0 / 255.0;
+//		double minVisibleIrradiance = minVisibleFraction * totalIrradiance;
+//		double gamma = log(minDisplayableValue) / log(minVisibleFraction);
+//
+//		ls.nLights = 0;
+//		for (int idx = 0; idx < nLights && ls.lights[idx].irradiance > minVisibleIrradiance; idx++) {
+//			ls.lights[idx].irradiance =
+//					pow(ls.lights[idx].irradiance / totalIrradiance, gamma);
+////			ls.lights[idx].directObject = ls.lights[idx].directEye * m;
+//			ls.nLights++;
+//		}
+	}
+
+//	double eyeFromCenterDistance = ls.eyePosObject.length();
+//	if (eyeFromCenterDistance > 100.0 && isNormalized) {
+//		double s = 100.0 / eyeFromCenterDistance;
+//		ls.eyePosObject = ls.eyePosObject * s;
+//	}
+
 	ls.eyePosObject = -objPosition * objRotation;
 	ls.eyeDirObject = (vec3d_t(0, 0, 0) - objPosition) * objRotation;
 	ls.ambientColor = vec3d_t(0, 0, 0);
 }
 
-void Scene::renderPlanetarySystem(const CelestialStar *sun)
+void Scene::renderPlanet(vObject *vobj)
 {
-	const System *system = sun->getSystem();
-	const SystemTree *tree = system->getSystemTree();
+	// setupObjectLighting
+	vobj->render(prm);
+}
+
+void Scene::renderPlanetarySystem(const SystemTree *tree)
+{
 	int nObjects = tree->getSystemSize();
 
 	for (int idx = 0; idx < nObjects; idx++) {
@@ -61,10 +103,12 @@ void Scene::renderPlanetarySystem(const CelestialStar *sun)
 		{
 			vObject *vobj = getVisualObject(object, true);
 
-			vobj->render(prm);
+			renderPlanet(vobj);
 		}
 	}
+
+	// Rendering satellites orbiting around this celestial body
+//	const SystemTree *subtree = body.getSystemTree();
+//	if (subtree != nullptr)
+//		renderPlanetarySystem(subtree);
 }
-
-
-

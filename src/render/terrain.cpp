@@ -358,8 +358,8 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.biasLOD = 0;
 
 	// Object position and orientation parameters
-	prm.obj.opos = body.getPosition(prm.jdTime);
-	prm.obj.orot = glm::toMat4(body.getRotation(prm.jdTime));
+	prm.obj.opos = body.getPosition(prm.now);
+	prm.obj.orot = glm::toMat4(body.getRotation(prm.now));
 	// prm.obj.orot = glm::rotate(mat4d_t(1.0), glm::radians(90.0), vec3d_t(0.0, 0.0, 1.0));
 	prm.obj.orad = body.getRadius();
 
