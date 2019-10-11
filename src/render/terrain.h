@@ -137,6 +137,8 @@ private:
 
     ShaderProgram *pgm = nullptr;
 
+    string surfFolder;
+
     static TerrainHandler *loader;
 
     TerrainTile *terrain[2];

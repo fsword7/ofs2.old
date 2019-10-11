@@ -63,6 +63,14 @@ System::System(CelestialStar *star)
 void System::addObject(Object *object)
 {
 	systemTree.addObject(object);
+
+	switch(object->getType())
+	{
+	case objCelestialBody:
+		CelestialBody *body = dynamic_cast<CelestialBody *>(object);
+		objects.addBody(body);
+		break;
+	}
 }
 
 

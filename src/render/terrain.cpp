@@ -6,6 +6,7 @@
  */
 
 #include "main/core.h"
+#include "engine/engine.h"
 #include "engine/object.h"
 #include "render/gl/texture.h"
 #include "render/render.h"
@@ -128,15 +129,11 @@ void TerrainTile::load()
 
 	// Orbiter data files (database system)
 	string surfName = fmt::sprintf("%s/surf/%02d/%06d/%06d.jpg",
-		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
-	string elevName = fmt::sprintf("%s/elev/%02d/%06d/%06d.elv",
-		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
-	string emodName = fmt::sprintf("%s/elev_mod/%02d/%06d/%06d.elv",
-		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+3, ilat, ilng);
 	string maskName = fmt::sprintf("%s/mask/%02d/%06d/%06d.jpg",
-		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+3, ilat, ilng);
 	string cloudName = fmt::sprintf("%s/cloud/%02d/%06d/%06d.jpg",
-		"data/systems/Sol/Earth/terrain/orbiter", lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+3, ilat, ilng);
 
 	texImage = Texture::create(surfName);
 	if (texImage == nullptr) {
@@ -179,6 +176,23 @@ TerrainManager::TerrainManager(Scene &scene, const Object &object)
 	ShaderManager &smgr = scene.getShaderManager();
 
 	pgm = smgr.createShader("planet");
+
+	string sysFolder = scene.getEngine()->getSystemFolder();
+
+	switch (body.getType())
+	{
+	case objCelestialBody:
+		const CelestialBody *obj = dynamic_cast<const CelestialBody *>(&body);
+		const PlanetarySystem *system = obj->getInSystem();
+		string starName = system->getStar()->getName();
+		string bodyName = body.getName();
+
+		surfFolder = fmt::sprintf("%s/%s/%s/terrain/orbiter",
+			sysFolder, starName, bodyName);
+		break;
+	}
+
+//	cout << "Path name: " << surfFolder << endl;
 
 	// Initialize root of terrain tiles
 	for (int idx = 0; idx < 2; idx++) {

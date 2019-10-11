@@ -22,7 +22,7 @@ namespace ofs::universe {
 		~PlanetarySystem() = default;
 
 		inline CelestialBody *getPrimaryBody() { return body; }
-		inline CelestialStar *getStar() { return star; }
+		inline CelestialStar *getStar() const { return star; }
 		inline int getSystemSize() { return bodies.size(); }
 
 		void addBody(CelestialBody *body);
@@ -43,8 +43,10 @@ namespace ofs::universe {
         CelestialBody(const string &name, PlanetarySystem *system = nullptr);
         ~CelestialBody() = default;
 
-        inline PlanetarySystem *getOwnSystem() { return ownSystem; }
-        inline PlanetarySystem *getInSystem()  { return inSystem; }
+        inline void setInSystem(PlanetarySystem *system) { inSystem = system; }
+
+        inline PlanetarySystem *getOwnSystem() const { return ownSystem; }
+        inline PlanetarySystem *getInSystem() const { return inSystem; }
 
     private:
 //        PlanetarySystem ownSystem;

@@ -33,6 +33,7 @@ PlanetarySystem::PlanetarySystem(CelestialStar *star)
 void PlanetarySystem::addBody(CelestialBody *body)
 {
 	bodies.push_back(body);
+	body->setInSystem(this);
 }
 
 void PlanetarySystem::removeBody(CelestialBody *body)
