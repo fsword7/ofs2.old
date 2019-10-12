@@ -19,7 +19,7 @@ vec3d_t ofs::astro::convertEquatorialToEcliptic(double ra, double dec, double pc
 {
 	double  theta, phi;
 	double  x, y, z;
-	vec3d_t rot(-J2000Obliquity, 0, 0);
+	vec3d_t rot(J2000Obliquity, 0, 0);
 	vec3d_t opos;
 
 	theta = glm::radians(ra) + PI;
