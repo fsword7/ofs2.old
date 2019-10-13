@@ -153,10 +153,14 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 
 	// Calculate apparent size of star in view field
 	srad    = star.getRadius();
-	objSize = srad / (rdist * pxSize);
+	objSize = (srad / rdist) / pxSize;
+
+//	if (star.getHIPNumber() == 0)
+//		cout << "Sun distance: " << rdist << " size: " << glm::degrees(asin(srad/rdist) * 2.0)
+//			 << " pixel: " << pxSize  << " -> " << srad / (rdist * pxSize) << endl;
 
 	if (objSize > pxSize) {
-		discSize = objSize * 8.0;
+		discSize = objSize; // * 4.0;
 		alpha = 1.0;
 	} else {
 		alpha  = faintestMag - appMag;
@@ -173,7 +177,6 @@ void StarRenderer::process(const CelestialStar& star, double dist, double appMag
 	color.setAlpha(alpha);
 
 //	if (star.getHIPNumber() == 0) {
-//		cout << "Yes, Sun is here." << endl;
 //		cout << "Star size: " << discSize << " Position: " << rpos.x << "," << rpos.y << "," << rpos.z << endl;
 //		cout << "Star color: " << color.getRed() << "," << color.getGreen() << "," << color.getBlue() << "," << color.getAlpha() << endl;
 //		discSize = 20.0;
