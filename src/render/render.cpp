@@ -44,7 +44,7 @@ void Scene::resize(int w, int h)
 
 double Scene::calculatePixelSize(Camera *cam) const
 {
-	return 2 * tan(cam->getFOV()/2.0) / double(gl.getHeight());
+	return (2.0 * tan(cam->getFOV()/2.0)) / double(gl.getHeight());
 }
 
 vObject *Scene::addVisualObject(Object *object)

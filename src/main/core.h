@@ -28,7 +28,7 @@ using namespace std;
 
 // Default window scene size
 #define OFS_DEFAULT_WIDTH	1600
-#define OFS_DEFAULT_HEIGHT	900
+#define OFS_DEFAULT_HEIGHT	1000
 #define OFS_DEFAULT_FOV		35.0
 
 
