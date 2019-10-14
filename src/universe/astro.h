@@ -32,7 +32,8 @@
 #define SOLAR_MASS			1.9885e30
 
 namespace ofs::astro {
-	extern const double G;
+	constexpr double G = 6.673889e-11;  // Official gravitational constant [N (m/kg)^2]
+	constexpr double J2000 = 2451545.0; // Epoch J2000 [Jan 1, 2000 at 12:00 UTC]
 
 	vec3d_t convertEquatorialToEcliptic(double ra, double dec, double pc);
 

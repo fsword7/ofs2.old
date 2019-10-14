@@ -12,9 +12,6 @@
 
 using namespace ofs::astro;
 
-// Official gravitational constant [N (m/kg)^2]
-constexpr double ofs::astro::G = 6.673889e-11;
-
 vec3d_t ofs::astro::convertEquatorialToEcliptic(double ra, double dec, double pc)
 {
 	double  theta, phi;
