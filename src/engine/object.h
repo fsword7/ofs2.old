@@ -38,6 +38,7 @@ public:
     inline void setOrbitFrame(ReferenceFrame *frame)  { orbitFrame = frame; }
     inline void setObjectFrame(ReferenceFrame *frame) { objectFrame = frame; }
     inline void setOrbit(Orbit *orbit)                { this->orbit = orbit; }
+    inline void setRotation(RotationModel *rot)       { this->rot = rot; }
 
     inline double getRadius() const { return objRadius; }
     inline ObjectType getType() const { return objType; }

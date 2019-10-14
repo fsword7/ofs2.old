@@ -51,8 +51,10 @@ vec3d_t Object::getVelocity(double tjd) const
 	return objVelocity;
 }
 
-quatd_t Object::getRotation(double) const
+quatd_t Object::getRotation(double tjd) const
 {
+//	if (rot != nullptr)
+//		return rot->getRotation(tjd);
 	return objRotation;
 }
 
