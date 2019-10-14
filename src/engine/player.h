@@ -25,8 +25,9 @@ public:
 	inline double getFOV() const { return fov; }
 	inline double getAspect() const { return aspect; }
 	inline double getTanAp() const { return tanap; }
-	void setFOVrad(double fov);
-	void setFOVdeg(double fov);
+
+	void setViewport(uint32_t width, uint32_t height);
+	void setFieldOfView(double fov);
 
 	void focus(Object *obj);
 	void update();
@@ -35,6 +36,8 @@ private:
     Player  *player;
     vec3d_t  camPosition;
     quatd_t  camRotation;
+
+    uint32_t height = 1, width = 1;
     double   fov;
     double   aspect;
 	double   tanap;

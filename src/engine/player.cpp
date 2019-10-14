@@ -20,23 +20,23 @@ Camera::Camera(Player *_player)
   camPosition(0, 0, 0),
   camRotation(1, 0, 0, 0)
 {
-	setFOVdeg(OFS_DEFAULT_FOV);
+	setFieldOfView(glm::radians(OFS_DEFAULT_FOV));
 }
 
 Camera::~Camera()
 {
 }
 
-void Camera::setFOVrad(double _fov)
+void Camera::setViewport(uint32_t width, uint32_t height)
 {
-	fov = _fov;
-	tanap = tan(fov);
+	this->width  = width;
+	this->height = height;
 }
 
-void Camera::setFOVdeg(double _fov)
+void Camera::setFieldOfView(double fov)
 {
-	fov = glm::radians(_fov);
-	tanap = tan(fov);
+	this->fov = fov;
+	tanap = tan(this->fov);
 }
 
 void Camera::focus(Object *obj)
