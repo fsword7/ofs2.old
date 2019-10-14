@@ -7,6 +7,7 @@
 
 #include "main/core.h"
 #include "render/gl/shader.h"
+#include "render/render.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -154,7 +155,7 @@ ShaderStatus ShaderSource::create(ostream &out, ShaderType type,
 	return ShaderStatus::shrSuccessful;
 }
 
-// *************************************************************
+// ******** Shader Program ********
 
 ShaderProgram::ShaderProgram()
 {
@@ -209,6 +210,27 @@ ShaderStatus ShaderProgram::link(ostream &out)
 
 	return ShaderStatus::shrSuccessful;
 }
+
+void ShaderProgram::setLightParameters(LightState *ls,
+	Color diffuse, Color specular, Color emissive)
+{
+
+	int nLights = ls->nLights;
+
+	for (int idx = 0; idx < nLights; idx++) {
+		DirectLight &light = ls->lights[idx];
+
+		vec3f_t color = vec3f_t(light.color.getRed(),
+								light.color.getGreen(),
+								light.color.getBlue()) * float(light.irradiance);
+
+		lights[idx].direction = light.directObject;
+		lights[idx].diffuse = color;
+		lights[idx].specular = color;
+	}
+}
+
+// ******** Shader Manager ********
 
 ShaderStatus ShaderManager::createProgram(ostream &out, const string &vsSource, const string &fsSource, ShaderProgram **pgm)
 {

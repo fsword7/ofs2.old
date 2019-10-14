@@ -9,6 +9,8 @@
 
 #include "render/context.h"
 
+struct LightState;
+
 namespace ofs::gl {
 
 };
@@ -62,8 +64,17 @@ public:
 	const string getLogInfo();
 	ShaderStatus link(ostream &out);
 
+	void setLightParameters(LightState *ls, Color diffuse, Color specular, Color emissive);
+
 private:
 	GLuint id = 0;
+
+	vec3f_t ambientColor;
+	struct ShaderLight {
+		vec3f_t direction;
+		vec3f_t diffuse;
+		vec3f_t specular;
+	} lights[8];
 };
 
 class ShaderManager
