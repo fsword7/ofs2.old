@@ -144,7 +144,8 @@ void Player::update(double dt, double timeTravel)
 	//      dq/dt = q * w * t/2
 	//		w = (0, x, y, z)
 	//
-	lqrot += lqrot * wv * (dt / 2.0f);
+	lqrot += lqrot * wv * (dt / 2.0);
+	lqrot  = glm::normalize(lqrot);
 	lpos  -= lqrot * tv * dt;
 
 	// Updating current universal coordinates
