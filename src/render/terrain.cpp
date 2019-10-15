@@ -76,8 +76,8 @@ vec3d_t TerrainTile::calculateCenter()
 	double mlat1 = PI * double(ilat+1) / double(nlat);
     // float mlng0 = PI*2 * (float(nlng/2 - ilng-1) / float(nlng)) - PI;
     // float mlng1 = PI*2 * (float(nlng/2 - ilng) / float(nlng)) - PI;
-    double mlng0 = PI*2 * (double(ilng) / double(nlng));// - PI;
-    double mlng1 = PI*2 * (double(ilng+1) / double(nlng));// - PI;
+    double mlng0 = PI*2 * (double(ilng) / double(nlng)) - PI;
+    double mlng1 = PI*2 * (double(ilng+1) / double(nlng)) - PI;
 
 	// float latc = (PI/2) - PI * ((float(ilat)+0.5f) / float(nlat));
 	// float lngc = (PI*2) * ((float(nlng/2 - ilng-1)+0.5) / float(nlng)) - PI;
@@ -527,11 +527,6 @@ Mesh *TerrainManager::createSphere(int lod, int ilat, int ilng, int grids, tcrd_
 //    pvtx  = vtxs;
 //    pnml  = nmls;
 //    ptc   = tc;
-
-    if (mlng0 < PI*2)
-        mlng0 += PI*2;
-    if (mlng1 < PI*2)
-        mlng1 += PI*2;
 
 //	std::cout << std::fixed << std::setprecision(10);
 //	std::cout << "----------------------" << std::endl;

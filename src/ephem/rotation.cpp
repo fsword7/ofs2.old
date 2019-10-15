@@ -31,7 +31,8 @@ quatd_t RotationModel::getRotation(double tjd) const
 quatd_t EarthRotationModel::spin(double tjd) const
 {
 	double t = tjd - ofs::astro::J2000;
-	double theta = (PI * 2) * (t * 24.0 / 23.9344694 - 259.853 / 360.0);
+//	double theta = (PI * 2) * (t * 24.0 / 23.9344694 - 259.853 / 360.0);
+	double theta = (PI * 2) * (t * 24.0 / 23.9344694 - 79.853 / 360.0);
 
 	return yrot(-theta);
 //	return quatd_t(vec3d_t(0, -theta, 0));
