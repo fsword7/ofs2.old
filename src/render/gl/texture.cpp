@@ -8,8 +8,8 @@
 #include "main/core.h"
 #include "render/gl/texture.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "util/stb_image.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 Texture::Texture(uint32_t width, uint32_t height)
 : width(width), height(height)
@@ -53,29 +53,47 @@ void Texture::load()
 
 Texture *Texture::create(const string &fname)
 {
-    int      width, height, fcomps;
-    int      comps = 3;
-    uint8_t *data = nullptr;
+	IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
 
-    // stbi_set_flip_vertically_on_load(true);
-	data = stbi_load(fname.c_str(), &width, &height, &fcomps, 0 /* comps */);
-    if (data == nullptr) {
-        // cout << "Can't open file: " << fname << endl;
-        return nullptr;
-    }
+	SDL_Surface *image = IMG_Load(fname.c_str());
+	if (image == nullptr)
+		return nullptr;
 
-    // cout << "File: " << fname << endl;
-    // cout << "Format Width " << width << " Height " << height << " Components " << fcomps << "(actual " << comps << ")" << endl;
+	SDL_PixelFormat *format = image->format;
+	int glFormat = -1;
 
-    Texture *texImage = new Texture(width, height);
-    texImage->components = comps;
-    texImage->size = width * height * comps;
+	if (format->BytesPerPixel == 4) {
+		if (format->Rshift == 24 && format->Aloss == 0)
+			glFormat = GL_ABGR_EXT;
+		else if(format->Rshift == 16 && format->Aloss == 8)
+			glFormat = GL_BGRA;
+		else if (format->Rshift == 16 && format->Ashift == 24)
+			glFormat = GL_BGRA;
+		else if (format->Rshift == 0 && format->Ashift == 24)
+			glFormat = GL_RGBA;
+	} else if (format->BytesPerPixel == 3) {
+		if (format->Rshift == 16)
+			glFormat = GL_BGR;
+		else if (format->Rshift == 0)
+			glFormat = GL_RGB;
+	} else {
+		cout << "Bytes Per Pixel: " << (int)format->BytesPerPixel << endl;
+	}
+
+     cout << "File: " << fname << endl;
+     cout << "Format Width " << image->w << " Height " << image->h << " Components " << (int)format->BytesPerPixel << endl;
+
+    Texture *texImage = new Texture(image->w, image->h);
+    texImage->components = format->BytesPerPixel;
+    texImage->size = image->w * image->h * format->BytesPerPixel;
     texImage->data = new uint8_t[texImage->size];
 
-    copy(data, data+texImage->size, texImage->data);
-	stbi_image_free(data);
+    copy((uint8_t *)image->pixels, (uint8_t *)image->pixels + texImage->size, texImage->data);
 
     // texImage->load();
+
+	IMG_Quit();
+	SDL_FreeSurface(image);
 
     return texImage;
 }

@@ -79,7 +79,6 @@ set(ofs_h_SRCS
 	universe/universe.h
 	universe/xhipdata.h
 	util/color.h
-	util/stb_image.h
 	util/tree.h
 )
 
@@ -96,6 +95,7 @@ set(ofs_sdl2_h_SRCS
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(
 	${SDL2_INCLUDE_DIRS}
+	${SDL2_IMAGE_INCLUDE_DIRS}
 	${SDL2_TTF_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_DIRS}
 	${GLEW_INCLUDE_DIRS}
@@ -109,6 +109,7 @@ include_directories(
 add_executable(ofs ${ofs_cpp_SRCS} ${ofs_sdl2_cpp_SRCS} ${ofs_h_SRCS} ${ofs_sdl2_h_SRCS})
 target_link_libraries(ofs
 	${SDL2_LIBRARIES}
+	${SDL2_IMAGE_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}
 	${OPENGL_LIBRARIES}
 	GLEW::GLEW
