@@ -77,11 +77,11 @@ Texture *Texture::create(const string &fname)
 		else if (format->Rshift == 0)
 			glFormat = GL_RGB;
 	} else {
-		cout << "Bytes Per Pixel: " << (int)format->BytesPerPixel << endl;
+//		cout << "Bytes Per Pixel: " << (int)format->BytesPerPixel << endl;
 	}
 
-     cout << "File: " << fname << endl;
-     cout << "Format Width " << image->w << " Height " << image->h << " Components " << (int)format->BytesPerPixel << endl;
+//     cout << "File: " << fname << endl;
+//     cout << "Format Width " << image->w << " Height " << image->h << " Components " << (int)format->BytesPerPixel << endl;
 
     Texture *texImage = new Texture(image->w, image->h);
     texImage->components = format->BytesPerPixel;

@@ -76,8 +76,8 @@ vec3d_t TerrainTile::calculateCenter()
 	double mlat1 = PI * double(ilat+1) / double(nlat);
     // float mlng0 = PI*2 * (float(nlng/2 - ilng-1) / float(nlng)) - PI;
     // float mlng1 = PI*2 * (float(nlng/2 - ilng) / float(nlng)) - PI;
-    double mlng0 = PI*2 * (double(ilng) / double(nlng)) - PI;
-    double mlng1 = PI*2 * (double(ilng+1) / double(nlng)) - PI;
+    double mlng0 = PI*2 * (double(ilng) / double(nlng));// - PI;
+    double mlng1 = PI*2 * (double(ilng+1) / double(nlng));// - PI;
 
 	// float latc = (PI/2) - PI * ((float(ilat)+0.5f) / float(nlat));
 	// float lngc = (PI*2) * ((float(nlng/2 - ilng-1)+0.5) / float(nlng)) - PI;
@@ -360,12 +360,11 @@ void TerrainManager::render(renderParameter &prm)
 	// Object position and orientation parameters
 	prm.obj.opos = body.getPosition(prm.now);
 	prm.obj.orot = glm::toMat4(body.getRotation(prm.now));
-	// prm.obj.orot = glm::rotate(mat4d_t(1.0), glm::radians(90.0), vec3d_t(0.0, 0.0, 1.0));
 	prm.obj.orad = body.getRadius();
 
 	// Camera position and oreintation parameters in object reference frame.
 	prm.obj.cpos   = prm.obj.opos - prm.cpos;
-	prm.obj.cdir   = glm::transpose(prm.obj.orot) * vec4f_t(prm.obj.cpos, 1.0f);
+	prm.obj.cdir   = prm.obj.orot * vec4f_t(prm.obj.cpos, 1.0f);
 	prm.obj.cdist  = glm::length(prm.obj.cdir) / prm.obj.orad;
 	prm.obj.viewap = (prm.obj.cdist >= 1.0f) ? acos(1.0f / prm.obj.cdist) : 0.0f;
 	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
@@ -391,10 +390,9 @@ void TerrainManager::render(renderParameter &prm)
 
 	convertDoubleToTwoFloats(-prm.obj.cpos, gCamera, eCamera);
 
-	prm.dmWorld = prm.dmView * glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
-//	prm.dmView = glm::translate(prm.dmView, prm.obj.cpos);
-//	prm.dmWorld = prm.dmView * mat4d_t(1.0); // glm::transpose(prm.obj.orot);
-//	prm.dmWorld = prm.dmView * glm::translate(prm.obj.orot, prm.obj.cpos);
+//	prm.dmModel = glm::translate(glm::transpose(prm.obj.orot), prm.obj.cpos);
+	prm.dmModel = glm::transpose(prm.obj.orot);
+	prm.dmView = glm::translate(prm.dmView, prm.obj.cpos);
 
 //	cout << "MV:      " << setw(15) << fixed << prm.dmWorld[0][0] << "," << prm.dmWorld[1][0] << "," << prm.dmWorld[2][0] << "," << prm.dmWorld[3][0] << endl;
 //	cout << "         " << setw(15) << fixed << prm.dmWorld[0][1] << "," << prm.dmWorld[1][1] << "," << prm.dmWorld[2][1] << "," << prm.dmWorld[3][1] << endl;
@@ -408,16 +406,16 @@ void TerrainManager::render(renderParameter &prm)
 
 //	mat4d_t smWorld = prm.dmWorld;
 
-	prm.dmWorld[3].x = 0;
-	prm.dmWorld[3].y = 0;
-	prm.dmWorld[3].z = 0;
+	prm.dmModel[3].x = 0;
+	prm.dmModel[3].y = 0;
+	prm.dmModel[3].z = 0;
 
 //	cout << "MV2:     " << setw(15) << fixed << prm.dmWorld[0][0] << "," << prm.dmWorld[1][0] << "," << prm.dmWorld[2][0] << "," << prm.dmWorld[3][0] << endl;
 //	cout << "         " << setw(15) << fixed << prm.dmWorld[0][1] << "," << prm.dmWorld[1][1] << "," << prm.dmWorld[2][1] << "," << prm.dmWorld[3][1] << endl;
 //	cout << "         " << setw(15) << fixed << prm.dmWorld[0][2] << "," << prm.dmWorld[1][2] << "," << prm.dmWorld[2][2] << "," << prm.dmWorld[3][2] << endl;
 //	cout << "         " << setw(15) << fixed << prm.dmWorld[0][3] << "," << prm.dmWorld[1][3] << "," << prm.dmWorld[2][3] << "," << prm.dmWorld[3][3] << endl;
 
-	prm.mvp = mat4f_t(prm.dmProj * prm.dmWorld);
+	prm.mvp = mat4f_t(prm.dmProj * prm.dmView * prm.dmModel);
 //	mat4f_t smvp = mat4f_t(prm.dmProj * smWorld);
 
 	prm.mPView = mat4f_t(prm.dmPView);
@@ -466,10 +464,10 @@ void TerrainManager::render(renderParameter &prm)
 	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(prm.mvp));
 
-	uint32_t chLoc = glGetUniformLocation(pgm->getID(), "gCamera");
-    glUniform3fv(chLoc, 1, glm::value_ptr(gCamera));
-	uint32_t clLoc = glGetUniformLocation(pgm->getID(), "eCamera");
-    glUniform3fv(clLoc, 1, glm::value_ptr(eCamera));
+//	uint32_t chLoc = glGetUniformLocation(pgm->getID(), "gCamera");
+//    glUniform3fv(chLoc, 1, glm::value_ptr(gCamera));
+//	uint32_t clLoc = glGetUniformLocation(pgm->getID(), "eCamera");
+//    glUniform3fv(clLoc, 1, glm::value_ptr(eCamera));
 
 	// Rendering terrain area
 	for (int idx = 0; idx < 2; idx++)
