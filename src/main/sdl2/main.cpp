@@ -6,6 +6,7 @@
  */
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
 #include "main/core.h"
@@ -19,13 +20,22 @@ void sdlCoreApp::init()
 {
 	// SDL initialization
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		std::cerr << "OFS: Unable to initialize SDL: " << SDL_GetError() << std::endl;
+		cerr << "OFS: Unable to initialize SDL: " << SDL_GetError() << endl;
 		abort();
 	}
 
 	// TTF initialization
 	if (TTF_Init() != 0) {
-		std::cerr << "OFS: Unable to initialize TTF: " << TTF_GetError() << std::endl;
+		cerr << "OFS: Unable to initialize TTF: " << TTF_GetError() << endl;
+		abort();
+	}
+
+	// IMG initialization
+	int imgFlags = IMG_INIT_JPG|IMG_INIT_PNG|IMG_INIT_TIF;
+	int rcFlags = IMG_Init(imgFlags);
+	if ((imgFlags & rcFlags) != imgFlags) {
+		cerr << "OFS: Failed to initialize JPG, PNG and TIF" << endl;
+		cerr << "OFS: Unable to initialize IMG: " << IMG_GetError() << endl;
 		abort();
 	}
 
@@ -60,6 +70,7 @@ void sdlCoreApp::init()
 void sdlCoreApp::clean()
 {
 	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 }
 

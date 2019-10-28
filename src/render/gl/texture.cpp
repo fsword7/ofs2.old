@@ -53,8 +53,6 @@ void Texture::load()
 
 Texture *Texture::create(const string &fname)
 {
-	IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG);
-
 	SDL_Surface *image = IMG_Load(fname.c_str());
 	if (image == nullptr)
 		return nullptr;
@@ -92,7 +90,6 @@ Texture *Texture::create(const string &fname)
 
     // texImage->load();
 
-	IMG_Quit();
 	SDL_FreeSurface(image);
 
     return texImage;
