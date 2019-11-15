@@ -185,6 +185,23 @@ BodyFixedFrame::BodyFixedFrame(const Object *obj, const Object *tgt)
 // ******** Body Mean Equator Reference Frame ********
 
 BodyMeanEquatorFrame::BodyMeanEquatorFrame(const Object *obj, const Object *tgt)
-: ReferenceFrame(obj)
+: ReferenceFrame(obj), equatorObject(tgt)
 {
+	cout << "Yes Body Mean Equator here." << endl;
+}
+
+quatd_t BodyMeanEquatorFrame::getRotation(double tjd) const
+{
+	quatd_t q;
+
+	cout << "Yes rotation frame here." << endl;
+
+	switch (equatorObject->getType()) {
+	case objCelestialBody:
+		q = dynamic_cast<const CelestialBody *>(equatorObject)->getEclipticToEquatorial(tjd);
+		cout << "Rotation Frame: " << q.w << "," << q.x << "," << q.y << "," << q.z << endl;
+		return q;
+	default:
+		return quatd_t(1, 0, 0, 0);
+	}
 }

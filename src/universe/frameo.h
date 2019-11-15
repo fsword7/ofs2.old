@@ -41,8 +41,8 @@ namespace ofs::universe
 		vec3d_t fromAstrocentric(const vec3d_t& upos, double tjd);
 		vec3d_t toAstrocentric(const vec3d_t& lpos, double tjd);
 
-		virtual quatd_t getRotation(double tjd) = 0;
-//		virtual vec3d_t getAngularVelocity(double tdb) = 0;
+		virtual quatd_t getRotation(double tjd) const = 0;
+//		virtual vec3d_t getAngularVelocity(double tdb) const = 0;
 //		virtual bool isInertial() const = 0;
 
 	private:
@@ -86,7 +86,7 @@ namespace ofs::universe
 		J2000EclipticFrame(const Object *obj);
 		~J2000EclipticFrame() = default;
 
-		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
+		quatd_t getRotation(double tjd) const { return quatd_t(1,0,0,0); }
 	};
 
 	class J2000EquatorFrame : public ReferenceFrame
@@ -95,7 +95,7 @@ namespace ofs::universe
 		J2000EquatorFrame(const Object *obj, const Object *tgt);
 		~J2000EquatorFrame() = default;
 
-		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
+		quatd_t getRotation(double tjd) const { return quatd_t(1,0,0,0); }
 	};
 
 	class BodyFixedFrame : public ReferenceFrame
@@ -104,7 +104,7 @@ namespace ofs::universe
 		BodyFixedFrame(const Object *obj, const Object *tgt);
 		~BodyFixedFrame() = default;
 
-		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
+		quatd_t getRotation(double tjd) const { return quatd_t(1,0,0,0); }
 	};
 
 	class BodyMeanEquatorFrame : public ReferenceFrame
@@ -113,7 +113,10 @@ namespace ofs::universe
 		BodyMeanEquatorFrame(const Object *obj, const Object *tgt);
 		~BodyMeanEquatorFrame() = default;
 
-		quatd_t getRotation(double tjd) { return quatd_t(1,0,0,0); }
+		quatd_t getRotation(double tjd) const;
+
+	private:
+		const Object *equatorObject = nullptr;
 	};
 
 }
