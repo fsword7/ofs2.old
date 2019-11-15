@@ -8,6 +8,9 @@
 #pragma once
 
 #include "engine/object.h"
+#include "ephem/rotation.h"
+
+//using ofs::ephem;
 
 namespace ofs::universe {
 	class System;
@@ -47,6 +50,12 @@ namespace ofs::universe {
 
         inline PlanetarySystem *getOwnSystem() const { return ownSystem; }
         inline PlanetarySystem *getInSystem() const { return inSystem; }
+
+//        inline RotationModel *getRotationModel(double tjd) const { return rot; };
+
+        quatd_t getEclipticToEquatorial(double tjd) const;
+
+        quatd_t getRotation(double tjd = 0) const override;
 
     private:
 //        PlanetarySystem ownSystem;
