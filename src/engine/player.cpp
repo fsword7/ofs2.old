@@ -166,7 +166,7 @@ void Player::updateFrame(PlayerFrame *nframe)
 	lqrot = nframe->fromUniversal(uqrot, jdTime);
 }
 
-void Player::setFrame(PlayerFrame::CoordType cs, const Object *obj)
+void Player::setFrame(PlayerFrame::coordType cs, const Object *obj)
 {
 	PlayerFrame *nframe = new PlayerFrame(cs, obj);
 	if (nframe == nullptr) {

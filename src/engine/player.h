@@ -65,7 +65,7 @@ public:
 	void setTravelVelocity(vec3d_t tv);
 	void setTravelSpeed(double ts);
 
-    void setFrame(PlayerFrame::CoordType cs, const Object *obj);
+    void setFrame(PlayerFrame::coordType cs, const Object *obj);
 
     void follow(const Object &obj);
     void look(const Object &obj);

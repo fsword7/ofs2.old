@@ -35,8 +35,8 @@ public:
     inline void setVelocity(vec3d_t vel) { objVelocity = vel; }
     inline void setRadius(float rad) { objRadius = rad; }
 
-    inline void setOrbitFrame(ReferenceFrame *frame)  { orbitFrame = frame; }
-    inline void setObjectFrame(ReferenceFrame *frame) { objectFrame = frame; }
+    inline void setOrbitFrame(Frame *frame)  { orbitFrame = frame; }
+    inline void setObjectFrame(Frame *frame) { objectFrame = frame; }
     inline void setOrbit(Orbit *orbit)                { this->orbit = orbit; }
     inline void setRotation(RotationModel *rot)       { this->rot = rot; }
 
@@ -46,9 +46,9 @@ public:
 
 //    SystemTree *createSystemTree();
 
-    vec3d_t getPosition(double tjd = 0) const;
-    vec3d_t getVelocity(double tjd = 0) const;
-	quatd_t getRotation(double tjd = 0) const;
+    virtual vec3d_t getPosition(double tjd = 0) const;
+    virtual vec3d_t getVelocity(double tjd = 0) const;
+	virtual quatd_t getRotation(double tjd = 0) const;
 
 private:
     ObjectType objType = objUnknown;
@@ -69,10 +69,10 @@ protected:
 //	SystemTree     *sysTree = nullptr;
 
 	// Orbital parameters
-	ReferenceFrame *orbitFrame = nullptr;
+	Frame          *orbitFrame = nullptr;
 	Orbit          *orbit = nullptr;
 
 	// Orientation parameters
-	ReferenceFrame *objectFrame = nullptr;
+	Frame          *objectFrame = nullptr;
 	RotationModel  *rot = nullptr;
 };

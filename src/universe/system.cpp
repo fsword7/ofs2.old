@@ -12,7 +12,7 @@
 
 using namespace ofs::universe;
 
-// ******** System Tree ********
+// ******** Reference Frame Tree ********
 
 SystemTree::SystemTree(Object *object)
 {
@@ -26,6 +26,18 @@ SystemTree::SystemTree(Object *object)
 		defaultFrame = new BodyMeanEquatorFrame(object, object);
 		break;
 	}
+}
+
+SystemTree::SystemTree(CelestialStar *star)
+{
+	starParent = star;
+	defaultFrame = new J2000EclipticFrame(star);
+}
+
+SystemTree::SystemTree(CelestialBody *body)
+{
+	bodyParent = body;
+	defaultFrame = new BodyMeanEquatorFrame(body, body);
 }
 
 SystemTree::~SystemTree()

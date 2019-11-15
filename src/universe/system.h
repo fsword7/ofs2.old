@@ -17,6 +17,8 @@ namespace ofs::universe
 	{
 	public:
 		SystemTree(Object *object);
+		SystemTree(CelestialStar *star);
+		SystemTree(CelestialBody *body);
 		~SystemTree();
 
 		inline CelestialStar *getStar() const { return starParent; }
@@ -35,7 +37,7 @@ namespace ofs::universe
 
 		vector<Object *> objects;
 
-		ReferenceFrame *defaultFrame = nullptr;
+		Frame *defaultFrame = nullptr;
 	};
 
 	class System
