@@ -76,13 +76,23 @@ namespace ofs::universe
 	public:
 		FrameTree(CelestialBody *body);
 		FrameTree(CelestialStar *star);
-		~FrameTree() = default;
+		~FrameTree();
+
+		inline CelestialStar *getStar() const { return starParent; }
+		inline CelestialBody *getBody() const { return bodyParent; }
+		inline int getSystemSize() const { return objects.size(); }
 
 		bool isRoot() const { return bodyParent == nullptr; }
+
+		void addObject(Object *object);
+
+		Object *getObject(int idx) const;
 
 	private:
 		CelestialBody *bodyParent = nullptr;
 		CelestialStar *starParent = nullptr;
+
+		vector<Object *> objects;
 
 		Frame *defaultFrame;
 	};

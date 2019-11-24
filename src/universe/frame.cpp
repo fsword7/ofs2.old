@@ -1,5 +1,5 @@
 /*
- * frame2.cpp - Reference frame package
+ * frame.cpp - Reference frame package
  *
  *  Created on: Oct 17, 2019
  *      Author: Tim Stark
@@ -18,13 +18,34 @@ using namespace ofs::universe;
 FrameTree::FrameTree(CelestialStar *star)
 : starParent(star), bodyParent(nullptr)
 {
-	defaultFrame = nullptr;
+	defaultFrame = new J2000EclipticFrame(star);
 }
 
 FrameTree::FrameTree(CelestialBody *body)
 : starParent(nullptr), bodyParent(body)
 {
-	defaultFrame = nullptr;
+	defaultFrame = new BodyMeanEquatorFrame(body, body);
+}
+
+FrameTree::~FrameTree()
+{
+	if (defaultFrame != nullptr)
+		defaultFrame->release();
+}
+
+void FrameTree::addObject(Object *object)
+{
+	object->setOrbitFrame(defaultFrame);
+	objects.push_back(object);
+}
+
+Object *FrameTree::getObject(int idx) const
+{
+	if (idx < 0)
+		return nullptr;
+	if (idx <= objects.size())
+		return objects[idx];
+	return nullptr;
 }
 
 // ******** Reference Frame ********
