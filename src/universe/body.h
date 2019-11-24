@@ -48,8 +48,10 @@ namespace ofs::universe {
 
         inline void setInSystem(PlanetarySystem *system) { inSystem = system; }
 
-        inline PlanetarySystem *getOwnSystem() const { return ownSystem; }
+        inline PlanetarySystem *getOwnSystem() { return &ownSystem; }
         inline PlanetarySystem *getInSystem() const { return inSystem; }
+
+        inline FrameTree *getReferenceFrameTree() { return &frame; }
 
 //        inline RotationModel *getRotationModel(double tjd) const { return rot; };
 
@@ -58,8 +60,10 @@ namespace ofs::universe {
         quatd_t getRotation(double tjd = 0) const override;
 
     private:
-//        PlanetarySystem ownSystem;
-        PlanetarySystem *ownSystem = nullptr;
+        PlanetarySystem ownSystem;
+        FrameTree frame;
+
+//        PlanetarySystem *ownSystem = nullptr;
         PlanetarySystem *inSystem = nullptr;
     };
 }

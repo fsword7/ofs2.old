@@ -43,15 +43,15 @@ void PlanetarySystem::removeBody(CelestialBody *body)
 // ********** Celestial Body ************
 
 CelestialBody::CelestialBody()
-: Object(ObjectType::objCelestialBody) //, ownSystem(this)
+: Object(ObjectType::objCelestialBody), frame(this), ownSystem(this)
 {
-	ownSystem = new PlanetarySystem(this);
+//	ownSystem = new PlanetarySystem(this);
 }
 
 CelestialBody::CelestialBody(const string &name, PlanetarySystem *system)
-: Object(ObjectType::objCelestialBody, name), inSystem(system) //, ownSystem(this)
+: Object(ObjectType::objCelestialBody, name), frame(this), inSystem(system), ownSystem(this)
 {
-	ownSystem = new PlanetarySystem(this);
+//	ownSystem = new PlanetarySystem(this);
 	if (inSystem != nullptr)
 		inSystem->addBody(this);
 }
