@@ -116,6 +116,5 @@ target_link_libraries(ofs
 	${OPENGL_LIBRARIES}
 	GLEW::GLEW
 	${ZLIB_LIBRARIES}
-#	${fmt_LIBRARIES}
-	-lfmt
+	fmt::fmt
 )
