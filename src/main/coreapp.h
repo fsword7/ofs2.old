@@ -88,6 +88,7 @@ namespace ofs {
 		// keyboard handle parameters
 		bool	stateKey[256];
 		double	keyRotationAccel;
+		double	keyRotationBrake;
 		double	keyTravelAccel;
 		double	keyTravelBrake;
 	};

@@ -26,8 +26,9 @@ CoreApp::CoreApp()
 
 	// Initialize velocity control
 	keyRotationAccel = toRadian(OFS_DEFAULT_FOV);
+	keyRotationBrake = toRadian(OFS_DEFAULT_FOV) * 3.0;
 	keyTravelAccel   = 2.0;
-	keyTravelBrake   = 10.0;
+	keyTravelBrake   = 5.0;
 }
 
 CoreApp::~CoreApp()
@@ -105,8 +106,8 @@ void CoreApp::tick()
 	// Braking velocity control
 	if (stateKey[keyPad5])
 	{
-		av *= exp(-dt * keyRotationAccel);
-		tv *= exp(-dt * keyTravelAccel);
+		av *= exp(-dt * keyRotationBrake);
+		tv *= exp(-dt * keyTravelBrake);
 	}
 
 	player->setAngularVelocity(av);
