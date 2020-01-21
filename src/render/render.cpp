@@ -119,6 +119,7 @@ void Scene::render(const Player *player, const Universe *universe)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	prm.dmProj  = glm::perspective(cam->getFOV(), double(gl.getWidth()) / double(gl.getHeight()), DIST_NEAR, DIST_FAR);
+	prm.dmOrtho = glm::ortho(0, gl.getWidth(), gl.getHeight(), 0);
 	prm.dmView  = glm::transpose(glm::toMat4(prm.crot));
 //	prm.dmPView = prm.dmProj * prm.dmView;
 //	prm.mProj = mat4f_t(prm.dmProj);

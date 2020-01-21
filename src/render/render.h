@@ -37,6 +37,7 @@ struct renderParameter
 	mat4f_t mvp;
 
 	mat4d_t dmProj;
+	mat4d_t dmOrtho;
 	mat4d_t dmView;
 	mat4d_t dmModel;
 	mat4d_t dmWorld;
