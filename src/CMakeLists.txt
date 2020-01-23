@@ -105,6 +105,7 @@ include_directories(
 	${SDL2_TTF_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_DIRS}
 	${GLEW_INCLUDE_DIRS}
+	${FREETYPE_INCLUDE_DIRS}
 #	${fmt_INCLUDE_DIRS}
 )
 
@@ -120,5 +121,6 @@ target_link_libraries(ofs
 	${OPENGL_LIBRARIES}
 	GLEW::GLEW
 	${ZLIB_LIBRARIES}
+	Freetype::Freetype
 	fmt::fmt
 )

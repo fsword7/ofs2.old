@@ -7,13 +7,18 @@
 
 #pragma once
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include "font/font.h"
 
 class TrueTypeFont : public TextureFont
 {
 public:
 	TrueTypeFont() = default;
-	~TrueTypeFont() = default;
+	~TrueTypeFont();
+
+	static TrueTypeFont *load(const string &fileName, int size, int dpi);
 
 	void bind() override;
 	void unbind() override;
@@ -34,4 +39,9 @@ public:
 	int getHeight() const override;
 	int getMaxAscent() const override;
 	int getMaxDescent() const override;
+
+private:
+	FT_Face face;
+
+	static FT_Library font;
 };
