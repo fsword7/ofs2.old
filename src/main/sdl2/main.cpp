@@ -96,6 +96,15 @@ void sdlCoreApp::run()
 				}
 				break;
 
+			// Handling joystick events
+
+			// Handling mouse events
+//			case SDL_MOUSEBUTTONDOWN:
+//				break;
+//			case SDL_MOUSEMOTION:
+//				break;
+
+			// Handling keyboard events
 			case SDL_KEYDOWN:
 				pressKeyEvent(&event.key, true);
 				break;
