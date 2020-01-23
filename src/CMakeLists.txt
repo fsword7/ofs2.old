@@ -20,6 +20,7 @@ set(ofs_cpp_SRCS
 	render/stars.cpp
 	render/system.cpp
 	render/object.cpp
+	render/overlay.cpp
 	render/planet.cpp
 	render/terrain.cpp
 	universe/asterisms.cpp

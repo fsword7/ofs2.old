@@ -119,6 +119,14 @@ struct VertexLine
 	Color   color;
 };
 
+struct Annotation
+{
+	string	labelText;
+	Color	color;
+	vec3f_t	position;
+	double	size;
+};
+
 class Scene
 {
 public:
@@ -154,6 +162,8 @@ protected:
 
 	void renderPlanet(vObject *vobj);
 	void renderPlanetarySystem(const SystemTree *tree);
+
+	void renderOverlay();
 
 	// Light source function calls
 	void setupPrimaryLightSources(const vector<const CelestialStar *> &nearStars,
