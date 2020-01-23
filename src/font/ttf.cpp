@@ -76,7 +76,7 @@ int TrueTypeFont::getMaxDescent() const
 	return 0;
 }
 
-TrueTypeFont *TrueTypeFont::load(const string &fileName, int size, int dpi)
+TextureFont *TrueTypeFont::load(Context &gl, const string &fileName, int size, int dpi)
 {
 	FT_Face face;
 

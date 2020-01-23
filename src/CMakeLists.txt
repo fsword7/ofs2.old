@@ -11,6 +11,7 @@ set(ofs_cpp_SRCS
 	render/gl/buffer.cpp
 	render/gl/context.cpp
 	render/gl/shader.cpp
+	render/gl/text.cpp
 	render/gl/texture.cpp
 	render/context.cpp
 	render/elevation.cpp
@@ -21,7 +22,7 @@ set(ofs_cpp_SRCS
 	render/stars.cpp
 	render/system.cpp
 	render/object.cpp
-	render/overlay.cpp
+	render/headup.cpp
 	render/planet.cpp
 	render/terrain.cpp
 	universe/asterisms.cpp
@@ -64,6 +65,7 @@ set(ofs_h_SRCS
 	render/gl/buffer.h
 	render/gl/context.h
 	render/gl/shader.h
+	render/gl/text.h
 	render/gl/texture.h
 	render/context.h
 	render/mesh.h

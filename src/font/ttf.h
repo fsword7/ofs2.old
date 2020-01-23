@@ -15,10 +15,10 @@
 class TrueTypeFont : public TextureFont
 {
 public:
-	TrueTypeFont() = default;
+	TrueTypeFont(Context &gl) : TextureFont(gl) {};
 	~TrueTypeFont();
 
-	static TrueTypeFont *load(const string &fileName, int size, int dpi);
+	static TextureFont *load(Context &gl, const string &fileName, int size, int dpi);
 
 	void bind() override;
 	void unbind() override;

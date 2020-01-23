@@ -7,10 +7,12 @@
 
 #pragma once
 
+#include "render/gl/context.h"
+
 class TextureFont
 {
 public:
-	TextureFont() = default;
+	TextureFont(Context &gl) : gl(gl) {};
 	~TextureFont() = default;
 
 	virtual void bind();
@@ -32,4 +34,7 @@ public:
 	virtual int getMaxDescent() const;
 
 	virtual int getAdvance(char32_t ch) const;
+
+protected:
+	Context &gl;
 };
