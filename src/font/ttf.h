@@ -14,6 +14,17 @@
 
 class TrueTypeFont : public TextureFont
 {
+private:
+	struct Glyph
+	{
+		wchar_t ch;
+
+		float ax, ay; // Advance [X, Y]
+		float bw, bh; // Bitmap [width, height]
+		float bl, bt; // Bitmap [left, top]
+		float tx, ty; // Texture Offset [X, Y]
+	};
+
 public:
 	TrueTypeFont(Context &gl) : TextureFont(gl) {};
 	~TrueTypeFont();
@@ -42,7 +53,13 @@ public:
 	int getMaxDescent() const override;
 
 private:
+	bool loadGlyph(wchar_t ch, Glyph &glyph);
+	void initGlyphs();
+	bool initAtlas();
+
+private:
 	FT_Face face;
+	vector<Glyph> glyphs;
 
 	static FT_Library font;
 };

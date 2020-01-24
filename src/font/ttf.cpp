@@ -76,6 +76,54 @@ int TrueTypeFont::getMaxDescent() const
 	return 0;
 }
 
+bool TrueTypeFont::loadGlyph(wchar_t ch, Glyph &glyph)
+{
+	FT_GlyphSlot slot = face->glyph;
+
+	if (FT_Load_Char(face, ch, FT_LOAD_RENDER) != 0)
+	{
+		glyph.ch = 0;
+		return false;
+	}
+
+	glyph.ch = ch;
+	glyph.ax = slot->advance.x >> 6;
+	glyph.ay = slot->advance.y >> 6;
+	glyph.bw = slot->bitmap.width;
+	glyph.bh = slot->bitmap.rows;
+	glyph.bl = slot->bitmap_left;
+	glyph.bt = slot->bitmap_top;
+
+	return true;
+}
+
+void TrueTypeFont::initGlyphs()
+{
+	FT_GlyphSlot slot = face->glyph;
+
+	// Initial 256 glyphs reserved
+	glyphs.reserve(face->num_glyphs);
+	for (int idx = 0; idx < face->num_glyphs; idx++)
+	{
+		FT_Load_Glyph(face, idx, FT_LOAD_RENDER);
+
+		glyphs[idx].ax = slot->advance.x >> 6;
+		glyphs[idx].ay = slot->advance.y >> 6;
+		glyphs[idx].bw = slot->bitmap.width;
+		glyphs[idx].bh = slot->bitmap.rows;
+		glyphs[idx].bl = slot->bitmap_left;
+		glyphs[idx].bt = slot->bitmap_top;
+	}
+
+}
+
+bool TrueTypeFont::initAtlas()
+{
+	initGlyphs();
+
+	return false;
+}
+
 TextureFont *TrueTypeFont::load(Context &gl, const fs::path &path, int size, int dpi)
 {
 	FT_Face face;
@@ -105,5 +153,14 @@ TextureFont *TrueTypeFont::load(Context &gl, const fs::path &path, int size, int
 		return nullptr;
 	}
 
-	return nullptr;
+	fmt::fprintf(cout, "TTF: Loading %s (%s) %d glyphs...\n",
+		face->family_name, face->style_name, face->num_glyphs);
+
+	TrueTypeFont *font = new TrueTypeFont(gl);
+	font->face = face;
+
+	// Initializing atlas database
+//	font->initAtlas();
+
+	return font;
 }

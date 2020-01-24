@@ -13,27 +13,27 @@ class TextureFont
 {
 public:
 	TextureFont(Context &gl) : gl(gl) {};
-	~TextureFont() = default;
+	virtual ~TextureFont() = default;
 
-	virtual void bind();
-	virtual void unbind();
+	virtual void bind() = 0;
+	virtual void unbind() = 0;
 
-	virtual void render(char32_t ch) const;
-	virtual void render(const string &str) const;
+	virtual void render(char32_t ch) const = 0;
+	virtual void render(const string &str) const = 0;
 
-	virtual void render(char32_t ch, float xoff, float yoff) const;
-	virtual void render(const string &str, float xoff, float yoff) const;
+	virtual void render(char32_t ch, float xoff, float yoff) const = 0;
+	virtual void render(const string &str, float xoff, float yoff) const = 0;
 
-	virtual void setMaxAscent(int);
-	virtual void setMaxDescent(int);
+	virtual void setMaxAscent(int) = 0;
+	virtual void setMaxDescent(int) = 0;
 
-	virtual int getWidth(const string &str) const;
-	virtual int getMaxWidth() const;
-	virtual int getHeight() const;
-	virtual int getMaxAscent() const;
-	virtual int getMaxDescent() const;
+	virtual int getWidth(const string &str) const = 0;
+	virtual int getMaxWidth() const = 0;
+	virtual int getHeight() const = 0;
+	virtual int getMaxAscent() const = 0;
+	virtual int getMaxDescent() const = 0;
 
-	virtual int getAdvance(char32_t ch) const;
+	virtual int getAdvance(char32_t ch) const = 0;
 
 protected:
 	Context &gl;
