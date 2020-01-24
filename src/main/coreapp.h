@@ -24,6 +24,14 @@ namespace ofs {
 		CoreApp();
 		virtual ~CoreApp();
 
+		enum mouseButton {
+			mouseLeftButton   = 0x01,
+			mouseMiddleButton = 0x02,
+			mouseRightButton  = 0x04,
+			mouseShiftKey     = 0x08,
+			mouseControlKey   = 0x10
+		};
+
 		enum keyCode {
 	        keyUndefined = 0,
 			keyUp       = 1,
@@ -69,7 +77,17 @@ namespace ofs {
 		void initRenderer();
 		void initEngine();
 
+		// Keyboard controls
 		void pressKey(keyCode code, bool down);
+
+		// Mouse controls
+		void mouseMove(float dx, float dy, int modifiers);
+		void mousePressButtonDown(float x, float y, int button);
+		void mousePressButtonUp(float x, float y, int button);
+		void mouseDialWheel(float motion);
+
+		// Joystick controls
+		// GameController controls
 
 		void start();
 		void tick();

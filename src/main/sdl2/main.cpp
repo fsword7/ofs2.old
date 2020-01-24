@@ -78,6 +78,9 @@ void sdlCoreApp::run()
 {
 	bool running = true;
 	int  w, h;
+	int  mx, my, lx, ly;
+	int  state;
+	string title;
 
 	start();
 	while (running) {
@@ -99,10 +102,38 @@ void sdlCoreApp::run()
 			// Handling joystick events
 
 			// Handling mouse events
-//			case SDL_MOUSEBUTTONDOWN:
-//				break;
-//			case SDL_MOUSEMOTION:
-//				break;
+			case SDL_MOUSEMOTION:
+				mx = event.motion.x;
+				my = event.motion.y;
+
+				state = 0;
+				if (event.motion.state & SDL_BUTTON_LMASK)
+					state |= mouseLeftButton;
+				if (event.motion.state & SDL_BUTTON_MMASK)
+					state |= mouseMiddleButton;
+				if (event.motion.state & SDL_BUTTON_RMASK)
+					state |= mouseRightButton;
+
+				title = fmt::sprintf("%s X: %d Y: %d State: %c%c%c\n",
+					APP_FULL_NAME, mx, my,
+					(state & mouseLeftButton   ? 'L' : '-'),
+					(state & mouseMiddleButton ? 'M' : '-'),
+					(state & mouseRightButton  ? 'R' : '-'));
+				SDL_SetWindowTitle(dWindow, title.c_str());
+
+				mouseMove(mx-lx, my-ly, state);
+
+				lx = mx;
+				ly = my;
+
+				break;
+
+			case SDL_MOUSEBUTTONDOWN:
+				break;
+			case SDL_MOUSEBUTTONUP:
+				break;
+			case SDL_MOUSEWHEEL:
+				break;
 
 			// Handling keyboard events
 			case SDL_KEYDOWN:

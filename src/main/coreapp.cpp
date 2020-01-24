@@ -61,6 +61,24 @@ void CoreApp::pressKey(keyCode code, bool down)
 	stateKey[code] = down;
 }
 
+
+void CoreApp::mouseMove(float dx, float dy, int modifiers)
+{
+}
+
+void CoreApp::mousePressButtonDown(float x, float y, int button)
+{
+}
+
+void CoreApp::mousePressButtonUp(float x, float y, int button)
+{
+}
+
+void CoreApp::mouseDialWheel(float motion)
+{
+}
+
+
 void CoreApp::start()
 {
 	if (engine != nullptr)
