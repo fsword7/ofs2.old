@@ -29,6 +29,9 @@ CoreApp::CoreApp()
 	keyRotationBrake = toRadian(OFS_DEFAULT_FOV) * 3.0;
 	keyTravelAccel   = 2.0;
 	keyTravelBrake   = 5.0;
+
+	lastX = -1;
+	lastY = -1;
 }
 
 CoreApp::~CoreApp()
@@ -62,8 +65,25 @@ void CoreApp::pressKey(keyCode code, bool down)
 }
 
 
-void CoreApp::mouseMove(float dx, float dy, int modifiers)
+void CoreApp::mouseMove(float x, float y, int state)
 {
+	float dx = x - lastX;
+	float dy = y - lastY;
+
+	// Rotate camera around
+	if (state & mouseLeftButton) {
+		Camera *cam = player->getCamera(0);
+		double fov  = cam->getFOV();
+
+		double coarseness = glm::degrees(fov) / 30.0;
+
+		quatd_t rot = xrot(dy / height * coarseness) * yrot(dx / width * coarseness);
+		player->rotate(rot);
+	}
+
+	// Save current mouse motion for next event.
+	lastX = x;
+	lastY = y;
 }
 
 void CoreApp::mousePressButtonDown(float x, float y, int button)

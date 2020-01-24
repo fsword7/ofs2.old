@@ -121,11 +121,7 @@ void sdlCoreApp::run()
 					(state & mouseRightButton  ? 'R' : '-'));
 				SDL_SetWindowTitle(dWindow, title.c_str());
 
-				mouseMove(mx-lx, my-ly, state);
-
-				lx = mx;
-				ly = my;
-
+				mouseMove(mx, my, state);
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:

@@ -81,7 +81,7 @@ namespace ofs {
 		void pressKey(keyCode code, bool down);
 
 		// Mouse controls
-		void mouseMove(float dx, float dy, int modifiers);
+		void mouseMove(float x, float y, int state);
 		void mousePressButtonDown(float x, float y, int button);
 		void mousePressButtonUp(float x, float y, int button);
 		void mouseDialWheel(float motion);
@@ -109,5 +109,8 @@ namespace ofs {
 		double	keyRotationBrake;
 		double	keyTravelAccel;
 		double	keyTravelBrake;
+
+		// mouse handle parameters
+		float lastX, lastY;
 	};
 }

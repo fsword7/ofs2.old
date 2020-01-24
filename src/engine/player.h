@@ -71,6 +71,8 @@ public:
     void look(const Object &obj);
     void go(const Object &obj);
 
+    void rotate(quatd_t rot);
+
     void start(double jd);
     void update(double dt, double timeTravel);
 	void updateFrame(PlayerFrame *nfame);

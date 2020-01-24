@@ -126,6 +126,14 @@ void Player::setTravelSpeed(double ts)
 	tv.z = ts;
 }
 
+void Player::rotate(quatd_t rot)
+{
+	uqrot = rot * uqrot;
+	lqrot = frame->fromUniversal(uqrot, jdTime);
+	for (auto cam : camera)
+		cam->update();
+}
+
 void Player::start(double jd)
 {
 	realTime = jd;
