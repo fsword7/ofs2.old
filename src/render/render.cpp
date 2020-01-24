@@ -12,6 +12,7 @@
 
 #include "render/gl/shader.h"
 #include "render/gl/buffer.h"
+#include "render/gl/text.h"
 #include "render/planet.h"
 #include "render/render.h"
 
@@ -26,6 +27,9 @@ void Scene::init(int w, int h, Universe &universe)
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
+
+	titleFont = TrueTypeFont::load(gl, "data/fonts/OpenSans-Bold.ttf", 20);
+	textFont =  TrueTypeFont::load(gl, "data/fonts/OpenSans-Regular.ttf", 12);
 
 	initStarVertex();
 	initConstellations(universe);

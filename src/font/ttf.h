@@ -18,7 +18,8 @@ public:
 	TrueTypeFont(Context &gl) : TextureFont(gl) {};
 	~TrueTypeFont();
 
-	static TextureFont *load(Context &gl, const string &fileName, int size, int dpi);
+	static TextureFont *load(Context &gl, const fs::path &fileName,
+		int size = 12, int dpi = 96);
 
 	void bind() override;
 	void unbind() override;

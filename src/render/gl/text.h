@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "font/ttf.h"
+
 namespace ofs::gl {
 
 };

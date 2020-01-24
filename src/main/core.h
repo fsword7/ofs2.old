@@ -15,10 +15,13 @@
 #include <chrono>
 #include <thread>
 #include <mutex>
+#include <filesystem>
 
 #include <fmt/printf.h>
 
 using namespace std;
+
+namespace fs = std::filesystem;
 
 #include "util/color.h"
 #include "main/math.h"

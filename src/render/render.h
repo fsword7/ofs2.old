@@ -25,6 +25,7 @@ class Camera;
 class vObject;
 class vPlanet;
 class StarRenderer;
+class TextureFont;
 
 struct renderParameter
 {
@@ -184,6 +185,9 @@ private:
 
 	StarColors *starColors = nullptr;
 	StarRenderer  *starRenderer = nullptr;
+
+	TextureFont *titleFont = nullptr;
+	TextureFont *textFont = nullptr;
 
 	renderParameter prm;
 
