@@ -128,8 +128,10 @@ void Player::setTravelSpeed(double ts)
 
 void Player::rotate(quatd_t rot)
 {
-	uqrot = rot * uqrot;
-	lqrot = frame->fromUniversal(uqrot, jdTime);
+	lqrot = lqrot * rot;
+
+	// Updating current universal coordinates
+	updateUniversal();
 	for (auto cam : camera)
 		cam->update();
 }
