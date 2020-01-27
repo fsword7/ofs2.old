@@ -71,7 +71,20 @@ void CoreApp::mouseMove(float x, float y, int state)
 	float dy = y - lastY;
 
 	// Rotate camera around
-	if (state & mouseLeftButton) {
+	if (checkAllFlags(state, mouseLeftButton|mouseRightButton)) {
+		if (checkAnyFlags(state, mouseControlKey)) {
+			double dzoom = dy / height;
+			player->dolly(dzoom * 5);
+		} else {
+			Camera *cam = player->getCamera(0);
+			double fov  = cam->getFOV();
+
+			double coarseness = glm::degrees(fov) / 30.0;
+
+			quatd_t rot = xrot(dy / height * coarseness) * yrot(dx / width * coarseness);
+			player->orbit(rot);
+		}
+	} else if (state & mouseLeftButton) {
 		Camera *cam = player->getCamera(0);
 		double fov  = cam->getFOV();
 

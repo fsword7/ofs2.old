@@ -64,3 +64,5 @@ inline char *strFourCC(uint32_t code)
 	return str;
 }
 
+#define checkAllFlags(flags, mask) ((flags & (mask)) == (mask))
+#define checkAnyFlags(flags, mask) (flags & (mask))

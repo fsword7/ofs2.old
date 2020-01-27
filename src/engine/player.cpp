@@ -126,16 +126,6 @@ void Player::setTravelSpeed(double ts)
 	tv.z = ts;
 }
 
-void Player::rotate(quatd_t rot)
-{
-	lqrot = lqrot * rot;
-
-	// Updating current universal coordinates
-	updateUniversal();
-	for (auto cam : camera)
-		cam->update();
-}
-
 void Player::start(double jd)
 {
 	realTime = jd;
@@ -187,7 +177,7 @@ void Player::setFrame(PlayerFrame::coordType cs, const Object *obj)
 		delete frame;
 
 	updateFrame(nframe);
-	frame = nframe;
+	frame  = nframe;
 }
 
 
@@ -234,4 +224,61 @@ void Player::go(const Object &obj)
 
 //	cout << "Universal: (" << std::fixed << upos.x << "," << upos.y << "," << upos.z << ")" << endl;
 //	cout << "Local:     (" << std::fixed << lpos.x << "," << lpos.y << "," << lpos.z << ")" << endl;
+}
+
+void Player::rotate(quatd_t rot)
+{
+	lqrot = lqrot * rot;
+
+	// Updating current universal coordinates
+	updateUniversal();
+	for (auto cam : camera)
+		cam->update();
+}
+
+// Move toward or from the center object at exponential rate.
+void Player::dolly(double delta)
+{
+	const Object *center = frame->getCenter();
+	if (center == nullptr)
+		return;
+
+	vec3d_t opos  = center->getPosition(jdTime);
+	double  surfaceDistance = center->getRadius();
+	double  naturalDistance = surfaceDistance * 4.0;
+	double  currentDistance = glm::length(lpos);
+
+	if (currentDistance >= surfaceDistance && naturalDistance != 0) {
+		double r = (currentDistance - surfaceDistance) / naturalDistance;
+		double newDistance = surfaceDistance + naturalDistance * exp(log(r) + delta);
+
+//		cout << fmt::sprintf("Zoom: S: %lf N: %lf C: %lf (%lf,%lf,%lf) * %lf\n",
+//			surfaceDistance, naturalDistance, currentDistance,
+//			lpos.x, lpos.y, lpos.z, newDistance / currentDistance);
+		lpos *= (newDistance / currentDistance);
+
+		// Updating current universal coordinates
+		updateUniversal();
+		for (auto cam : camera)
+			cam->update();
+	}
+
+}
+
+void Player::orbit(quatd_t rot)
+{
+	const Object *center = frame->getCenter();
+	if (center == nullptr)
+		return;
+
+	double  dist = glm::length(lpos);
+	quatd_t qrot = glm::normalize(lqrot * rot * glm::conjugate(lqrot));
+
+	lpos  = glm::normalize(glm::conjugate(qrot) * lpos) * dist;
+	lqrot = glm::conjugate(qrot) * lqrot;
+
+	// Updating current universal coordinates
+	updateUniversal();
+	for (auto cam : camera)
+		cam->update();
 }

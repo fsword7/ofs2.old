@@ -121,6 +121,10 @@ namespace ofs::universe
 
 		Frame *create(coordType csType, const Object *center = nullptr);
 
+		const Object *getCenter() const { return frame != nullptr ? frame->getCenter() : nullptr; }
+
+		coordType getCoordType() { return type; }
+
 	private:
 		coordType type = csUniversal;
 		Frame *frame   = nullptr;

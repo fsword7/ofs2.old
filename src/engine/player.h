@@ -57,6 +57,8 @@ public:
 	inline vec3d_t getTravelVelocity()  { return tv; }
 	inline double  getTravelSpeed()     { return tv.z; }
 
+	inline const Object *getCenter() const { return frame->getCenter(); }
+
     Camera *getCamera(int idx) const;
 	
 	void setPosition(vec3d_t pos);
@@ -72,6 +74,9 @@ public:
     void go(const Object &obj);
 
     void rotate(quatd_t rot);
+
+    void dolly(double dist);
+    void orbit(quatd_t rot);
 
     void start(double jd);
     void update(double dt, double timeTravel);

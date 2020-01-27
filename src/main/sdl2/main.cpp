@@ -81,6 +81,7 @@ void sdlCoreApp::run()
 	int  mx, my, lx, ly;
 	int  state;
 	string title;
+	uint16_t mod;
 
 	start();
 	while (running) {
@@ -113,12 +114,19 @@ void sdlCoreApp::run()
 					state |= mouseMiddleButton;
 				if (event.motion.state & SDL_BUTTON_RMASK)
 					state |= mouseRightButton;
+				if (mod & KMOD_CTRL)
+					state |= mouseControlKey;
+				if (mod & KMOD_SHIFT)
+					state |= mouseShiftKey;
 
-				title = fmt::sprintf("%s X: %d Y: %d State: %c%c%c\n",
+				title = fmt::sprintf("%s X: %d Y: %d State: %c%c%c%c%c\n",
 					APP_FULL_NAME, mx, my,
 					(state & mouseLeftButton   ? 'L' : '-'),
 					(state & mouseMiddleButton ? 'M' : '-'),
-					(state & mouseRightButton  ? 'R' : '-'));
+					(state & mouseRightButton  ? 'R' : '-'),
+					(state & mouseControlKey   ? 'C' : '-'),
+					(state & mouseShiftKey     ? 'S' : '-'));
+
 				SDL_SetWindowTitle(dWindow, title.c_str());
 
 				mouseMove(mx, my, state);
@@ -134,9 +142,11 @@ void sdlCoreApp::run()
 			// Handling keyboard events
 			case SDL_KEYDOWN:
 				pressKeyEvent(&event.key, true);
+				mod = event.key.keysym.mod;
 				break;
 			case SDL_KEYUP:
 				pressKeyEvent(&event.key, false);
+				mod = event.key.keysym.mod;
 				break;
 			}
 		}
