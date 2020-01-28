@@ -226,6 +226,22 @@ void Player::go(const Object &obj)
 //	cout << "Local:     (" << std::fixed << lpos.x << "," << lpos.y << "," << lpos.z << ")" << endl;
 }
 
+double Player::computeCoarseness(double maxCoarseness)
+{
+	const Object *center = frame->getCenter();
+	if (center == nullptr)
+		return maxCoarseness;
+
+	double radius   = center->getRadius();
+	double distance = glm::length(lpos);
+	double altitude = distance - radius;
+	double coarse   = maxCoarseness;
+
+	if (altitude > 0 && altitude < radius)
+		coarse *= max(0.01, altitude/radius);
+	return coarse;
+}
+
 void Player::rotate(quatd_t rot)
 {
 	lqrot = lqrot * rot;

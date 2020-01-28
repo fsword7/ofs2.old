@@ -79,7 +79,7 @@ void CoreApp::mouseMove(float x, float y, int state)
 			Camera *cam = player->getCamera(0);
 			double fov  = cam->getFOV();
 
-			double coarseness = glm::degrees(fov) / 30.0;
+			double coarseness = player->computeCoarseness(1.5);
 
 			quatd_t rot = xrot(dy / height * coarseness) * yrot(dx / width * coarseness);
 			player->orbit(rot);

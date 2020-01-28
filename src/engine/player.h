@@ -69,12 +69,13 @@ public:
 
     void setFrame(PlayerFrame::coordType cs, const Object *obj);
 
+    double computeCoarseness(double maxCoarseness);
+
     void follow(const Object &obj);
     void look(const Object &obj);
     void go(const Object &obj);
 
     void rotate(quatd_t rot);
-
     void dolly(double dist);
     void orbit(quatd_t rot);
 
