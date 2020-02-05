@@ -55,7 +55,8 @@ namespace ofs::universe {
 
 //        inline RotationModel *getRotationModel(double tjd) const { return rot; };
 
-        quatd_t getEclipticToEquatorial(double tjd) const;
+        quatd_t getEquatorial(double tjd) const;
+        quatd_t getBodyFixed(double tjd) const;
 
         quatd_t getRotation(double tjd = 0) const override;
 

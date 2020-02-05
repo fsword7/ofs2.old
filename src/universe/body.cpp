@@ -56,7 +56,14 @@ CelestialBody::CelestialBody(const string &name, PlanetarySystem *system)
 		inSystem->addBody(this);
 }
 
-quatd_t CelestialBody::getEclipticToEquatorial(double tjd) const
+quatd_t CelestialBody::getBodyFixed(double tjd) const
+{
+	if (rot == nullptr)
+		return objRotation;
+	return rot->getRotation(tjd);
+}
+
+quatd_t CelestialBody::getEquatorial(double tjd) const
 {
 	if (rot == nullptr)
 		return objRotation;

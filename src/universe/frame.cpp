@@ -73,15 +73,16 @@ vec3d_t Frame::fromAstrocentric(const vec3d_t &upos, double tjd)
 {
 	if (center == nullptr)
 		return upos;
-	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
-
+//	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
+	return (center->getPosition(tjd) - upos) * getOrientation(tjd);
 }
 
 vec3d_t Frame::toAstrocentric(const vec3d_t &lpos, double tjd)
 {
 	if (center == nullptr)
 		return lpos;
-	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
+//	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
+	return center->getPosition(tjd) + (lpos * glm::conjugate(getOrientation(tjd)));
 }
 
 
@@ -89,14 +90,38 @@ vec3d_t Frame::fromUniversal(const vec3d_t &upos, double tjd)
 {
 	if (center == nullptr)
 		return upos;
-	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
+//	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
+//	return (center->getPosition(tjd) - upos) * getOrientation(tjd);
+
+	vec3d_t opos = center->getPosition(tjd);
+	quatd_t orot = getOrientation(tjd);
+	vec3d_t rpos = (opos - upos) * orot;
+
+//	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
+//		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
+//	cout << fmt::sprintf(" Frame: U(%lf,%lf,%lf) => L(%lf,%lf,%lf)\n",
+//		upos.x, upos.y, upos.z, rpos.x, rpos.y, rpos.z);
+
+	return rpos;
 }
 
 vec3d_t Frame::toUniversal(const vec3d_t &lpos, double tjd)
 {
 	if (center == nullptr)
 		return lpos;
-	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
+//	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
+//	return center->getPosition(tjd) + (lpos * glm::conjugate(getOrientation(tjd)));
+
+	vec3d_t opos = center->getPosition(tjd);
+	quatd_t orot = glm::conjugate(getOrientation(tjd));
+	vec3d_t rpos = opos + (lpos * orot);
+
+//	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
+//		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
+//	cout << fmt::sprintf(" Frame: L(%lf,%lf,%lf) => U(%lf,%lf,%lf)\n",
+//		lpos.x, lpos.y, lpos.z, rpos.x, rpos.y, rpos.z);
+
+	return rpos;
 }
 
 
@@ -104,14 +129,16 @@ quatd_t Frame::fromUniversal(const quatd_t &urot, double tjd)
 {
 	if (center == nullptr)
 		return urot;
-	return urot * glm::conjugate(getOrientation(tjd));
+//	return urot * glm::conjugate(getOrientation(tjd));
+	return glm::conjugate(getOrientation(tjd)) * urot;
 }
 
 quatd_t Frame::toUniversal(const quatd_t &lrot, double tjd)
 {
 	if (center == nullptr)
 		return lrot;
-	return lrot * getOrientation(tjd);
+//	return lrot * getOrientation(tjd);
+	return getOrientation(tjd) * lrot;
 }
 
 
@@ -168,6 +195,9 @@ Frame *PlayerFrame::create(coordType csType, const Object *obj)
 	case csEcliptical:
 		return new J2000EclipticFrame(obj);
 	case csEquatorial:
+		return new BodyMeanEquatorFrame(obj, obj);
+	case csBodyFixed:
+		return new BodyFixedFrame(obj, obj);
 	default:
 		return new J2000EclipticFrame(nullptr);
 	}
@@ -192,8 +222,20 @@ J2000EquatorFrame::J2000EquatorFrame(const Object *obj, const Object *tgt)
 // ******** Body Fixed Reference Frame ********
 
 BodyFixedFrame::BodyFixedFrame(const Object *obj, const Object *tgt)
-: Frame(obj)
+: Frame(obj), fixedObject(tgt)
 {
+}
+
+quatd_t BodyFixedFrame::getOrientation(double tjd) const
+{
+	quatd_t q;
+
+	switch (fixedObject->getType()) {
+	case objCelestialBody:
+		return dynamic_cast<const CelestialBody *>(fixedObject)->getBodyFixed(tjd);
+	default:
+		return quatd_t(1, 0, 0, 0);
+	}
 }
 
 // ******** Body Mean Equator Reference Frame ********
@@ -201,21 +243,23 @@ BodyFixedFrame::BodyFixedFrame(const Object *obj, const Object *tgt)
 BodyMeanEquatorFrame::BodyMeanEquatorFrame(const Object *obj, const Object *tgt)
 : Frame(obj), equatorObject(tgt)
 {
-	cout << "Yes Body Mean Equator here." << endl;
 }
 
 quatd_t BodyMeanEquatorFrame::getOrientation(double tjd) const
 {
 	quatd_t q;
 
-	cout << "Yes rotation frame here." << endl;
-
 	switch (equatorObject->getType()) {
 	case objCelestialBody:
-		q = dynamic_cast<const CelestialBody *>(equatorObject)->getEclipticToEquatorial(tjd);
-		cout << "Rotation Frame: " << q.w << "," << q.x << "," << q.y << "," << q.z << endl;
-		return q;
+		return dynamic_cast<const CelestialBody *>(equatorObject)->getEquatorial(tjd);
 	default:
 		return quatd_t(1, 0, 0, 0);
 	}
+}
+
+// ******** Heliosynchronous Reference Frame ********
+
+SunSyncFrame::SunSyncFrame(const Object *obj, const Object *tgt)
+: Frame(obj)
+{
 }

@@ -103,7 +103,8 @@ namespace ofs::universe
 		enum coordType {
 			csUniversal  = 0,
 			csEcliptical = 1,
-			csEquatorial = 2
+			csEquatorial = 2,
+			csBodyFixed  = 3,
 		};
 
 		PlayerFrame();
@@ -154,7 +155,10 @@ namespace ofs::universe
 		BodyFixedFrame(const Object *obj, const Object *tgt);
 		~BodyFixedFrame() = default;
 
-		quatd_t getOrientation(double tjd) const { return quatd_t(1,0,0,0); }
+		quatd_t getOrientation(double tjd) const;
+
+	private:
+		const Object *fixedObject = nullptr;
 	};
 
 	class BodyMeanEquatorFrame : public Frame
@@ -167,6 +171,15 @@ namespace ofs::universe
 
 	private:
 		const Object *equatorObject = nullptr;
+	};
+
+	class SunSyncFrame : public Frame
+	{
+	public:
+		SunSyncFrame(const Object *obj, const Object *tgt);
+		~SunSyncFrame() = default;
+
+		quatd_t getOrientation(double tjd) const { return quatd_t(1,0,0,0); }
 	};
 
 }

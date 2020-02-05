@@ -46,12 +46,20 @@ private:
 class Player
 {
 public:
+	enum travelMode {
+		tvFree
+	};
+
+	enum followMode {
+		fwGeosync
+	};
+
     Player();
     ~Player();
 
-	inline vec3d_t getPosition() const   { return upos; }
-	inline quatd_t getRotation() const   { return uqrot; }
-	inline double  getJulianTime() const { return jdTime; }
+	inline vec3d_t getPosition() const    { return upos; }
+	inline quatd_t getOrientation() const { return uqrot; }
+	inline double  getJulianTime() const  { return jdTime; }
 
 	inline vec3d_t getAngularVelocity() { return av; }
 	inline vec3d_t getTravelVelocity()  { return tv; }
@@ -62,7 +70,7 @@ public:
     Camera *getCamera(int idx) const;
 	
 	void setPosition(vec3d_t pos);
-	void setRotation(quatd_t rot);
+	void setOrientation(quatd_t rot);
 	void setAngularVelocity(vec3d_t av);
 	void setTravelVelocity(vec3d_t tv);
 	void setTravelSpeed(double ts);
@@ -71,9 +79,9 @@ public:
 
     double computeCoarseness(double maxCoarseness);
 
-    void follow(const Object &obj);
+    void follow(const Object &obj, followMode mode);
     void look(const Object &obj);
-    void go(const Object &obj);
+    void go(const Object &obj, double dist);
 
     void rotate(quatd_t rot);
     void dolly(double dist);

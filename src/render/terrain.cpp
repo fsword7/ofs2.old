@@ -358,9 +358,10 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.biasLOD = 0;
 
 	// Object position and orientation parameters
-	prm.obj.opos = body.getPosition(prm.now);
-	prm.obj.orot = glm::toMat4(body.getRotation(prm.now));
-	prm.obj.orad = body.getRadius();
+	prm.obj.opos  = body.getPosition(prm.now);
+	prm.obj.oqrot = body.getRotation(prm.now);
+	prm.obj.orot  = glm::toMat4(prm.obj.oqrot);
+	prm.obj.orad  = body.getRadius();
 
 	// Camera position and oreintation parameters in object reference frame.
 	prm.obj.cpos   = prm.obj.opos - prm.cpos;
@@ -369,15 +370,20 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.viewap = (prm.obj.cdist >= 1.0f) ? acos(1.0f / prm.obj.cdist) : 0.0f;
 	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 
-	// cout << "Terrain Manager - Render Parameter" << endl;
-	// cout << "Planet Radius:    " << prm.obj.orad << endl;
-	// cout << "Planet Position:  (" << prm.obj.opos.x << "," << prm.obj.opos.y << "," << prm.obj.opos.z << ")" << endl;
-	// cout << "Camera Position:  (" << prm.obj.cpos.x << "," << prm.obj.cpos.y << "," << prm.obj.cpos.z << ")" << endl;
-	// cout << "Camera Direction: (" << prm.obj.cdir.x << "," << prm.obj.cdir.y << "," << prm.obj.cdir.z << ")" << endl;
-	// cout << "Camera Distance:  " << prm.obj.cdist << endl;
-	// cout << "Horizon View:     " << toDegree(prm.obj.viewap) << endl;
-	// cout << "Camera Position:  (" << prm.cpos.x << "," << prm.cpos.y << "," << prm.cpos.z
-    //          << ") in Universe frame" << endl;
+//	cout << fmt::sprintf("Terrain Manager - Render Parameter\n");
+//	cout << fmt::sprintf("Planet Radius:      %lf\n", prm.obj.orad);
+//	cout << fmt::sprintf("Planet Position:    (%lf,%lf,%lf)\n",
+//		prm.obj.opos.x, prm.obj.opos.y, prm.obj.opos.z);
+//	cout << fmt::sprintf("Planet Orientation: (%lf,%lf,%lf,%lf)\n",
+//		prm.obj.oqrot.w, prm.obj.oqrot.x, prm.obj.oqrot.y, prm.obj.oqrot.z);
+//	cout << fmt::sprintf("Camera Position:    (%lf,%lf,%lf)\n",
+//		prm.obj.cpos.x, prm.obj.cpos.y, prm.obj.cpos.z);
+//	cout << fmt::sprintf("Camera Direction:   (%lf,%lf,%lf)\n",
+//		prm.obj.cdir.x, prm.obj.cdir.y, prm.obj.cdir.z);
+//	cout << fmt::sprintf("Camera Distance:    %lf\n", prm.obj.cdist);
+//	cout << fmt::sprintf("Horizon View:       %lf\n", toDegree(prm.obj.viewap));
+//	cout << fmt::sprintf("Camera Position:    (%lf,%lf,%lf) in Universe frame\n",
+//		prm.cpos.x, prm.cpos.y, prm.cpos.z);
 
 //    obj->getCoordinates(prm.cpos, &lat, &lng);
 //    cout << "Planet Position:  (" << toDegrees(lat) << "," << toDegrees(lng) << ")" << endl;

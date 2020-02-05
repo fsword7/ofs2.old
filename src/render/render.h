@@ -57,10 +57,12 @@ struct renderParameter
 		uint32_t maxLOD;
 		uint32_t biasLOD;
 		vec3d_t  opos;
+		quatd_t  oqrot;
 		mat4d_t  orot;
 		double   orad;
 
 		vec3d_t  cpos;
+		quatd_t  cqrot;
 		mat4d_t  crot;
 		vec3d_t  cdir;
 		double   cdist;

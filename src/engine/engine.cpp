@@ -53,8 +53,8 @@ void Engine::start()
 	// To removed later
 
 	CelestialBody *earth = universe.getEarth();
-	player.go(*earth);
-	player.follow(*earth);
+	player.go(*earth, earth->getRadius() * 6.0);
+	player.follow(*earth, Player::fwGeosync);
 }
 
 void Engine::update(double dt)

@@ -272,7 +272,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	double faintest)
 {
 	vec3d_t obs = player.getPosition();
-	quatd_t rot = player.getRotation();
+	quatd_t rot = player.getOrientation();
 	Camera *cam = player.getCamera(0);
 	double  fov = cam->getFOV();
 	double  aspect = gl.getAspect();

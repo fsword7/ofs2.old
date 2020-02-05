@@ -58,7 +58,7 @@ void Camera::focus(Object *obj)
 void Camera::update()
 {
 	camPosition = player->getPosition();
-	camRotation = player->getRotation();
+	camRotation = player->getOrientation();
 }
 
 // ******** Player ********
@@ -102,7 +102,7 @@ void Player::setPosition(vec3d_t pos)
 		cam->update();
 }
 
-void Player::setRotation(quatd_t rot)
+void Player::setOrientation(quatd_t rot)
 {
 	uqrot = rot;
 	lqrot = frame->fromUniversal(rot, jdTime);
@@ -181,9 +181,17 @@ void Player::setFrame(PlayerFrame::coordType cs, const Object *obj)
 }
 
 
-void Player::follow(const Object &obj)
+void Player::follow(const Object &obj, followMode mode)
 {
-	setFrame(PlayerFrame::csEcliptical, &obj);
+	switch (mode) {
+	case fwGeosync:
+		setFrame(PlayerFrame::csBodyFixed, &obj);
+		break;
+	default:
+		setFrame(PlayerFrame::csEcliptical, &obj);
+		break;
+	}
+
 //	std::cout << "Reference Frame: " << frame->name() << std::endl;
 }
 
@@ -200,17 +208,20 @@ void Player::look(const Object &obj)
 //	std::cout << "Local Rotation:     (" << lqrot.w() << "," << lqrot.x() << "," << lqrot.y() << "," << lqrot.z() << ")" << std::endl;
 }
 
-void Player::go(const Object &obj)
+void Player::go(const Object &obj, double dist)
 {
 	vec3d_t opos = obj.getPosition(jdTime);
+	quatd_t orot = obj.getRotation(jdTime);
 
-	upos = opos;
-	upos.z -= obj.getRadius() * 6;
-	lpos = frame->fromUniversal(upos, jdTime);
+	upos  = opos + glm::conjugate(orot) * vec3d_t(0, 0, -dist);
+	uqrot = glm::conjugate(orot) * quatd_t(1, 0, 0, 0);;
+	lpos  = frame->fromUniversal(upos, jdTime);
+	lqrot = frame->fromUniversal(uqrot, jdTime);
 
-	look(obj);
+//	look(obj);
 
 	// Update all cameras
+//	updateUniversal();
 	for (auto cam : camera)
 		cam->update();
 
