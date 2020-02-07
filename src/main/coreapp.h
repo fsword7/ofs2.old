@@ -67,7 +67,62 @@ namespace ofs {
 			keyPad6     = 36,
 			keyPad7     = 37,
 			keyPad8     = 38,
-			keyPad9     = 39
+			keyPad9     = 39,
+
+			keyA		= 'A',
+			keyB		= 'B',
+			keyC		= 'C',
+			keyD		= 'D',
+			keyE		= 'E',
+			keyF		= 'F',
+			keyG		= 'G',
+			keyH		= 'H',
+			keyI		= 'I',
+			keyJ		= 'J',
+			keyK		= 'K',
+			keyL		= 'L',
+			keyM		= 'M',
+			keyN		= 'N',
+			keyO		= 'O',
+			keyP		= 'P',
+			keyQ		= 'Q',
+			keyR		= 'R',
+			keyS		= 'S',
+			keyT		= 'T',
+			keyU		= 'U',
+			keyV		= 'V',
+			keyW		= 'W',
+			keyX		= 'X',
+			keyY		= 'Y',
+			keyZ		= 'Z',
+
+			keya		= 'a',
+			keyb		= 'b',
+			keyc		= 'c',
+			keyd		= 'd',
+			keye		= 'e',
+			keyf		= 'f',
+			keyg		= 'g',
+			keyh		= 'h',
+			keyi		= 'i',
+			keyj		= 'j',
+			keyk		= 'k',
+			keyl		= 'l',
+			keym		= 'm',
+			keyn		= 'n',
+			keyo		= 'o',
+			keyp		= 'p',
+			keyq		= 'q',
+			keyr		= 'r',
+			keys		= 's',
+			keyt		= 't',
+			keyu		= 'u',
+			keyv		= 'v',
+			keyw		= 'w',
+			keyx		= 'x',
+			keyy		= 'y',
+			keyz		= 'z',
+
 		};
 
 		virtual void init() = 0;
@@ -78,7 +133,10 @@ namespace ofs {
 		void initEngine();
 
 		// Keyboard controls
-		void pressKey(keyCode code, bool down);
+		void keyPress(keyCode code, int modifiers, bool down);
+//		void keyDown(keyCode code, int modifiers);
+//		void keyUp(keyCode code, int modifiers);
+		void keyEntered(wchar_t ch, int modifiers);
 
 		// Mouse controls
 		void mouseMove(float x, float y, int state);

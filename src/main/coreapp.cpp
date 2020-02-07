@@ -59,11 +59,15 @@ void CoreApp::initEngine()
 	scene = engine->getScene();
 }
 
-void CoreApp::pressKey(keyCode code, bool down)
+void CoreApp::keyPress(keyCode code, int modifiers, bool down)
 {
 	stateKey[code] = down;
 }
 
+void CoreApp::keyEntered(wchar_t ch, int modifiers)
+{
+
+}
 
 void CoreApp::mouseMove(float x, float y, int state)
 {

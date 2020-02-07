@@ -160,29 +160,47 @@ void sdlCoreApp::run()
 void sdlCoreApp::pressKeyEvent(SDL_KeyboardEvent *key, bool down)
 {
 	CoreApp::keyCode code = keyUndefined;
+	uint16_t mod;
+
+	mod = key->keysym.mod;
+
+//	if (mod & KMOD_CTRL)
+//		state |= mouseControlKey;
+//	if (mod & KMOD_SHIFT)
+//		state |= mouseShiftKey;
 
 	switch(key->keysym.sym)
 	{
-	case SDLK_LEFT:  code = keyLeft;  break;
-	case SDLK_RIGHT: code = keyRight; break;
-	case SDLK_UP:    code = keyUp;    break;
-	case SDLK_DOWN:  code = keyDown;  break;
-	case SDLK_KP_0:  code = keyPad0;  break;
-	case SDLK_KP_1:  code = keyPad1;  break;
-	case SDLK_KP_2:  code = keyPad2;  break;
-	case SDLK_KP_3:  code = keyPad3;  break;
-	case SDLK_KP_4:  code = keyPad4;  break;
-	case SDLK_KP_5:  code = keyPad5;  break;
-	case SDLK_KP_6:  code = keyPad6;  break;
-	case SDLK_KP_7:  code = keyPad7;  break;
-	case SDLK_KP_8:  code = keyPad8;  break;
-	case SDLK_KP_9:  code = keyPad9;  break;
-    case SDLK_F1:    code = keyF1;    break;
-    case SDLK_F2:    code = keyF2;    break;
+	case SDLK_LEFT:		code = keyLeft;		break;
+	case SDLK_RIGHT:	code = keyRight;	break;
+	case SDLK_UP:		code = keyUp;		break;
+	case SDLK_DOWN:		code = keyDown;		break;
+	case SDLK_KP_0:		code = keyPad0;		break;
+	case SDLK_KP_1:		code = keyPad1;		break;
+	case SDLK_KP_2:		code = keyPad2;		break;
+	case SDLK_KP_3:		code = keyPad3;		break;
+	case SDLK_KP_4:		code = keyPad4;		break;
+	case SDLK_KP_5:		code = keyPad5;		break;
+	case SDLK_KP_6:		code = keyPad6;		break;
+	case SDLK_KP_7:		code = keyPad7;		break;
+	case SDLK_KP_8:		code = keyPad8;		break;
+	case SDLK_KP_9:		code = keyPad9;		break;
+    case SDLK_F1:		code = keyF1;		break;
+    case SDLK_F2:		code = keyF2;		break;
+    case SDLK_F3:		code = keyF3;		break;
+    case SDLK_F4:		code = keyF4;		break;
+    case SDLK_F5:		code = keyF5;		break;
+    case SDLK_F6:		code = keyF6;		break;
+    case SDLK_F7:		code = keyF7;		break;
+    case SDLK_F8:		code = keyF8;		break;
+    case SDLK_F9:		code = keyF9;		break;
+    case SDLK_F10:		code = keyF10;		break;
+    case SDLK_F11:		code = keyF11;		break;
+    case SDLK_F12:		code = keyF12;		break;
 	}
 
 	if (code > 0)
-		pressKey(code, down);
+		keyPress(code, mod, down);
 }
 
 int main(int argc, char **argv)
