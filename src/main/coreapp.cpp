@@ -21,7 +21,7 @@ CoreApp::CoreApp()
   height(OFS_DEFAULT_HEIGHT)
 {
 	// Initialize state keys
-	for (int key = 0; key < 256; key++)
+	for (int key = 0; key < 512; key++)
 		stateKey[key] = false;
 
 	// Initialize velocity control
@@ -66,7 +66,7 @@ void CoreApp::keyPress(keyCode code, int modifiers, bool down)
 
 void CoreApp::keyEntered(wchar_t ch, int modifiers)
 {
-
+	cout << fmt::sprintf("Key pressed: %c\n", (char)ch) << flush;
 }
 
 void CoreApp::mouseMove(float x, float y, int state)

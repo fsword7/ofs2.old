@@ -171,20 +171,6 @@ void sdlCoreApp::pressKeyEvent(SDL_KeyboardEvent *key, bool down)
 
 	switch(key->keysym.sym)
 	{
-	case SDLK_LEFT:		code = keyLeft;		break;
-	case SDLK_RIGHT:	code = keyRight;	break;
-	case SDLK_UP:		code = keyUp;		break;
-	case SDLK_DOWN:		code = keyDown;		break;
-	case SDLK_KP_0:		code = keyPad0;		break;
-	case SDLK_KP_1:		code = keyPad1;		break;
-	case SDLK_KP_2:		code = keyPad2;		break;
-	case SDLK_KP_3:		code = keyPad3;		break;
-	case SDLK_KP_4:		code = keyPad4;		break;
-	case SDLK_KP_5:		code = keyPad5;		break;
-	case SDLK_KP_6:		code = keyPad6;		break;
-	case SDLK_KP_7:		code = keyPad7;		break;
-	case SDLK_KP_8:		code = keyPad8;		break;
-	case SDLK_KP_9:		code = keyPad9;		break;
     case SDLK_F1:		code = keyF1;		break;
     case SDLK_F2:		code = keyF2;		break;
     case SDLK_F3:		code = keyF3;		break;
@@ -197,6 +183,28 @@ void sdlCoreApp::pressKeyEvent(SDL_KeyboardEvent *key, bool down)
     case SDLK_F10:		code = keyF10;		break;
     case SDLK_F11:		code = keyF11;		break;
     case SDLK_F12:		code = keyF12;		break;
+
+	case SDLK_KP_0:		code = keyPad0;		break;
+	case SDLK_KP_1:		code = keyPad1;		break;
+	case SDLK_KP_2:		code = keyPad2;		break;
+	case SDLK_KP_3:		code = keyPad3;		break;
+	case SDLK_KP_4:		code = keyPad4;		break;
+	case SDLK_KP_5:		code = keyPad5;		break;
+	case SDLK_KP_6:		code = keyPad6;		break;
+	case SDLK_KP_7:		code = keyPad7;		break;
+	case SDLK_KP_8:		code = keyPad8;		break;
+	case SDLK_KP_9:		code = keyPad9;		break;
+
+	case SDLK_LEFT:		code = keyLeft;		break;
+	case SDLK_RIGHT:	code = keyRight;	break;
+	case SDLK_UP:		code = keyUp;		break;
+	case SDLK_DOWN:		code = keyDown;		break;
+
+    default: // ASCII codes
+    	if ((down == false) || (key->keysym.sym & ~0xFF))
+    		break;
+    	keyEntered(key->keysym.sym, mod);
+    	break;
 	}
 
 	if (code > 0)
