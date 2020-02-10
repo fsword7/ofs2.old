@@ -22,12 +22,15 @@ public:
 	~Engine();
 
 	inline Universe *getUniverse() { return &universe; }
-	inline Player *getPlayer() { return &player; }
-	inline Scene *getScene() { return scene; }
-	inline Date *getRealTime() { return &realDate; }
+	inline Player *getPlayer()     { return &player; }
+	inline Scene *getScene()       { return scene; }
+	inline Date *getRealTime()     { return &realDate; }
+	inline double getTimeWarp()    { return scaleTime; }
 
 	inline string getDataFolder() const   { return dataFolder; }
 	inline string getSystemFolder() const { return systemFolder; }
+
+	inline void setTimeWarp(double scale) { scaleTime = scale; }
 
 	void init(uint32_t height, uint32_t width);
 	void start();
