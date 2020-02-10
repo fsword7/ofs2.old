@@ -144,17 +144,27 @@ TextureFont *TrueTypeFont::load(Context &gl, const fs::path &path, int size, int
 	if (!FT_IS_SCALABLE(face)) {
 		fmt::fprintf(cerr, "TTF: Font %s is not scalable\n",
 			path);
+		FT_Done_Face(face);
 		return nullptr;
 	}
 
 	if (FT_Set_Char_Size(face, 0, size << 6, dpi, dpi) != 0) {
 		fmt::fprintf(cerr, "TTF: Can't set %i on font %s\n",
 			size, path);
+		FT_Done_Face(face);
+		return nullptr;
+	}
+
+	if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != 0) {
+		fmt::fprintf(cerr, "TTF: Unicode not supported on font %s\n",
+			path);
+		FT_Done_Face(face);
 		return nullptr;
 	}
 
 	fmt::fprintf(cout, "TTF: Loading %s (%s) %d glyphs...\n",
 		face->family_name, face->style_name, face->num_glyphs);
+
 
 	TrueTypeFont *font = new TrueTypeFont(gl);
 	font->face = face;
