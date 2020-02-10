@@ -64,7 +64,7 @@ void CoreApp::keyPress(keyCode code, int modifiers, bool down)
 	stateKey[code] = down;
 }
 
-void CoreApp::keyEntered(wchar_t ch, int modifiers)
+void CoreApp::keyEntered(char32_t ch, int modifiers)
 {
 //	cout << fmt::sprintf("Key pressed: %c\n", (char)ch) << flush;
 	switch (ch) {

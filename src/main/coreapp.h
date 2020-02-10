@@ -85,7 +85,7 @@ namespace ofs {
 		void keyPress(keyCode code, int modifiers, bool down);
 //		void keyDown(keyCode code, int modifiers);
 //		void keyUp(keyCode code, int modifiers);
-		void keyEntered(wchar_t ch, int modifiers);
+		void keyEntered(char32_t ch, int modifiers);
 
 		// Mouse controls
 		void mouseMove(float x, float y, int state);

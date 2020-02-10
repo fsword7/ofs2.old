@@ -160,6 +160,7 @@ void sdlCoreApp::run()
 void sdlCoreApp::pressKeyEvent(SDL_KeyboardEvent *key, bool down)
 {
 	CoreApp::keyCode code = keyUndefined;
+	char32_t ch;
 	uint16_t mod;
 
 	mod = key->keysym.mod;
@@ -201,9 +202,10 @@ void sdlCoreApp::pressKeyEvent(SDL_KeyboardEvent *key, bool down)
 	case SDLK_DOWN:		code = keyDown;		break;
 
     default: // ASCII codes
-    	if ((down == false) || (key->keysym.sym & ~0xFF))
+    	ch = key->keysym.sym;
+    	if ((down == false) || (ch & ~0xFF))
     		break;
-    	keyEntered(key->keysym.sym, mod);
+    	keyEntered(ch, mod);
     	break;
 	}
 
