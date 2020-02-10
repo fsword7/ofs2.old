@@ -108,6 +108,8 @@ private:
 	double  realTime;
 	double  jdTime;
 
+	travelMode mode = tvFree;
+
 	// Velocity control
 	vec3d_t	av; // Angular velocity
 	quatd_t wv; //    Quaternion control

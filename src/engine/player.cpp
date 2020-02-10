@@ -137,16 +137,18 @@ void Player::update(double dt, double timeTravel)
 	realTime += dt / SECONDS_PER_DAY;
 	jdTime   += (dt / SECONDS_PER_DAY) * timeTravel;
 
-	// Free travel mode
-	// Update current position and orientation (local reference frame)
-	// Applying angular velocity to rotation quaternion in local space.
-	//
-	//      dq/dt = q * w * t/2
-	//		w = (0, x, y, z)
-	//
-	lqrot += lqrot * wv * (dt / 2.0);
-	lqrot  = glm::normalize(lqrot);
-	lpos  -= lqrot * tv * dt;
+	if (mode == tvFree) {
+		// Free travel mode
+		// Update current position and orientation (local reference frame)
+		// Applying angular velocity to rotation quaternion in local space.
+		//
+		//      dq/dt = q * w * t/2
+		//		w = (0, x, y, z)
+		//
+		lqrot += lqrot * wv * (dt / 2.0);
+		lqrot  = glm::normalize(lqrot);
+		lpos  -= lqrot * tv * dt;
+	}
 
 	// Updating current universal coordinates
 	updateUniversal();
