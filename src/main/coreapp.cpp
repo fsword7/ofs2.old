@@ -66,7 +66,15 @@ void CoreApp::keyPress(keyCode code, int modifiers, bool down)
 
 void CoreApp::keyEntered(wchar_t ch, int modifiers)
 {
-	cout << fmt::sprintf("Key pressed: %c\n", (char)ch) << flush;
+//	cout << fmt::sprintf("Key pressed: %c\n", (char)ch) << flush;
+	switch (ch) {
+	case L'k':
+		engine->setTimeWarp(engine->getTimeWarp() * 2.0);
+		break;
+	case L'l':
+		engine->setTimeWarp(engine->getTimeWarp() / 2.0);
+		break;
+	}
 }
 
 void CoreApp::mouseMove(float x, float y, int state)
