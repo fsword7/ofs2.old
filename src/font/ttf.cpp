@@ -76,7 +76,7 @@ int TrueTypeFont::getMaxDescent() const
 	return 0;
 }
 
-bool TrueTypeFont::loadGlyph(wchar_t ch, Glyph &glyph)
+bool TrueTypeFont::loadGlyph(char32_t ch, Glyph &glyph)
 {
 	FT_GlyphSlot slot = face->glyph;
 
@@ -103,18 +103,27 @@ void TrueTypeFont::initGlyphs()
 
 	// Initial 256 glyphs reserved
 	glyphs.reserve(face->num_glyphs);
-	for (int idx = 0; idx < face->num_glyphs; idx++)
+	for (int gidx = 0; gidx < face->num_glyphs; gidx++)
 	{
-		FT_Load_Glyph(face, idx, FT_LOAD_RENDER);
+		FT_Load_Glyph(face, gidx, FT_LOAD_RENDER);
 
-		glyphs[idx].ax = slot->advance.x >> 6;
-		glyphs[idx].ay = slot->advance.y >> 6;
-		glyphs[idx].bw = slot->bitmap.width;
-		glyphs[idx].bh = slot->bitmap.rows;
-		glyphs[idx].bl = slot->bitmap_left;
-		glyphs[idx].bt = slot->bitmap_top;
+		glyphs[gidx].ch = 0;
+		glyphs[gidx].ax = slot->advance.x >> 6;
+		glyphs[gidx].ay = slot->advance.y >> 6;
+		glyphs[gidx].bw = slot->bitmap.width;
+		glyphs[gidx].bh = slot->bitmap.rows;
+		glyphs[gidx].bl = slot->bitmap_left;
+		glyphs[gidx].bt = slot->bitmap_top;
 	}
 
+	// Assign UNICODE code to glyph table
+	uint32_t gidx;
+	char32_t ch = FT_Get_First_Char(face, &gidx);
+	while ( gidx != 0) {
+//		cout << fmt::sprintf("Glyph index %d: %08X\n", gidx, uint32_t(ch));
+		glyphs[gidx].ch = ch;
+		ch = FT_Get_Next_Char(face, ch, &gidx);
+	}
 }
 
 bool TrueTypeFont::initAtlas()
@@ -170,7 +179,7 @@ TextureFont *TrueTypeFont::load(Context &gl, const fs::path &path, int size, int
 	font->face = face;
 
 	// Initializing atlas database
-//	font->initAtlas();
+	font->initAtlas();
 
 	return font;
 }

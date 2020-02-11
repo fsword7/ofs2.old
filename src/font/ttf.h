@@ -53,7 +53,7 @@ public:
 	int getMaxDescent() const override;
 
 private:
-	bool loadGlyph(wchar_t ch, Glyph &glyph);
+	bool loadGlyph(char32_t ch, Glyph &glyph);
 	void initGlyphs();
 	bool initAtlas();
 
