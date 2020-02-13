@@ -6,8 +6,6 @@
  */
 
 #include "main/core.h"
-#include "font/ttf.h"
-#include "render/gl/context.h"
 #include "render/gl/text.h"
 
 

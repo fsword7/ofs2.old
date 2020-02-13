@@ -5,11 +5,12 @@ set(ofs_cpp_SRCS
 	ephem/precession.cpp
 	ephem/rotation.cpp
 	ephem/orbit.cpp
-	font/ttf.cpp
+#	font/ttf.cpp
 	main/coreapp.cpp
 	main/date.cpp
 	render/gl/buffer.cpp
 	render/gl/context.cpp
+	render/gl/font.cpp
 	render/gl/shader.cpp
 	render/gl/text.cpp
 	render/gl/texture.cpp
@@ -56,14 +57,15 @@ set(ofs_h_SRCS
 	ephem/precession.h
 	ephem/rotation.h
 	ephem/orbit.h
-	font/font.h
-	font/ttf.h
+#	font/font.h
+#	font/ttf.h
 	main/core.h
 	main/coreapp.h
 	main/date.h
 	main/math.h
 	render/gl/buffer.h
 	render/gl/context.h
+	render/gl/font.h
 	render/gl/shader.h
 	render/gl/text.h
 	render/gl/texture.h

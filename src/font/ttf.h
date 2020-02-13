@@ -10,6 +10,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include "render/gl/context.h"
 #include "font/font.h"
 
 class TrueTypeFont : public TextureFont
@@ -17,7 +18,7 @@ class TrueTypeFont : public TextureFont
 private:
 	struct Glyph
 	{
-		wchar_t ch;
+		char32_t ch;
 
 		float ax, ay; // Advance [X, Y]
 		float bw, bh; // Bitmap [width, height]
@@ -53,13 +54,18 @@ public:
 	int getMaxDescent() const override;
 
 private:
-	bool loadGlyph(char32_t ch, Glyph &glyph);
+	void computeTextureSize();
 	void initGlyphs();
 	bool initAtlas();
 
 private:
 	FT_Face face;
 	vector<Glyph> glyphs;
+	Glyph *glyph = nullptr;
+
+	int maxTextureSize = 0;
+	int texWidth = 0;
+	int texHeight = 0;
 
 	static FT_Library font;
 };

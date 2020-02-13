@@ -14,6 +14,8 @@ TrueTypeFont::~TrueTypeFont()
 {
 	if (face != nullptr)
 		FT_Done_Face(face);
+	if (glyph != nullptr)
+		delete [] glyph;
 }
 
 void TrueTypeFont::bind()
@@ -76,44 +78,22 @@ int TrueTypeFont::getMaxDescent() const
 	return 0;
 }
 
-bool TrueTypeFont::loadGlyph(char32_t ch, Glyph &glyph)
-{
-	FT_GlyphSlot slot = face->glyph;
-
-	if (FT_Load_Char(face, ch, FT_LOAD_RENDER) != 0)
-	{
-		glyph.ch = 0;
-		return false;
-	}
-
-	glyph.ch = ch;
-	glyph.ax = slot->advance.x >> 6;
-	glyph.ay = slot->advance.y >> 6;
-	glyph.bw = slot->bitmap.width;
-	glyph.bh = slot->bitmap.rows;
-	glyph.bl = slot->bitmap_left;
-	glyph.bt = slot->bitmap_top;
-
-	return true;
-}
-
 void TrueTypeFont::initGlyphs()
 {
 	FT_GlyphSlot slot = face->glyph;
 
-	// Initial 256 glyphs reserved
-	glyphs.reserve(face->num_glyphs);
+	glyph = new Glyph[face->num_glyphs];
 	for (int gidx = 0; gidx < face->num_glyphs; gidx++)
 	{
 		FT_Load_Glyph(face, gidx, FT_LOAD_RENDER);
 
-		glyphs[gidx].ch = 0;
-		glyphs[gidx].ax = slot->advance.x >> 6;
-		glyphs[gidx].ay = slot->advance.y >> 6;
-		glyphs[gidx].bw = slot->bitmap.width;
-		glyphs[gidx].bh = slot->bitmap.rows;
-		glyphs[gidx].bl = slot->bitmap_left;
-		glyphs[gidx].bt = slot->bitmap_top;
+		glyph[gidx].ch = 0;
+		glyph[gidx].ax = slot->advance.x >> 6;
+		glyph[gidx].ay = slot->advance.y >> 6;
+		glyph[gidx].bw = slot->bitmap.width;
+		glyph[gidx].bh = slot->bitmap.rows;
+		glyph[gidx].bl = slot->bitmap_left;
+		glyph[gidx].bt = slot->bitmap_top;
 	}
 
 	// Assign UNICODE code to glyph table
@@ -121,14 +101,49 @@ void TrueTypeFont::initGlyphs()
 	char32_t ch = FT_Get_First_Char(face, &gidx);
 	while ( gidx != 0) {
 //		cout << fmt::sprintf("Glyph index %d: %08X\n", gidx, uint32_t(ch));
-		glyphs[gidx].ch = ch;
+		glyph[gidx].ch = ch;
 		ch = FT_Get_Next_Char(face, ch, &gidx);
 	}
 }
 
+void TrueTypeFont::computeTextureSize()
+{
+	FT_GlyphSlot slot = face->glyph;
+
+	int roww = 0;
+	int rowh = 0;
+	int w = 0;
+	int h = 0;
+
+	for (int gidx = 0; gidx < face->num_glyphs; gidx++) {
+		if (glyph[gidx].ch == 0)
+			continue;
+		if (roww + glyph[gidx].bw + 1 >= maxTextureSize) {
+			w = max(w, roww);
+			h += rowh;
+			roww = 0;
+			rowh = 0;
+		}
+		roww += glyph[gidx].bw + 1;
+		rowh = max(rowh, (int)glyph[gidx].bh);
+	}
+
+	w = max(w, roww);
+	h += rowh;
+
+	texWidth = w;
+	texHeight = h;
+
+	cout << fmt::sprintf("Texture size: (%d,%d)\n", texWidth, texHeight);
+}
+
 bool TrueTypeFont::initAtlas()
 {
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+//	cout << fmt::sprintf("Maximum texture size: %d\n", maxTextureSize);
+
 	initGlyphs();
+	computeTextureSize();
 
 	return false;
 }

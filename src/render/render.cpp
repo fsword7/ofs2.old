@@ -27,9 +27,10 @@ void Scene::init(int w, int h, Universe &universe)
 
 	// Initialize global parameters
 	TerrainManager::ginit(*this);
+	TextureFont::ginit();
 
-	titleFont = TrueTypeFont::load(gl, "data/fonts/OpenSans-Bold.ttf", 20);
-	textFont =  TrueTypeFont::load(gl, "data/fonts/OpenSans-Regular.ttf", 12);
+	titleFont = TextureFont::load(gl, "data/fonts/OpenSans-Bold.ttf", 20);
+	textFont =  TextureFont::load(gl, "data/fonts/OpenSans-Regular.ttf", 12);
 
 	initStarVertex();
 	initConstellations(universe);
