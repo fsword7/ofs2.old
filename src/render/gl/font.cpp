@@ -34,8 +34,92 @@ void TextureFont::gexit()
 		FT_Done_FreeType(font);
 }
 
+void TextureFont::computeTextureSize()
+{
+//	FT_GlyphSlot slot = face->glyph;
+//
+//	int roww = 0;
+//	int rowh = 0;
+//	int w = 0;
+//	int h = 0;
+//
+//	for (int gidx = 0; gidx < face->num_glyphs; gidx++) {
+//		if (glyph[gidx].ch == 0)
+//			continue;
+//		if (roww + glyph[gidx].bw + 1 >= maxTextureSize) {
+//			w = max(w, roww);
+//			h += rowh;
+//			roww = 0;
+//			rowh = 0;
+//		}
+//		roww += glyph[gidx].bw + 1;
+//		rowh = max(rowh, (int)glyph[gidx].bh);
+//	}
+//
+//	w = max(w, roww);
+//	h += rowh;
+//
+//	texWidth = w;
+//	texHeight = h;
+//
+//	cout << fmt::sprintf("Texture size: (%d,%d)\n", texWidth, texHeight);
+}
+
 void TextureFont::initGlyphs()
 {
+	FT_GlyphSlot slot = face->glyph;
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glyph = new Glyph[face->num_glyphs];
+	for (int gidx = 0; gidx < face->num_glyphs; gidx++) {
+		if (FT_Load_Glyph(face, gidx, FT_LOAD_RENDER))
+			continue;
+
+		GLuint name;
+		glGenTextures(1, &name);
+		glBindTexture(GL_TEXTURE_2D, name);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA,
+			slot->bitmap.width, slot->bitmap.rows,
+			0, GL_ALPHA, GL_UNSIGNED_BYTE,
+			slot->bitmap.buffer);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glyph[gidx].glName = name;
+		glyph[gidx].ax = slot->advance.x >> 6;
+		glyph[gidx].ay = slot->advance.y >> 6;
+		glyph[gidx].bw = slot->bitmap.width;
+		glyph[gidx].bh = slot->bitmap.rows;
+		glyph[gidx].bl = slot->bitmap_left;
+		glyph[gidx].bt = slot->bitmap_top;
+	}
+
+	// Assign UNICODE code to glyph table
+	uint32_t gidx;
+	char32_t ch = FT_Get_First_Char(face, &gidx);
+	while ( gidx != 0) {
+//		cout << fmt::sprintf("Glyph index %d: %08X\n", gidx, uint32_t(ch));
+		glyph[gidx].ch = ch;
+		ch = FT_Get_Next_Char(face, ch, &gidx);
+	}
+
+}
+
+void TextureFont::buildAtlas()
+{
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+//	cout << fmt::sprintf("Maximum texture size: %d\n", maxTextureSize);
+
+//	ShaderManager &smgr = scene.getShaderManager();
+//	pgm = smgr.createShader("text");
+
+	initGlyphs();
+
+
 }
 
 TextureFont *TextureFont::load(Context &gl, const fs::path &path, int size, int dpi)

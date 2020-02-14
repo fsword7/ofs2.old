@@ -17,6 +17,9 @@ class TextureFont
 private:
 	struct Glyph
 	{
+		char32_t ch;
+		GLuint glName;
+
 		float ax, ay;	// Advance [X, Y]
 		float bw, bh;	// Bitmap  [width, height]
 		float bl, bt;	// Bitmap  [left, top]
@@ -34,6 +37,8 @@ public:
 	static void gexit();
 
 private:
+	void computeTextureSize();
+	void buildAtlas();
 	void initGlyphs();
 
 private:
@@ -42,6 +47,10 @@ private:
 	FT_Face face = nullptr;
 	Glyph *glyph = nullptr;
 
+	// Atlas texture
+	int maxTextureSize = 0;
+	int texWidth = 0;
+	int texHeight = 0;
 
 	static FT_Library font;
 };
