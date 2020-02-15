@@ -11,10 +11,10 @@
 #include "universe/body.h"
 #include "universe/star.h"
 
-#include "render/gl/shader.h"
-#include "render/gl/buffer.h"
 #include "render/planet.h"
 #include "render/render.h"
+#include "render/gl/font.h"
+#include "render/gl/text.h"
 
 using namespace ofs::astro;
 using namespace ofs::universe;

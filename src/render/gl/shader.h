@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include "render/context.h"
-
 struct LightState;
 
 namespace ofs::gl {
@@ -78,13 +76,17 @@ private:
 	} lights[8];
 };
 
+class Context;
 class ShaderManager
 {
 public:
-	ShaderManager() = default;
+	ShaderManager(const Context *gl);
 	~ShaderManager() = default;
 
 	ShaderStatus createProgram(ostream &out, const string &vsSource, const string &fsSource, ShaderProgram **pgm);
 	ShaderProgram *buildPrograms(const string &vsSource, const string &fsSource);
 	ShaderProgram *createShader(const string &name);
+
+private:
+	const Context *gl;
 };

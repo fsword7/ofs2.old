@@ -10,9 +10,6 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "render/gl/context.h"
-#include "render/gl/shader.h"
-
 class TextureFont
 {
 private:

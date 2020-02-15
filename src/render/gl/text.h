@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include "render/gl/font.h"
-
 namespace ofs::gl {
 
 };

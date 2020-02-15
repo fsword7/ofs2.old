@@ -9,8 +9,9 @@
 #include "render/context.h"
 
 Context::Context()
+: smgr(this)
 {
-	smgr = new ShaderManager();
+//	smgr = new ShaderManager();
 }
 
 void Context::init(int w, int h)

@@ -6,7 +6,7 @@
  */
 
 #include "main/core.h"
-#include "render/gl/shader.h"
+#include "render/gl/context.h"
 #include "render/render.h"
 
 #include <sys/types.h>
@@ -231,6 +231,11 @@ void ShaderProgram::setLightParameters(LightState *ls,
 }
 
 // ******** Shader Manager ********
+
+ShaderManager::ShaderManager(const Context *gl)
+: gl(gl)
+{
+}
 
 ShaderStatus ShaderManager::createProgram(ostream &out, const string &vsSource, const string &fsSource, ShaderProgram **pgm)
 {

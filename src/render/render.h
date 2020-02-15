@@ -13,8 +13,6 @@
 
 #include "render/context.h"
 #include "render/starcolors.h"
-#include "render/gl/buffer.h"
-#include "render/gl/shader.h"
 
 #define DIST_NEAR	0.0001
 //#define DIST_FAR	1.0e15
@@ -136,7 +134,7 @@ public:
 	Scene() = default;
 	~Scene() = default;
 
-	inline ShaderManager &getShaderManager() { return smgr; }
+	inline ShaderManager &getShaderManager() { return gl.getShaderManager(); }
 	inline const Context *getContext() const { return &gl; }
 	inline Context *getContext() { return &gl; }
 	inline renderParameter *getParameter() { return &prm; }
@@ -192,8 +190,6 @@ private:
 	TextureFont *textFont = nullptr;
 
 	renderParameter prm;
-
-	ShaderManager smgr;
 
 	ShaderProgram *pgmAsterism = nullptr;
 	VertexBuffer *vbufAsterism = nullptr;

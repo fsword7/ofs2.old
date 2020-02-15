@@ -255,7 +255,7 @@ void Scene::initConstellations(const Universe &universe)
 	const StarCatalogue &starlib = *universe.getStarCatalogue();
 	const vector<Asterism *> &asterisms = constellations.getAsterisms();
 
-	pgmAsterism = smgr.createShader("line");
+	pgmAsterism = gl.getShaderManager().createShader("line");
 
 	pgmAsterism->use();
 

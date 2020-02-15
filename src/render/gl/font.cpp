@@ -6,6 +6,7 @@
  */
 
 #include "main/core.h"
+#include "render/gl/context.h"
 #include "render/gl/font.h"
 
 FT_Library TextureFont::font = nullptr;
@@ -157,8 +158,8 @@ void TextureFont::initGlyphs()
 		ch = FT_Get_Next_Char(face, ch, &gidx);
 	}
 
-	ShaderManager *smgr = gl.getShaderManager();
-	pgm = smgr->createShader("text");
+	ShaderManager &smgr = gl.getShaderManager();
+	pgm = smgr.createShader("text");
 
 	// Initialize OpenGL buffers
 	glGenVertexArrays(1, &vao);

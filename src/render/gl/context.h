@@ -8,13 +8,15 @@
 #pragma once
 
 #include <GL/glew.h>
+
 #include "render/gl/shader.h"
+#include "render/gl/buffer.h"
 
 namespace ofs::gl {
 
 };
 
-class ShaderManager;
+//class ShaderManager;
 
 class Context
 {
@@ -35,7 +37,7 @@ public:
 	inline int getHeight() const    { return height; }
 	inline double getAspect() const { return aspect; }
 
-	inline ShaderManager *getShaderManager() { return smgr; }
+	inline ShaderManager &getShaderManager() { return smgr; }
 
 	void resize(int width, int height);
 
@@ -52,5 +54,6 @@ protected:
 	unsigned int vbo = 0;
 	unsigned int ebo = 0;
 
-	ShaderManager *smgr = nullptr;
+//	ShaderManager *smgr = nullptr;
+	ShaderManager smgr;
 };
