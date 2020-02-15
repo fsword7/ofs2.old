@@ -58,6 +58,7 @@ public:
 
 	inline int getID() const { return id; }
 	inline void use() const { glUseProgram(id); }
+	inline void release() const { glUseProgram(0); }
 
 	void attach(const ShaderSource &shader);
 

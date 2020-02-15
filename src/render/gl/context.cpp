@@ -8,6 +8,11 @@
 #include "main/core.h"
 #include "render/context.h"
 
+Context::Context()
+{
+	smgr = new ShaderManager();
+}
+
 void Context::init(int w, int h)
 {
 	resize(w, h);

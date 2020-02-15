@@ -34,6 +34,56 @@ void TextureFont::gexit()
 		FT_Done_FreeType(font);
 }
 
+void TextureFont::render(const string &text, float x, float y, const Color &color)
+{
+	if (pgm == nullptr)
+		return;
+	pgm->use();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(vao);
+
+	mat4f_t proj = glm::ortho(0.0f, float(gl.getWidth()), 0.0f, float(gl.getHeight()));
+
+	uint32_t colorLoc = glGetUniformLocation(pgm->getID(), "colorText");
+    glUniform3f(colorLoc, color.getRed(), color.getGreen(), color.getBlue());
+	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "proj");
+    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
+	string::const_iterator ch;
+	for (ch = text.begin(); ch != text.end(); ch++) {
+		int gidx = FT_Get_Char_Index(face, *ch);
+
+		float xpos = x + glyph[gidx].bw;
+		float ypos = y - (glyph[gidx].bt - glyph[gidx].bh);
+		float w = glyph[gidx].bw;
+		float h = glyph[gidx].bh;
+		float vtx[6][4] = {
+				{ xpos,   ypos+h, 0.0, 0.0 },
+				{ xpos,   ypos,   0.0, 1.0 },
+				{ xpos+w, ypos,   1.0, 1.0 },
+
+				{ xpos,   ypos+h, 0.0, 0.0 },
+				{ xpos+w, ypos,   1.0, 1.0 },
+				{ xpos+w, ypos+h, 1.0, 0.0 },
+		};
+
+		glBindTexture(GL_TEXTURE_2D, glyph[gidx].glName);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vtx), vtx);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		x += glyph[gidx].ax;
+	}
+
+	glDisable(GL_BLEND);
+}
+
 void TextureFont::computeTextureSize()
 {
 //	FT_GlyphSlot slot = face->glyph;
@@ -107,6 +157,19 @@ void TextureFont::initGlyphs()
 		ch = FT_Get_Next_Char(face, ch, &gidx);
 	}
 
+	ShaderManager *smgr = gl.getShaderManager();
+	pgm = smgr->createShader("text");
+
+	// Initialize OpenGL buffers
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 void TextureFont::buildAtlas()

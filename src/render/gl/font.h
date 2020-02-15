@@ -11,6 +11,7 @@
 #include FT_FREETYPE_H
 
 #include "render/gl/context.h"
+#include "render/gl/shader.h"
 
 class TextureFont
 {
@@ -27,7 +28,7 @@ private:
 	};
 
 public:
-	TextureFont(const Context &gl) : gl(gl) {}
+	TextureFont(Context &gl) : gl(gl) {}
 	~TextureFont();
 
 	static TextureFont *load(Context &gl, const fs::path &fname,
@@ -36,13 +37,18 @@ public:
 	static void ginit();
 	static void gexit();
 
+	void render(const string &text, float x, float y, const Color &color);
+
 private:
 	void computeTextureSize();
 	void buildAtlas();
 	void initGlyphs();
 
 private:
-	const Context &gl;
+	Context &gl;
+
+	ShaderProgram *pgm = nullptr;
+	GLuint vao, vbo;
 
 	FT_Face face = nullptr;
 	Glyph *glyph = nullptr;
