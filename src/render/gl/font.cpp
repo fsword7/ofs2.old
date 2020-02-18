@@ -39,6 +39,20 @@ void TextureFont::gexit()
 		FT_Done_FreeType(font);
 }
 
+float TextureFont::getWidth(const string &text)
+{
+	float ax = 0.0f;
+
+	string::const_iterator ch;
+	for (ch = text.begin(); ch != text.end(); ch++) {
+		int gidx = FT_Get_Char_Index(face, *ch);
+
+		ax += glyph[gidx].ax;
+	}
+
+	return ax;
+}
+
 void TextureFont::render(const string &text, float x, float y, const Color &color)
 {
 	if (pgm == nullptr)
@@ -164,6 +178,9 @@ void TextureFont::initGlyphs()
 		glyph[gidx].ch = ch;
 		ch = FT_Get_Next_Char(face, ch, &gidx);
 	}
+
+	maxAscent  = face->size->metrics.ascender >> 6;
+	maxDescent = face->size->metrics.descender >> 6;
 
 	ShaderManager &smgr = gl.getShaderManager();
 	pgm = smgr.createShader("text");

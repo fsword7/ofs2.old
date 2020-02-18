@@ -34,7 +34,12 @@ public:
 	static void ginit();
 	static void gexit();
 
-	void render(const string &text, float x, float y, const Color &color);
+	inline float getHeight()     { return maxAscent + maxDescent; }
+	inline float getMaxAsecent() { return maxAscent; }
+	inline float getMaxDescent() { return maxDescent; }
+
+	float getWidth(const string &text);
+	void  render(const string &text, float x, float y, const Color &color);
 
 private:
 	void computeTextureSize();
@@ -49,6 +54,9 @@ private:
 
 	FT_Face face = nullptr;
 	Glyph *glyph = nullptr;
+
+	float maxAscent;
+	float maxDescent;
 
 	// Atlas texture
 	int maxTextureSize = 0;
