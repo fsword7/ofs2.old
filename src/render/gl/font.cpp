@@ -58,8 +58,8 @@ void TextureFont::render(const string &text, float x, float y, const Color &colo
 	for (ch = text.begin(); ch != text.end(); ch++) {
 		int gidx = FT_Get_Char_Index(face, *ch);
 
-		float xpos = x + glyph[gidx].bw;
-		float ypos = y - (glyph[gidx].bt - glyph[gidx].bh);
+		float xpos = x + glyph[gidx].bl;
+		float ypos = y - (glyph[gidx].bh - glyph[gidx].bt);
 		float w = glyph[gidx].bw;
 		float h = glyph[gidx].bh;
 		float vtx[6][4] = {

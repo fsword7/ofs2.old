@@ -149,6 +149,9 @@ void Scene::render(const Player *player, const Universe *universe)
 	}
 
 	titleFont->render("Earth", 25.0, 25.0, Color(1.0, 0.0, 0.0, 0.0));
+//	titleFont->render("abcdefghijklmnopqrstuvwxyz", 10.0, 20.0, Color(1.0, 1.0, 0.0, 0.0));
+//	titleFont->render("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10.0, 60.0, Color(1.0, 1.0, 0.0, 0.0));
+
 
 	gl.finish();
 }
