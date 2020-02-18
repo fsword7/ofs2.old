@@ -7,7 +7,7 @@
 
 #include "main/core.h"
 #include "render/gl/context.h"
-#include "render/gl/text.h"
+#include "render/text.h"
 #include "render/render.h"
 
 void Scene::renderHeadupPanel()
