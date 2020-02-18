@@ -164,6 +164,7 @@ protected:
 	void renderPlanet(vObject *vobj);
 	void renderPlanetarySystem(const SystemTree *tree);
 
+	void renderOverlay();
 	void renderHeadupPanel();
 
 	// Light source function calls

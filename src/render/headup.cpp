@@ -7,10 +7,15 @@
 
 #include "main/core.h"
 #include "render/gl/context.h"
-#include "render/text.h"
 #include "render/render.h"
+#include "render/overlay.h"
 
 void Scene::renderHeadupPanel()
+{
+
+}
+
+void Scene::renderOverlay()
 {
 
 }
