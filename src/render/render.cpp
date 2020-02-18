@@ -148,5 +148,7 @@ void Scene::render(const Player *player, const Universe *universe)
 		renderPlanetarySystem(tree);
 	}
 
+	titleFont->render("Earth", 25.0, 25.0, Color(1.0, 0.0, 0.0, 0.0));
+
 	gl.finish();
 }

@@ -49,7 +49,7 @@ void TextureFont::render(const string &text, float x, float y, const Color &colo
 
 	mat4f_t proj = glm::ortho(0.0f, float(gl.getWidth()), 0.0f, float(gl.getHeight()));
 
-	uint32_t colorLoc = glGetUniformLocation(pgm->getID(), "colorText");
+	uint32_t colorLoc = glGetUniformLocation(pgm->getID(), "textColor");
     glUniform3f(colorLoc, color.getRed(), color.getGreen(), color.getBlue());
 	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "proj");
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(proj));
@@ -72,12 +72,15 @@ void TextureFont::render(const string &text, float x, float y, const Color &colo
 				{ xpos+w, ypos+h, 1.0, 0.0 },
 		};
 
+//		cout << fmt::sprintf("Render '%lc' => Glyph index %d (%f,%f) at (%f,%f) Advance (%f,%f)\n",
+//			*ch, gidx, w, h, xpos, ypos, glyph[gidx].ax, glyph[gidx].ay);
+
 		glBindTexture(GL_TEXTURE_2D, glyph[gidx].glName);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vtx), vtx);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		x += glyph[gidx].ax;
 	}
@@ -130,9 +133,9 @@ void TextureFont::initGlyphs()
 		GLuint name;
 		glGenTextures(1, &name);
 		glBindTexture(GL_TEXTURE_2D, name);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA,
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,
 			slot->bitmap.width, slot->bitmap.rows,
-			0, GL_ALPHA, GL_UNSIGNED_BYTE,
+			0, GL_RED, GL_UNSIGNED_BYTE,
 			slot->bitmap.buffer);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
