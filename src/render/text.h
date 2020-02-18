@@ -1,5 +1,5 @@
 /*
- * text.h - OpenGL text package (foreground overlay screen)
+ * text.h - text message handler package (foreground overlay screen)
  *
  *  Created on: Jan 23, 2020
  *      Author: Tim Stark
@@ -7,17 +7,19 @@
 
 #pragma once
 
-namespace ofs::gl {
+class TextureFont;
 
-};
-
-class glText
+class Text
 {
 public:
-	glText() = default;
-	~glText() = default;
+	Text() = default;
+	~Text() = default;
 
 	void begin();
 	void end();
 
+	inline void setFont(TextureFont *_font) { font = _font; }
+
+private:
+	TextureFont *font = nullptr;
 };
