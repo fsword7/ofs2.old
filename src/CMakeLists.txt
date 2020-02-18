@@ -21,10 +21,10 @@ set(ofs_cpp_SRCS
 	render/stars.cpp
 	render/system.cpp
 	render/object.cpp
+	render/overlay.cpp
 	render/headup.cpp
 	render/planet.cpp
 	render/terrain.cpp
-	render/text.cpp
 	universe/asterisms.cpp
 	universe/astro.cpp
 	universe/body.cpp
@@ -69,11 +69,11 @@ set(ofs_h_SRCS
 	render/mesh.h
 	render/render.h
 	render/object.h
+	render/overlay.h
 	render/planet.h
 	render/starcolors.h
 	render/stars.h
 	render/terrain.h
-	render/text.h
 	universe/asterisms.h
 	universe/astro.h
 	universe/body.h

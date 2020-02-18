@@ -14,7 +14,6 @@
 #include "render/planet.h"
 #include "render/render.h"
 #include "render/gl/font.h"
-#include "render/text.h"
 
 using namespace ofs::astro;
 using namespace ofs::universe;
