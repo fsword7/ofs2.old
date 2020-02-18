@@ -13,10 +13,14 @@ FT_Library TextureFont::font = nullptr;
 
 TextureFont::~TextureFont()
 {
-	if (face != nullptr)
-		FT_Done_Face(face);
+	for (int gidx = 0; gidx < face->num_glyphs; gidx++) {
+		if (glyph[gidx].glName != 0)
+			glDeleteTextures(1, &glyph[gidx].glName);
+	}
 	if (glyph != nullptr)
 		delete [] glyph;
+	if (face != nullptr)
+		FT_Done_Face(face);
 }
 
 void TextureFont::ginit()
@@ -58,10 +62,10 @@ void TextureFont::render(const string &text, float x, float y, const Color &colo
 	for (ch = text.begin(); ch != text.end(); ch++) {
 		int gidx = FT_Get_Char_Index(face, *ch);
 
-		float xpos = x + glyph[gidx].bl;
-		float ypos = y - (glyph[gidx].bh - glyph[gidx].bt);
-		float w = glyph[gidx].bw;
-		float h = glyph[gidx].bh;
+		float xpos = x + glyph[gidx].bx;
+		float ypos = y - (glyph[gidx].sy - glyph[gidx].by);
+		float w = glyph[gidx].sx;
+		float h = glyph[gidx].sy;
 		float vtx[6][4] = {
 				{ xpos,   ypos+h, 0.0, 0.0 },
 				{ xpos,   ypos,   0.0, 1.0 },
@@ -146,10 +150,10 @@ void TextureFont::initGlyphs()
 		glyph[gidx].glName = name;
 		glyph[gidx].ax = slot->advance.x >> 6;
 		glyph[gidx].ay = slot->advance.y >> 6;
-		glyph[gidx].bw = slot->bitmap.width;
-		glyph[gidx].bh = slot->bitmap.rows;
-		glyph[gidx].bl = slot->bitmap_left;
-		glyph[gidx].bt = slot->bitmap_top;
+		glyph[gidx].sx = slot->bitmap.width;
+		glyph[gidx].sy = slot->bitmap.rows;
+		glyph[gidx].bx = slot->bitmap_left;
+		glyph[gidx].by = slot->bitmap_top;
 	}
 
 	// Assign UNICODE code to glyph table

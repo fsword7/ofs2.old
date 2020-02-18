@@ -19,8 +19,8 @@ private:
 		GLuint glName;
 
 		float ax, ay;	// Advance [X, Y]
-		float bw, bh;	// Bitmap  [width, height]
-		float bl, bt;	// Bitmap  [left, top]
+		float sx, sy;	// Bitmap  [width, height]
+		float bx, by;	// Bearing [left, top]
 		float tx, ty;	// Texture [X, Y]
 	};
 
