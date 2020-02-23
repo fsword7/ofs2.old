@@ -25,6 +25,7 @@ namespace fs = std::filesystem;
 
 #include "util/color.h"
 #include "main/math.h"
+#include "engine/ucs.h"
 
 #define APP_FULL_NAME	"Orbital Flight Simulator"
 #define APP_SHORT_NAME	"OFS"
