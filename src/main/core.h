@@ -16,6 +16,7 @@
 #include <thread>
 #include <mutex>
 #include <filesystem>
+#include <climits>
 
 #include <fmt/printf.h>
 

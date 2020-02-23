@@ -34,6 +34,7 @@ set(ofs_cpp_SRCS
 	universe/system.cpp
 	universe/startree.cpp
 	universe/universe.cpp
+	util/fix128.cpp
 	util/tree.cpp
 )
 
@@ -86,6 +87,7 @@ set(ofs_h_SRCS
 	universe/universe.h
 	universe/xhipdata.h
 	util/color.h
+	util/fix128.h
 	util/tree.h
 )
 
