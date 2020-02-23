@@ -61,3 +61,13 @@ fix128_t::fix128_t(double val)
 		lo = 0;
 	}
 }
+
+fix128_t::operator double() const
+{
+	return 0.0;
+}
+
+fix128_t::operator uint64_t() const
+{
+	return 0;
+}

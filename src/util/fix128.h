@@ -20,11 +20,14 @@ public:
 	fix128_t(uint64_t val);
 	~fix128_t() = default;
 
+	operator double() const;
+	operator uint64_t() const;
+
 	inline fix128_t operator + (const fix128_t &val);
 	inline fix128_t operator - (const fix128_t &val);
 	inline fix128_t operator += (const fix128_t &val);
 	inline fix128_t operator -= (const fix128_t &val);
-	inline fix128_t operator - ();
+	inline fix128_t operator - () const;
 
 	inline bool operator == (const fix128_t &val) const;
 	inline bool operator != (const fix128_t &val) const;
@@ -36,6 +39,11 @@ public:
 	inline bool isNegative() const;
 	inline int sign() const;
 	inline void negate();
+
+//	fix128_t operator * (const fix128_t &val);
+//	fix128_t operator / (const fix128_t &val);
+//	fix128_t operator *= (const fix128_t &val);
+//	fix128_t operator /= (const fix128_t &val);
 
 public:
 	uint64_t hi = 0, lo = 0;
@@ -99,7 +107,7 @@ inline fix128_t fix128_t::operator -= (const fix128_t &val)
 	return *this;
 }
 
-inline fix128_t fix128_t::operator - ()
+inline fix128_t fix128_t::operator - () const
 {
 	fix128_t res = *this;
 
@@ -125,44 +133,28 @@ inline bool fix128_t::operator != (const fix128_t &val) const
 
 inline bool fix128_t::operator < (const fix128_t &val) const
 {
-	if (isNegative() == val.isNegative()) {
-		if (hi == val.hi)
-			return lo < val.lo;
-		else
-			return hi < val.hi;
-	} else
-		return isNegative();
+	if (isNegative() == val.isNegative())
+		return hi == val.hi ? lo < val.lo : hi < val.hi;
+	return isNegative();
 }
 
 inline bool fix128_t::operator <= (const fix128_t &val) const
 {
-	if (isNegative() == val.isNegative()) {
-		if (hi == val.hi)
-			return lo <= val.lo;
-		else
-			return hi < val.hi;
-	} else
-		return isNegative();
+	if (isNegative() == val.isNegative())
+		return hi == val.hi ? lo <= val.lo : hi < val.hi;
+	return isNegative();
 }
 
 inline bool fix128_t::operator > (const fix128_t &val) const
 {
-	if (isNegative() == val.isNegative()) {
-		if (hi == val.hi)
-			return lo > val.lo;
-		else
-			return hi > val.hi;
-	} else
-		return isNegative();
+	if (isNegative() == val.isNegative())
+		return hi == val.hi ? lo > val.lo : hi > val.hi;
+	return isNegative();
 }
 
 inline bool fix128_t::operator >= (const fix128_t &val) const
 {
-	if (isNegative() == val.isNegative()) {
-		if (hi == val.hi)
-			return lo >= val.lo;
-		else
-			return hi > val.hi;
-	} else
-		return isNegative();
+	if (isNegative() == val.isNegative())
+		return hi == val.hi ? lo >= val.lo : hi > val.hi;
+	return isNegative();
 }
