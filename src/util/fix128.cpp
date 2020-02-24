@@ -7,10 +7,11 @@
 
 #include "main/core.h"
 
-static constexpr double POW2_31 = 2147483648.0;
-static constexpr double POW2_32 = 4294967296.0;
-static constexpr double POW2_63 = POW2_32 * POW2_31;
-static constexpr double POW2_64 = POW2_32 * POW2_32;
+// Using std::pow() function call for best accuracy
+static constexpr double POW2_31 = pow(2, 31);
+static constexpr double POW2_32 = pow(2, 32);
+static constexpr double POW2_63 = pow(2, 63);
+static constexpr double POW2_64 = pow(2, 64);
 
 // Fixed point (96.32) format conversion
 static constexpr double WORD0_FACTOR = 1.0 / POW2_32;
