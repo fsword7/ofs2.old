@@ -24,6 +24,9 @@ using namespace std;
 
 namespace fs = std::filesystem;
 
+typedef __int128_t int128_t;
+typedef __uint128_t uint128_t;
+
 #include "util/color.h"
 #include "main/math.h"
 #include "engine/ucs.h"

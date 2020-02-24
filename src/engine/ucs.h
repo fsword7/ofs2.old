@@ -16,6 +16,6 @@ public:
 	~ucs_t() = default;
 
 public:
-	vec3d_t v = vec3d_t(0, 0, 0);
-	fix128_t x, y, z;
+//	fix128_t x, y, z;
+	int128_t x, y, z;
 };

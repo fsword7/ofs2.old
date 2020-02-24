@@ -2,6 +2,7 @@ set(ofs_cpp_SRCS
 	engine/engine.cpp
 	engine/object.cpp
 	engine/player.cpp
+	engine/ucs.cpp
 	ephem/precession.cpp
 	ephem/rotation.cpp
 	ephem/orbit.cpp

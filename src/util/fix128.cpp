@@ -7,21 +7,16 @@
 
 #include "main/core.h"
 
-//static constexpr double POW2_31 = 2147483648.0;
-//static constexpr double POW2_32 = 4294967296.0;
-//static constexpr double POW2_63 = POW2_32 * POW2_31;
-//static constexpr double POW2_64 = POW2_32 * POW2_32;
-
-static constexpr double POW2_31 = LONG_MAX;
-static constexpr double POW2_32 = ULONG_MAX;
-static constexpr double POW2_63 = LLONG_MAX;
-static constexpr double POW2_64 = ULLONG_MAX;
+static constexpr double POW2_31 = 2147483648.0;
+static constexpr double POW2_32 = 4294967296.0;
+static constexpr double POW2_63 = POW2_32 * POW2_31;
+static constexpr double POW2_64 = POW2_32 * POW2_32;
 
 // Fixed point (96.32) format conversion
-static constexpr double WORD0_FACTOR = 1.0 / POW2_64;
-static constexpr double WORD1_FACTOR = 1.0 / POW2_32;
-static constexpr double WORD2_FACTOR = 1.0;
-static constexpr double WORD3_FACTOR = POW2_32;
+static constexpr double WORD0_FACTOR = 1.0 / POW2_32;
+static constexpr double WORD1_FACTOR = 1.0;
+static constexpr double WORD2_FACTOR = POW2_32;
+static constexpr double WORD3_FACTOR = POW2_64;
 
 // Convert integer to fixed (96.32)
 fix128_t::fix128_t(uint64_t val)
