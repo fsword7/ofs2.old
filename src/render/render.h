@@ -140,6 +140,9 @@ public:
 	inline renderParameter *getParameter() { return &prm; }
 	inline double getAspect() const { return gl.getAspect(); }
 
+	inline int getWidth() const { return gl.getWidth(); }
+	inline int getHeight() const { return gl.getHeight(); }
+
 	inline const Engine *getEngine() const { return universe->getEngine(); }
 
 	void init(int width, int height, Universe &universe);

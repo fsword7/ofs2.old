@@ -1,6 +1,7 @@
 set(ofs_cpp_SRCS
 	engine/engine.cpp
 	engine/object.cpp
+	engine/headup.cpp
 	engine/player.cpp
 	engine/ucs.cpp
 	ephem/precession.cpp
@@ -54,6 +55,7 @@ set(ofs_sdl2_cpp_SRCS
 set(ofs_h_SRCS
 	engine/engine.h
 	engine/object.h
+	engine/headup.h
 	engine/player.h
 	ephem/precession.h
 	ephem/rotation.h

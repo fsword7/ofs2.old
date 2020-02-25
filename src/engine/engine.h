@@ -14,6 +14,8 @@
 using namespace ofs::universe;
 
 class Scene;
+class Overlay;
+class TextureFont;
 
 class Engine
 {
@@ -33,11 +35,16 @@ public:
 	inline void setTimeWarp(double scale) { scaleTime = scale; }
 
 	void init(uint32_t height, uint32_t width);
+	void resize(uint32_t width, uint32_t height);
 	void start();
 	void update(double dt);
+	void render();
+
+	// Rendering overlay/headup panel
+	void renderOverlay();
+//	void displayPlanetInfo();
 
 private:
-	Scene   *scene = nullptr;
 	Player   player;
 	Universe universe;
 
@@ -48,4 +55,12 @@ private:
 	// Database parameters
 	string	dataFolder;   // data folder for file access
 	string  systemFolder; // system folder
+
+	// Renderer
+	Scene   *scene = nullptr;
+
+	// Overlay/HUD panel
+	TextureFont *titleFont = nullptr;
+	TextureFont *textFont = nullptr;
+	Overlay     *overlay = nullptr;
 };

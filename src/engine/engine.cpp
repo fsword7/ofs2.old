@@ -12,6 +12,7 @@
 #include "universe/astro.h"
 #include "universe/body.h"
 #include "render/render.h"
+#include "render/overlay.h"
 
 using namespace ofs::astro;
 using namespace ofs::universe;
@@ -35,6 +36,19 @@ void Engine::init(uint32_t height, uint32_t width)
 {
 	scene = new Scene();
 	scene->init(height, width, universe);
+
+	overlay = new Overlay(scene);
+
+	Context *gl = scene->getContext();
+	titleFont = TextureFont::load(*gl, "data/fonts/OpenSans-Bold.ttf", 20);
+	textFont =  TextureFont::load(*gl, "data/fonts/OpenSans-Regular.ttf", 12);
+
+}
+
+void Engine::resize(uint32_t width, uint32_t height)
+{
+	scene->resize(width, height);
+	overlay->reset();
 }
 
 void Engine::start()
@@ -62,4 +76,13 @@ void Engine::update(double dt)
 	// Update current julian time
 	realTime += dt / SECONDS_PER_DAY;
 	player.update(dt, scaleTime);
+}
+
+void Engine::render()
+{
+	if (scene == nullptr)
+		return;
+
+	scene->render(&player, &universe);
+	renderOverlay();
 }

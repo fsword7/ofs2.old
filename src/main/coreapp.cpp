@@ -182,14 +182,16 @@ void CoreApp::render()
 {
 //	if (scene != nullptr && player != nullptr && universe != nullptr)
 //		scene->render(*player, *universe);
-	if (scene != nullptr)
-		scene->render(player, universe);
+//	if (scene != nullptr)
+//		scene->render(player, universe);
+	engine->render();
 }
 
 void CoreApp::resize(int w, int h)
 {
 	width = w;
 	height = h;
-	if (scene != nullptr)
-		scene->resize(w, h);
+	engine->resize(w, h);
+//	if (scene != nullptr)
+//		scene->resize(w, h);
 }
