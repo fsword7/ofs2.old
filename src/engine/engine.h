@@ -42,7 +42,7 @@ public:
 
 	// Rendering overlay/headup panel
 	void renderOverlay();
-//	void displayPlanetInfo();
+	void displayPlanetInfo();
 
 private:
 	Player   player;
