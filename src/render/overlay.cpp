@@ -55,6 +55,6 @@ void Overlay::moveBy(float x, float y)
 
 void Overlay::print(const string &text)
 {
-	yoff -= font->getHeight();
+	yoff -= font->getHeight() + ySpace;
 	font->render(text, xoff, yoff, color);
 }

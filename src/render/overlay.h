@@ -37,6 +37,7 @@ private:
 	bool fontChanged = false;
 	Color color;
 
-	float xoff = 0.0f;
-	float yoff = 0.0f;
+	float xoff   = 0.0f;
+	float yoff   = 0.0f;
+	float ySpace = 3.0f;
 };
