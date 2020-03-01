@@ -11,7 +11,14 @@
 #include "render/gl/font.h"
 
 class TextureFont;
-class Overlay
+
+//class OverlayBuffer : public streambuf
+//{
+//public:
+//	OverlayBuffer();
+//};
+
+class Overlay // : public ostream
 {
 public:
 //	Overlay(Scene *render) : render(render) {}
