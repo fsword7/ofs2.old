@@ -42,6 +42,7 @@ public:
 
 	// Rendering overlay/headup panel
 	void renderOverlay();
+	void displayPlanetocentric(double lon, double lat, double alt);
 	void displayPlanetInfo();
 
 private:
@@ -63,4 +64,5 @@ private:
 	TextureFont *titleFont = nullptr;
 	TextureFont *textFont = nullptr;
 	Overlay     *overlay = nullptr;
+	vec3d_t      lastView;
 };
