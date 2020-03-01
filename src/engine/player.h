@@ -57,9 +57,14 @@ public:
     Player();
     ~Player();
 
-	inline vec3d_t getPosition() const    { return upos; }
-	inline quatd_t getOrientation() const { return uqrot; }
-	inline double  getJulianTime() const  { return jdTime; }
+	inline vec3d_t getPosition() const         { return upos; }
+	inline vec3d_t getLocalPosition() const    { return lpos; }
+	inline quatd_t getOrientation() const      { return uqrot; }
+	inline quatd_t getLocalOrientation() const { return lqrot; }
+	inline double  getRealTime() const         { return realTime; }
+	inline double  getJulianTime() const       { return jdTime; }
+	inline double  getCurrentTime() const      { return jdTime; }
+	inline Object *getSelectedObject() const   { return selectObject; }
 
 	inline vec3d_t getAngularVelocity() { return av; }
 	inline vec3d_t getTravelVelocity()  { return tv; }
@@ -95,6 +100,9 @@ public:
 private:
     // Reference frame
     PlayerFrame *frame = nullptr;
+
+    // Selection object
+    Object *selectObject = nullptr;
 
 	// Universe position, orientation, and velocity
 	vec3d_t	upos, uvec;
