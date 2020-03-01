@@ -60,6 +60,9 @@ namespace ofs::universe {
 
         quatd_t getRotation(double tjd = 0) const override;
 
+        vec3d_t getPlanetocentric(const vec3d_t &pos) const;
+        vec3d_t getPlanetocentricFromEcliptic(const vec3d_t &pos, double tdb) const;
+
     private:
         PlanetarySystem ownSystem;
         FrameTree frame;

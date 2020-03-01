@@ -77,3 +77,20 @@ quatd_t CelestialBody::getRotation(double tjd) const
 	return rot->getRotation(tjd);
 //	return rot->spin(tjd) * rot->getEquatorRotation(tjd);
 }
+
+vec3d_t CelestialBody::getPlanetocentric(const vec3d_t &pos) const
+{
+	vec3d_t w = glm::normalize(pos);
+
+	double lat = acos(w.y) - (PI / 2);
+	double lon = atan2(w.z, -w.x);
+
+	return vec3d_t(lon, lat, glm::length(pos) - getRadius());
+}
+
+vec3d_t CelestialBody::getPlanetocentricFromEcliptic(const vec3d_t &pos, double tdb) const
+{
+	vec3d_t lpos = getBodyFixed(tdb) * pos;
+
+	return getPlanetocentric(lpos);
+}
