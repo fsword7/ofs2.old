@@ -64,6 +64,7 @@ public:
 	inline double  getRealTime() const         { return realTime; }
 	inline double  getJulianTime() const       { return jdTime; }
 	inline double  getCurrentTime() const      { return jdTime; }
+	inline double  getDeltaTime() const        { return deltaTime; }
 	inline Object *getSelectedObject() const   { return selectObject; }
 
 	inline vec3d_t getAngularVelocity() { return av; }
@@ -115,6 +116,7 @@ private:
 	// Current real time and virtual julian time
 	double  realTime;
 	double  jdTime;
+	double  deltaTime;
 
 	travelMode mode = tvFree;
 

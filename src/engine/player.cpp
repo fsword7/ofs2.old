@@ -136,6 +136,7 @@ void Player::update(double dt, double timeTravel)
 {	
 	realTime += dt / SECONDS_PER_DAY;
 	jdTime   += (dt / SECONDS_PER_DAY) * timeTravel;
+	deltaTime = dt;
 
 	if (mode == tvFree) {
 		// Free travel mode
