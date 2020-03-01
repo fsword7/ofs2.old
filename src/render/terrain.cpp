@@ -363,7 +363,7 @@ void TerrainManager::render(renderParameter &prm)
 	prm.obj.orot  = glm::toMat4(prm.obj.oqrot);
 	prm.obj.orad  = body.getRadius();
 
-	// Camera position and oreintation parameters in object reference frame.
+	// Camera position and orientation parameters in object reference frame.
 	prm.obj.cpos   = prm.obj.opos - prm.cpos;
 	prm.obj.cdir   = prm.obj.orot * vec4f_t(prm.obj.cpos, 1.0f);
 	prm.obj.cdist  = glm::length(prm.obj.cdir) / prm.obj.orad;
