@@ -90,7 +90,7 @@ vec3d_t CelestialBody::getPlanetocentric(const vec3d_t &pos) const
 
 vec3d_t CelestialBody::getPlanetocentricFromEcliptic(const vec3d_t &pos, double tdb) const
 {
-	vec3d_t lpos = pos * getBodyFixed(tdb);
+	vec3d_t lpos = pos * glm::conjugate(getBodyFixed(tdb));
 
 	return getPlanetocentric(lpos);
 }
