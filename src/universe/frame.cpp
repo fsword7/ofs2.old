@@ -73,16 +73,16 @@ vec3d_t Frame::fromAstrocentric(const vec3d_t &upos, double tjd)
 {
 	if (center == nullptr)
 		return upos;
-	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
-//	return (center->getPosition(tjd) - upos) * getOrientation(tjd);
+//	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
+	return (center->getPosition(tjd) - upos) * getOrientation(tjd);
 }
 
 vec3d_t Frame::toAstrocentric(const vec3d_t &lpos, double tjd)
 {
 	if (center == nullptr)
 		return lpos;
-	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
-//	return center->getPosition(tjd) + (lpos * glm::conjugate(getOrientation(tjd)));
+//	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
+	return center->getPosition(tjd) + (lpos * glm::conjugate(getOrientation(tjd)));
 }
 
 
