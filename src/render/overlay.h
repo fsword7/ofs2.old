@@ -11,14 +11,20 @@
 #include "render/gl/font.h"
 
 class TextureFont;
+class Overlay;
 
-//class OverlayBuffer : public streambuf
-//{
-//public:
-//	OverlayBuffer();
-//};
+class OverlayBuffer : public streambuf
+{
+public:
+	OverlayBuffer();
 
-class Overlay // : public ostream
+	void set(Overlay *obuf) { overlay = obuf; }
+
+private:
+	Overlay *overlay = nullptr;
+};
+
+class Overlay : public ostream
 {
 public:
 //	Overlay(Scene *render) : render(render) {}
@@ -36,6 +42,8 @@ public:
 	void print(const string &text);
 
 private:
+	OverlayBuffer obuf;
+
 	Scene *render = nullptr;
 
 	float width, height;

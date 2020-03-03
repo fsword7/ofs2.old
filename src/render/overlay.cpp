@@ -9,9 +9,15 @@
 #include "render/render.h"
 #include "render/overlay.h"
 
-Overlay::Overlay(Scene *render)
-: render(render)
+OverlayBuffer::OverlayBuffer()
 {
+	setbuf(nullptr, 0);
+}
+
+Overlay::Overlay(Scene *render)
+: ostream(&obuf), render(render)
+{
+	obuf.set(this);
 	reset();
 }
 
