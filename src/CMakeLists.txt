@@ -108,7 +108,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(
 	${SDL2_INCLUDE_DIRS}
 	${SDL2_IMAGE_INCLUDE_DIRS}
-	${SDL2_TTF_INCLUDE_DIRS}
+#	${SDL2_TTF_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_DIRS}
 	${GLEW_INCLUDE_DIRS}
 	${FREETYPE_INCLUDE_DIRS}
@@ -123,7 +123,7 @@ add_executable(ofs ${ofs_cpp_SRCS} ${ofs_sdl2_cpp_SRCS} ${ofs_h_SRCS} ${ofs_sdl2
 target_link_libraries(ofs
 	${SDL2_LIBRARIES}
 	${SDL2_IMAGE_LIBRARIES}
-	${SDL2_TTF_LIBRARIES}
+#	${SDL2_TTF_LIBRARIES}
 	${OPENGL_LIBRARIES}
 	GLEW::GLEW
 	${ZLIB_LIBRARIES}

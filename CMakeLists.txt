@@ -19,7 +19,7 @@ find_package(Threads REQUIRED)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
-find_package(SDL2_ttf REQUIRED)
+#find_package(SDL2_ttf REQUIRED)
 
 #find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)

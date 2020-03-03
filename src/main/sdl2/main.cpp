@@ -7,7 +7,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+//#include <SDL2/SDL_ttf.h>
 
 #include "main/core.h"
 #include "render/gl/context.h"
@@ -25,10 +25,10 @@ void sdlCoreApp::init()
 	}
 
 	// TTF initialization
-	if (TTF_Init() != 0) {
-		cerr << "OFS: Unable to initialize TTF: " << TTF_GetError() << endl;
-		abort();
-	}
+//	if (TTF_Init() != 0) {
+//		cerr << "OFS: Unable to initialize TTF: " << TTF_GetError() << endl;
+//		abort();
+//	}
 
 	// IMG initialization
 	int imgFlags = IMG_INIT_JPG|IMG_INIT_PNG|IMG_INIT_TIF;
@@ -69,7 +69,7 @@ void sdlCoreApp::init()
 
 void sdlCoreApp::clean()
 {
-	TTF_Quit();
+//	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
