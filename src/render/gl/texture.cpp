@@ -36,24 +36,40 @@ Texture::~Texture()
 int Texture::getFormatComponents(int format)
 {
 	switch (format) {
-		case GL_RGBA:
-			return 4;
-		case GL_RGB:
-			return 3;
-		case GL_LUMINANCE_ALPHA:
-			return 2;
-		case GL_ALPHA:
-		case GL_INTENSITY:
-		case GL_LUMINANCE:
-			return 1;
+	case GL_RGBA:
+		return 4;
+	case GL_RGB:
+		return 3;
+	case GL_LUMINANCE_ALPHA:
+		return 2;
+	case GL_ALPHA:
+	case GL_INTENSITY:
+	case GL_LUMINANCE:
+		return 1;
 
-		case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
-		case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
-		case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
-			return format;
+	case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+		return 3;
+	case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
+	case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
+		return 4;
 
-		default:
-			return 0;
+	default:
+		return 0;
+	}
+}
+
+int Texture::getDataSize(int w, int h, int format)
+{
+	switch (format) {
+	case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+		return ((w + 3) / 4) * ((h + 3) / 4) * 8;
+
+	case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
+	case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
+		return ((w + 3) / 4) * ((h + 3) / 4) * 16;
+
+	default:
+		return h * pad(w * getFormatComponents(format));
 	}
 }
 
@@ -71,7 +87,7 @@ void Texture::load()
     glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     if (isCompressed())
-    	glCompressedTexImage2D(target, 0, GL_RGB, width, height, 0, GL_UNSIGNED_BYTE, data);
+    	glCompressedTexImage2D(target, 0, format, width, height, 0, size, data);
     else
     	glTexImage2D(target, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
@@ -119,14 +135,16 @@ Texture *Texture::loadDDSFromMemory(uint8_t *data, uint32_t size)
 
 	Texture *texImage = new Texture(hdr->dwWidth, hdr->dwHeight);
 	texImage->components = texImage->getFormatComponents(glFormat);
-	texImage->size = hdr->dwWidth * hdr->dwHeight * texImage->components;
+	texImage->format = glFormat;
+	texImage->compressed = true;
+	texImage->size = texImage->getDataSize(hdr->dwWidth, hdr->dwHeight, glFormat);
 	texImage->data = new uint8_t[texImage->size];
 
-	copy(ptr, ptr + texImage->size, texImage->data);
+//    cout << "Image: " << hdr->dwWidth << " X " << hdr->dwHeight << " Depth: " << hdr->dwDepth
+//              << "  MIP Levels: " << hdr->dwMipMapCount << endl;
+//    cout << "  Size: " << texImage->size << " bytes" << endl << flush;
 
-//    std::cout << "Image: " << hdr->dwWidth << " X " << hdr->dwHeight << " Depth: " << hdr->dwDepth
-//              << "  MIP Levels: " << hdr->dwMipMapCount << std::endl;
-//    std::cout << "  Size: " << img->getSize() << " bytes" << std::endl;
+	copy(ptr, ptr + texImage->size, texImage->data);
 
 	return texImage;
 }
@@ -147,6 +165,8 @@ Texture *Texture::loadDDSFromFile(const string& fname)
 	data = new uint8_t[size];
 	ddsFile.read((char *)data, size);
 
+//	cout << "File: " << fname << " Size: " << size << " bytes" << endl << flush;
+
 	Texture *texImage = loadDDSFromMemory(data, size);
 	delete []data;
 
@@ -156,7 +176,11 @@ Texture *Texture::loadDDSFromFile(const string& fname)
 Texture *Texture::create(const string &fname)
 {
 	Texture *texImage = nullptr;
+	const fs::path imgName = fname;
 
+	if (imgName.extension() == ".dds")
+		return loadDDSFromFile(fname);
+	else
 	{
 		SDL_Surface *image = IMG_Load(fname.c_str());
 		if (image == nullptr)

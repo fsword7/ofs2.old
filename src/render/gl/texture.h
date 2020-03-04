@@ -40,15 +40,19 @@ public:
     void load();
 
     int getFormatComponents(int format);
+    int getDataSize(int w, int h, int format);
 
     static Texture *loadDDSFromMemory(uint8_t *data, uint32_t size);
     static Texture *loadDDSFromFile(const string &fname);
     static Texture *create(const string &fname);
 
+    inline int pad(int n) const { return (n + 3) & ~0x3; };
+
 private:
     uint32_t width, height;
     uint32_t size;
 
+    int      format;
     bool     compressed;
 
     uint32_t components = 0;
