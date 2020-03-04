@@ -31,18 +31,25 @@ public:
     Texture(uint32_t width, uint32_t height);
     ~Texture();
 
-    inline bool isLoaded() const { return loadFlag; }
-    inline void bind() const     { glBindTexture(GL_TEXTURE_2D, id); }
-    inline void unbind() const   { glBindTexture(GL_TEXTURE_2D, 0); }
+    inline bool isCompressed() const { return compressed; }
+    inline bool isLoaded() const     { return loadFlag; }
+    inline void bind() const         { glBindTexture(GL_TEXTURE_2D, id); }
+    inline void unbind() const       { glBindTexture(GL_TEXTURE_2D, 0); }
 
     // void bind();
     void load();
 
+    int getFormatComponents(int format);
+
+    static Texture *loadDDSFromMemory(uint8_t *data, uint32_t size);
+    static Texture *loadDDSFromFile(const string &fname);
     static Texture *create(const string &fname);
 
 private:
     uint32_t width, height;
     uint32_t size;
+
+    bool     compressed;
 
     uint32_t components = 0;
 

@@ -66,6 +66,7 @@ set(ofs_h_SRCS
 	main/math.h
 	render/gl/buffer.h
 	render/gl/context.h
+	render/gl/dds.h
 	render/gl/font.h
 	render/gl/shader.h
 	render/gl/texture.h
