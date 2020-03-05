@@ -49,6 +49,7 @@ namespace ofs::universe
 		inline CelestialStar *getStar(int idx)
 			{ return (idx < stars.size()) ? stars[idx] : nullptr; }
 		inline const SystemTree *getSystemTree() const { return &systemTree; }
+		inline const PlanetarySystem *getCelestialBodies() const { return &objects; }
 
 		void addObject(Object *object);
 
