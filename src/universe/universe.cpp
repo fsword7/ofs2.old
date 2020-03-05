@@ -25,10 +25,13 @@ void Universe::init()
 
 	// To removed later...
 
+	CelestialBody *moon;
+
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = new System(sun);
 
 	earth = new CelestialBody("Earth");
+	moon  = new CelestialBody("Moon", earth->getOwnSystem());
 
 	// Earth orbit parameters
 	double T     = 365.256;     // Period (T) [days]
@@ -87,6 +90,30 @@ Object *Universe::find(const string& name) const
 	Object *obj = starlib.find(name);
 	if (obj != nullptr)
 		return obj;
+	return nullptr;
+}
+
+Object *Universe::findObject(const Object *obj, const string &name) const
+{
+	System *sys;
+	const CelestialStar *sun;
+	const CelestialBody *body;
+	const PlanetarySystem *objects;
+
+	switch (obj->getType()) {
+	case objCelestialStar:
+		sun = dynamic_cast<const CelestialStar *>(obj);
+		if ((sys = sun->getSystem()) == nullptr)
+			break;
+		objects = sys->getCelestialBodies();
+		return objects->find(name);
+
+	case objCelestialBody:
+		body = dynamic_cast<const CelestialBody *>(obj);
+		break;
+	}
+
+	// Otherwise, find nothing
 	return nullptr;
 }
 
