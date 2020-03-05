@@ -31,6 +31,8 @@ namespace ofs::universe {
 		void addBody(CelestialBody *body);
 		void removeBody(CelestialBody *body);
 
+		CelestialBody *find(const string &name) const;
+
 	private:
 		// Planetary system parameters
 		System *solarSystem = nullptr;
@@ -67,7 +69,6 @@ namespace ofs::universe {
         PlanetarySystem ownSystem;
         FrameTree frame;
 
-//        PlanetarySystem *ownSystem = nullptr;
         PlanetarySystem *inSystem = nullptr;
     };
 }

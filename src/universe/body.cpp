@@ -40,18 +40,31 @@ void PlanetarySystem::removeBody(CelestialBody *body)
 {
 }
 
+CelestialBody *PlanetarySystem::find(const string &name) const
+{
+	for (auto obj : bodies) {
+//		if (boost::iequals(name, obj->getName()))
+		if (name == obj->getName())
+			return obj;
+	}
+	return nullptr;
+}
+
 // ********** Celestial Body ************
 
 CelestialBody::CelestialBody()
-: Object(ObjectType::objCelestialBody), frame(this), ownSystem(this)
+: Object(ObjectType::objCelestialBody),
+  ownSystem(this),
+  frame(this)
 {
-//	ownSystem = new PlanetarySystem(this);
 }
 
 CelestialBody::CelestialBody(const string &name, PlanetarySystem *system)
-: Object(ObjectType::objCelestialBody, name), frame(this), inSystem(system), ownSystem(this)
+: Object(ObjectType::objCelestialBody, name),
+  ownSystem(this),
+  inSystem(system),
+  frame(this)
 {
-//	ownSystem = new PlanetarySystem(this);
 	if (inSystem != nullptr)
 		inSystem->addBody(this);
 }
