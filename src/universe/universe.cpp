@@ -25,7 +25,7 @@ void Universe::init()
 
 	// To removed later...
 
-	CelestialBody *moon;
+	CelestialBody *earth, *moon;
 
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = new System(sun);
