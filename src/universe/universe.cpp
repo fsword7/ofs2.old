@@ -117,53 +117,29 @@ Object *Universe::findObject(const Object *obj, const string &name) const
 	return nullptr;
 }
 
-//Object *Universe::findChildObject(Object *obj, const string& name) const
-//{
-//	SolarSystem   *sys;
-//	PlanetSystem  *objsys;
-//	CelestialBody *body;
-//
-//	switch(obj->getType()) {
-//	case Object::objCelestialStar:
-//		sys = (dynamic_cast<CelestialStar *>(obj))->getSolarSystem();
-//		if (sys != nullptr) {
-//			objsys = sys->getBodies();
-//			if (objsys != nullptr) {
-//				body = objsys->find(name, false);
-//				if (body != nullptr)
-//					return body;
-//			}
-//		}
-//		break;
-//	case Object::objCelestialBody:
-//		break;
-//	}
-//	return nullptr;
-//}
+Object *Universe::findPath(const string &path) const
+{
+	string::size_type pos = path.find('/', 0);
+	if (pos == string::npos)
+		return find(path);
 
-//Object *Universe::findPath(const string& path) const
-//{
-//	string::size_type pos = path.find('/', 0);
-//
-//	if (pos == string::npos)
-//		return find(path);
-//
-//	string base(path, 0, pos);
-//	Object *obj = find(base);
-//
-//	while(obj != nullptr && pos != string::npos) {
-//		string::size_type nextPos = path.find('/', pos+1);
-//		string::size_type len;
-//
-//		len = ((nextPos == string::npos) ? path.size() : nextPos) - pos - 1;
-//		string name = string(path, pos+1, len);
-//
-//		obj = findChildObject(obj, name);
-//		pos = nextPos;
-//	}
-//
-//	return obj;
-//}
+	string base(path, 0, pos);
+	Object *obj = find(base);
+
+	while(obj != nullptr && pos != string::npos) {
+		string::size_type npos = path.find('/', pos+1);
+		string::size_type len;
+
+		len = ((npos == string::npos) ? path.size() : npos) - pos - 1;
+		string name = string(path, pos+1, len);
+
+		obj = findObject(obj, name);
+		pos = npos;
+	}
+
+	return obj;
+}
+
 
 //class NearStarHandler : public ofsHandler
 //{

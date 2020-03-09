@@ -34,6 +34,7 @@ namespace ofs::universe {
         Object *find(const string& name) const;
         CelestialStar *findStar(const std::string& name) const;
         Object *findObject(const Object *obj, const string &name) const;
+        Object *findPath(const string &path) const;
 
         int findNearStars(const vec3d_t& obs, double mdist,
         		vector<const CelestialStar *>& stars) const;

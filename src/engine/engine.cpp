@@ -66,9 +66,12 @@ void Engine::start()
 
 	// To removed later
 
-	CelestialBody *earth = universe.getEarth();
-	player.go(*earth, earth->getRadius() * 6.0);
-	player.follow(*earth, Player::fwGeosync);
+	Object *earth = universe.findPath("Sol/Earth");
+	if (earth != nullptr) {
+		player.go(*earth, earth->getRadius() * 6.0);
+		player.follow(*earth, Player::fwGeosync);
+	} else
+		cout << "Earth is not found in universe!!" << endl;
 }
 
 void Engine::update(double dt)
