@@ -73,16 +73,34 @@ vec3d_t Frame::fromAstrocentric(const vec3d_t &upos, double tjd)
 {
 	if (center == nullptr)
 		return upos;
-//	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
-	return (center->getPosition(tjd) - upos) * getOrientation(tjd);
+
+	vec3d_t opos = center->getPosition(tjd);
+	quatd_t orot = glm::conjugate(getOrientation(tjd));
+	vec3d_t rpos = (opos - upos) * orot;
+
+//	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
+//		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
+//	cout << fmt::sprintf(" Frame: U(%lf,%lf,%lf) => L(%lf,%lf,%lf)\n",
+//		upos.x, upos.y, upos.z, rpos.x, rpos.y, rpos.z);
+
+	return rpos;
 }
 
 vec3d_t Frame::toAstrocentric(const vec3d_t &lpos, double tjd)
 {
 	if (center == nullptr)
 		return lpos;
-//	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
-	return center->getPosition(tjd) + (lpos * glm::conjugate(getOrientation(tjd)));
+
+	vec3d_t opos = center->getPosition(tjd);
+	quatd_t orot = getOrientation(tjd);
+	vec3d_t rpos = opos + (lpos * orot);
+
+//	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
+//		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
+//	cout << fmt::sprintf(" Frame: L(%lf,%lf,%lf) => U(%lf,%lf,%lf)\n",
+//		lpos.x, lpos.y, lpos.z, rpos.x, rpos.y, rpos.z);
+
+	return rpos;
 }
 
 
@@ -90,15 +108,10 @@ vec3d_t Frame::fromUniversal(const vec3d_t &upos, double tjd)
 {
 	if (center == nullptr)
 		return upos;
-//	return getOrientation(tjd) * (center->getPosition(tjd) - upos);
-//	return (center->getPosition(tjd) - upos) * getOrientation(tjd);
 
 	vec3d_t opos = center->getPosition(tjd);
-//	quatd_t orot = getOrientation(tjd);
 	quatd_t orot = glm::conjugate(getOrientation(tjd));
 	vec3d_t rpos = (opos - upos) * orot;
-//	quatd_t orot = glm::conjugate(getOrientation(tjd));
-//	vec3d_t rpos = orot * (opos - upos);
 
 //	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
 //		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
@@ -112,15 +125,10 @@ vec3d_t Frame::toUniversal(const vec3d_t &lpos, double tjd)
 {
 	if (center == nullptr)
 		return lpos;
-//	return center->getPosition(tjd) + (glm::conjugate(getOrientation(tjd)) * lpos);
-//	return center->getPosition(tjd) + (lpos * glm::conjugate(getOrientation(tjd)));
 
 	vec3d_t opos = center->getPosition(tjd);
-//	quatd_t orot = glm::conjugate(getOrientation(tjd));
 	quatd_t orot = getOrientation(tjd);
 	vec3d_t rpos = opos + (lpos * orot);
-//	quatd_t orot = getOrientation(tjd);
-//	vec3d_t rpos = opos + (orot * lpos);
 
 //	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
 //		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
@@ -135,17 +143,13 @@ quatd_t Frame::fromUniversal(const quatd_t &urot, double tjd)
 {
 	if (center == nullptr)
 		return urot;
-//	return urot * glm::conjugate(getOrientation(tjd));
 	return urot * getOrientation(tjd);
-//	return glm::conjugate(getOrientation(tjd)) * urot;
 }
 
 quatd_t Frame::toUniversal(const quatd_t &lrot, double tjd)
 {
 	if (center == nullptr)
 		return lrot;
-//	return lrot * getOrientation(tjd);
-//	return getOrientation(tjd) * lrot;
 	return glm::conjugate(getOrientation(tjd)) * lrot;
 }
 
