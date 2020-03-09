@@ -110,9 +110,11 @@ Object *Universe::findObject(const Object *obj, const string &name) const
 
 	case objCelestialBody:
 		body = dynamic_cast<const CelestialBody *>(obj);
-//		objects = body->getOwnSystem();
-//		return objects->find(name);
+		objects = body->getOwnSystem();
+		if (objects != nullptr)
+			return objects->find(name);
 		break;
+
 	}
 
 	// Otherwise, find nothing
