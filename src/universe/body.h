@@ -45,12 +45,14 @@ namespace ofs::universe {
     {
     public:
         CelestialBody();
-        CelestialBody(const string &name, PlanetarySystem *system = nullptr);
+        CelestialBody(const string &name, CelestialBody *body = nullptr);
         ~CelestialBody() = default;
+
+        PlanetarySystem *createPlanetarySystem();
 
         inline void setInSystem(PlanetarySystem *system) { inSystem = system; }
 
-        inline PlanetarySystem *getOwnSystem() { return &ownSystem; }
+        inline PlanetarySystem *getOwnSystem() const { return ownSystem; }
         inline PlanetarySystem *getInSystem() const { return inSystem; }
 
         inline FrameTree *getReferenceFrameTree() { return &frame; }
@@ -66,9 +68,9 @@ namespace ofs::universe {
         vec3d_t getPlanetocentricFromEcliptic(const vec3d_t &pos, double tdb) const;
 
     private:
-        PlanetarySystem ownSystem;
         FrameTree frame;
 
+        PlanetarySystem *ownSystem = nullptr;
         PlanetarySystem *inSystem = nullptr;
     };
 }

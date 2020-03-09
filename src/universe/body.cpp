@@ -54,19 +54,26 @@ CelestialBody *PlanetarySystem::find(const string &name) const
 
 CelestialBody::CelestialBody()
 : Object(ObjectType::objCelestialBody),
-  ownSystem(this),
   frame(this)
 {
 }
 
-CelestialBody::CelestialBody(const string &name, PlanetarySystem *system)
+CelestialBody::CelestialBody(const string &name, CelestialBody *body)
 : Object(ObjectType::objCelestialBody, name),
-  ownSystem(this),
-  inSystem(system),
   frame(this)
 {
-	if (inSystem != nullptr)
+	if (body != nullptr) {
+		inSystem = body->createPlanetarySystem();
 		inSystem->addBody(this);
+	}
+}
+
+PlanetarySystem *CelestialBody::createPlanetarySystem()
+{
+	if (ownSystem != nullptr)
+		return ownSystem;
+	ownSystem = new PlanetarySystem(this);
+	return ownSystem;
 }
 
 quatd_t CelestialBody::getBodyFixed(double tjd) const

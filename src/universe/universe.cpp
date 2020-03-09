@@ -31,7 +31,7 @@ void Universe::init()
 	System *solSystem = new System(sun);
 
 	earth = new CelestialBody("Earth");
-	moon  = new CelestialBody("Moon", earth->getOwnSystem());
+	moon  = new CelestialBody("Moon", earth);
 
 	// Earth orbit parameters
 	double T     = 365.256;     // Period (T) [days]
@@ -110,6 +110,8 @@ Object *Universe::findObject(const Object *obj, const string &name) const
 
 	case objCelestialBody:
 		body = dynamic_cast<const CelestialBody *>(obj);
+//		objects = body->getOwnSystem();
+//		return objects->find(name);
 		break;
 	}
 
