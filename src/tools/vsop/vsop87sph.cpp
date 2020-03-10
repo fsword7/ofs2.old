@@ -60,6 +60,12 @@ int main(int argc, char **argv)
 				exit(1);
 			}
 
+			if (lbr < 0 || lbr > 3) {
+				cout << "Bad data type (" << lbr << ") in VSOP data file at line "
+					 << lnum << endl;
+				exit(1);
+			}
+
 			if (lbr != 0 || deg != 0)
 				fmt::fprintf(cout, "\t{ %16.12lf, %16.12lf, %20.12lf }\n};\n\n",
 					0.0, 0.0, 0.0);
