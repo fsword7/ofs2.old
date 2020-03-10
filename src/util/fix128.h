@@ -3,7 +3,7 @@
  *
  * 128-bit fixed point (96.32) provides large celestial space
  * for universal coordinate system within billions of light year coverage
- * and keeping millimeter accuracy. Double-precision floating is
+ * and keeping nanometer accuracy. Double-precision floating is
  * inadequate for accuracy.
  *
  *  Created on: Feb 23, 2020
