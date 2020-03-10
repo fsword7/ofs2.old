@@ -23,6 +23,20 @@ void usage(char *name)
 	exit(1);
 }
 
+void print(double data[2000][3], const char *planet, int lbr, int deg, int terms)
+{
+	fmt::fprintf(cout, "vsop87_%s_%c%d[%d] = {\n",
+		planet, "lbr"[lbr], deg, terms);
+
+	for (int idx = 0; idx < terms; idx++) {
+		fmt::fprintf(cout, "\t{ %16.12lf, %16.12lf, %20.12lf }%c\n",
+			data[idx][0], data[idx][1], data[idx][2],
+			(idx < terms-1) ? ',' : ' ');
+	}
+
+	fmt::fprintf(cout, "};\n\n");
+}
+
 int main(int argc, char **argv)
 {
 	const char *planet = "earth"; // default planet name
@@ -43,16 +57,20 @@ int main(int argc, char **argv)
 
 	string line;
 	int lnum = 0;
+	int terms = 0;
+	int lbr, deg;
+	double data[2000][3];
 
 	while (getline(vsopFile, line)) {
 		lnum++;
 		const char *cline = line.c_str();
 		if (!strncmp(cline, " VSOP87", 7)) {
-//			cout << line << endl;
-			int lbr = (int)cline[41] - (int)'1';
-			int deg = (int)cline[59] - (int)'0';
+			if (terms > 0)
+				print(data, planet, lbr, deg, terms);
+			terms = 0;
 
-//			cout << "LBR " << lbr << " Degree " << deg << endl;
+			lbr = (int)cline[41] - (int)'1';
+			deg = (int)cline[59] - (int)'0';
 
 			if (deg < 0 || deg > 5) {
 				cout << "Bad degree (" << deg << ") in VSOP data file at line "
@@ -66,12 +84,6 @@ int main(int argc, char **argv)
 				exit(1);
 			}
 
-			if (lbr != 0 || deg != 0)
-				fmt::fprintf(cout, "\t{ %16.12lf, %16.12lf, %20.12lf }\n};\n\n",
-					0.0, 0.0, 0.0);
-			fmt::fprintf(cout, "vsop87_%s_%c%d = {\n",
-				planet, "lbr"[lbr], deg);
-
 		} else {
 
 			double a, b, c;
@@ -81,12 +93,15 @@ int main(int argc, char **argv)
 				exit(1);
 			}
 
-			fmt::fprintf(cout, "\t{ %16.12lf, %16.12lf, %20.12lf },\n", a, b, c);
+			data[terms][0] = a;
+			data[terms][1] = b;
+			data[terms][2] = c;
+			terms++;
 		}
 	}
 
-	fmt::fprintf(cout, "\t{ %16.12lf, %16.12lf, %20.12lf }\n};\n",
-		0.0, 0.0, 0.0);
+	if (terms > 0)
+		print(data, planet, lbr, deg, terms);
 
 	vsopFile.close();
 	exit(1);
