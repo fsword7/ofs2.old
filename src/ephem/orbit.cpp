@@ -12,6 +12,41 @@
 using namespace ofs::astro;
 using namespace ofs::ephem;
 
+vec3d_t CachingOrbit::getPosition(double jd)
+{
+	if (jd != lastTime) {
+		lastPosition  = calculatePosition(jd);
+		lastTime      = jd;
+		positionValid = true;
+		velocityValid = false;
+	} else if(positionValid == false) {
+		lastPosition  = calculatePosition(jd);
+		positionValid = true;
+	}
+
+	return lastPosition;
+}
+
+vec3d_t CachingOrbit::getVelocity(double jd)
+{
+	if (jd != lastTime) {
+		lastVelocity  = calculateVelocity(jd);
+		lastTime      = jd;
+		positionValid = false;
+		velocityValid = true;
+	} else if(velocityValid == false) {
+		lastVelocity  = calculateVelocity(jd);
+		velocityValid = true;
+	}
+
+	return lastVelocity;
+}
+
+vec3d_t CachingOrbit::calculateVelocity(double jd) const
+{
+	return vec3d_t(0, 0, 0);
+}
+
 EllipticalOrbit::EllipticalOrbit(double _a, double _e, double _i,
 		double _Om, double _w, double _M0, double _P, double mass, double ep)
 : P(_P), a(_a), e(_e), q(0.0), i(_i), Om(_Om), w(_w), M0(_M0),

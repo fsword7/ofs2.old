@@ -19,6 +19,27 @@ namespace ofs::ephem
 		virtual vec3d_t getVelocity(double jd) = 0;
 	};
 
+	class CachingOrbit : public Orbit
+	{
+	public:
+		CachingOrbit() = default;
+		virtual ~CachingOrbit() = default;
+
+		vec3d_t getPosition(double jd) override;
+		vec3d_t getVelocity(double jd) override;
+
+		virtual vec3d_t calculatePosition(double jd) const = 0;
+		virtual vec3d_t calculateVelocity(double jd) const;
+
+	private:
+		double  lastTime = -numeric_limits<double>::infinity();
+		vec3d_t lastPosition = vec3d_t(0.0, 0.0, 0.0);
+		vec3d_t lastVelocity = vec3d_t(0.0, 0.0, 0.0);
+
+		bool positionValid = false;
+		bool velocityValid = false;
+	};
+
 	class EllipticalOrbit : public Orbit
 	{
 	public:

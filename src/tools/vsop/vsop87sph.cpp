@@ -25,7 +25,7 @@ void usage(char *name)
 
 void print(double data[2000][3], const char *planet, int lbr, int deg, int terms)
 {
-	fmt::fprintf(cout, "vsop87_%s_%c%d[%d] = {\n",
+	fmt::fprintf(cout, "static vsop87_t %s_%c%d[%d] = {\n",
 		planet, "lbr"[lbr], deg, terms);
 
 	for (int idx = 0; idx < terms; idx++) {

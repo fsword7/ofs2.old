@@ -7,6 +7,7 @@ set(ofs_cpp_SRCS
 	ephem/precession.cpp
 	ephem/rotation.cpp
 	ephem/orbit.cpp
+	ephem/vsop87.cpp
 	main/coreapp.cpp
 	main/date.cpp
 	render/gl/buffer.cpp
@@ -60,6 +61,7 @@ set(ofs_h_SRCS
 	ephem/precession.h
 	ephem/rotation.h
 	ephem/orbit.h
+	ephem/vsop87.h
 	main/core.h
 	main/coreapp.h
 	main/date.h

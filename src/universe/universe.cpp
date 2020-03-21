@@ -9,9 +9,11 @@
 #include "universe/astro.h"
 #include "universe/system.h"
 #include "universe/universe.h"
+#include "ephem/vsop87.h"
 
 using namespace ofs::astro;
 using namespace ofs::universe;
+using namespace ofs::ephem;
 
 void Universe::init()
 {
@@ -25,13 +27,22 @@ void Universe::init()
 
 	// To removed later...
 
-	CelestialBody *earth, *moon;
+	CelestialBody *mercury, *venus, *earth, *mars;
+	CelestialBody *jupiter, *saturn, *uranus, *neptune;
+	CelestialBody *moon;
 
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = new System(sun);
 
-	earth = new CelestialBody("Earth");
-	moon  = new CelestialBody("Moon", earth);
+	mercury = new CelestialBody("Mercury");
+	venus   = new CelestialBody("Venus");
+	earth   = new CelestialBody("Earth");
+	moon    = new CelestialBody("Moon", earth);
+	mars    = new CelestialBody("Mars");
+	jupiter = new CelestialBody("Jupiter");
+	saturn  = new CelestialBody("Saturn");
+	uranus  = new CelestialBody("Uranus");
+	neptune = new CelestialBody("Neptune");
 
 	// Earth orbit parameters
 	double T     = 365.256;     // Period (T) [days]
@@ -50,6 +61,7 @@ void Universe::init()
 
 	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
+//	Orbit *orbit = VSOP87Orbit::create("vsop87-earth");
 	RotationModel *erot = new EarthRotationModel();
 
 	earth->setOrbit(orbit);
