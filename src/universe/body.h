@@ -66,6 +66,7 @@ namespace ofs::universe {
 
         vec3d_t getPlanetocentric(const vec3d_t &pos) const;
         vec3d_t getPlanetocentricFromEcliptic(const vec3d_t &pos, double tdb) const;
+        vec3d_t getHeliocentric(double jd) const;
 
     private:
         FrameTree frame;

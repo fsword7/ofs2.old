@@ -98,6 +98,17 @@ quatd_t CelestialBody::getRotation(double tjd) const
 //	return rot->spin(tjd) * rot->getEquatorRotation(tjd);
 }
 
+vec3d_t CelestialBody::getHeliocentric(double jd) const
+{
+	vec3d_t opos = getPosition(jd);
+	vec3d_t hpos = glm::normalize(opos);
+
+	double lat = acos(hpos.y) - (PI / 2);
+	double lon = atan2(hpos.z, -hpos.x);
+
+	return vec3d_t(lon, lat, glm::length(opos));
+}
+
 vec3d_t CelestialBody::getPlanetocentric(const vec3d_t &pos) const
 {
 	vec3d_t w = glm::normalize(pos);
