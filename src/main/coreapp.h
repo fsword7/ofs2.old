@@ -89,8 +89,8 @@ namespace ofs {
 
 		// Mouse controls
 		void mouseMove(float x, float y, int state);
-		void mousePressButtonDown(float x, float y, int button);
-		void mousePressButtonUp(float x, float y, int button);
+		void mousePressButtonDown(float x, float y, int state);
+		void mousePressButtonUp(float x, float y, int state);
 		void mouseDialWheel(float motion);
 
 		// Joystick controls

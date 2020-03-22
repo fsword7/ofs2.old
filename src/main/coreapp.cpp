@@ -111,12 +111,16 @@ void CoreApp::mouseMove(float x, float y, int state)
 	lastY = y;
 }
 
-void CoreApp::mousePressButtonDown(float x, float y, int button)
+void CoreApp::mousePressButtonDown(float x, float y, int state)
 {
 }
 
-void CoreApp::mousePressButtonUp(float x, float y, int button)
+void CoreApp::mousePressButtonUp(float x, float y, int state)
 {
+
+//	if (state & mouseLeftButton) {
+//
+//	}
 }
 
 void CoreApp::mouseDialWheel(float motion)

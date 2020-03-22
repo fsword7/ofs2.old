@@ -133,9 +133,43 @@ void sdlCoreApp::run()
 				break;
 
 			case SDL_MOUSEBUTTONDOWN:
+				mx = event.motion.x;
+				my = event.motion.y;
+
+				state = 0;
+				if (event.motion.state & SDL_BUTTON_LMASK)
+					state |= mouseLeftButton;
+				if (event.motion.state & SDL_BUTTON_MMASK)
+					state |= mouseMiddleButton;
+				if (event.motion.state & SDL_BUTTON_RMASK)
+					state |= mouseRightButton;
+				if (mod & KMOD_CTRL)
+					state |= mouseControlKey;
+				if (mod & KMOD_SHIFT)
+					state |= mouseShiftKey;
+
+				mousePressButtonDown(mx, my, state);
 				break;
+
 			case SDL_MOUSEBUTTONUP:
+				mx = event.motion.x;
+				my = event.motion.y;
+
+				state = 0;
+				if (event.motion.state & SDL_BUTTON_LMASK)
+					state |= mouseLeftButton;
+				if (event.motion.state & SDL_BUTTON_MMASK)
+					state |= mouseMiddleButton;
+				if (event.motion.state & SDL_BUTTON_RMASK)
+					state |= mouseRightButton;
+				if (mod & KMOD_CTRL)
+					state |= mouseControlKey;
+				if (mod & KMOD_SHIFT)
+					state |= mouseShiftKey;
+
+				mousePressButtonUp(mx, my, state);
 				break;
+
 			case SDL_MOUSEWHEEL:
 				break;
 
