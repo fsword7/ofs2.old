@@ -12,6 +12,7 @@
 using namespace ofs::ephem;
 
 #define VSOP_SERIES(series) vsop87s_t(series, ARRAY_SIZE(series))
+#define VSOP_PARAM(series)  (series), ARRAY_SIZE(series)
 
 #include "ephem/vsop87mer.cpp" // Mercury
 #include "ephem/vsop87ven.cpp" // Venus
@@ -58,29 +59,19 @@ vec3d_t VSOP87Orbit::calculatePosition(double jd) const
 	// Julian time since J2000.0
 	double t = (jd - 2451545.0) / 365250.0;
 	double T;
+	int idx;
 
 	// Evaluate series for L (longitude)
-	for (int idx = 0, T = 1.0; idx < nL; idx++) {
+	for (idx = 0, T = 1.0; idx < nL; idx++, T *= t)
 		l += sum(sL[idx], t) * T;
-		T = t * T;
-	}
 
 	// Evaluate series for B (latitude)
-	for (int idx = 0, T = 1.0; idx < nB; idx++) {
+	for (idx = 0, T = 1.0; idx < nB; idx++, T *= t)
 		b += sum(sB[idx], t) * T;
-		T = t * T;
-	}
 
 	// Evaluate series for R (radius)
-	for (int idx = 0, T = 1.0; idx < nR; idx++) {
+	for (idx = 0, T = 1.0; idx < nR; idx++, T *= t)
 		r += sum(sR[idx], t) * T;
-		T = t * T;
-	}
-
-//	fmt::fprintf(cout, "VSOP87 - JD %lf => T %lf P %lf, %lf, %lf\n",
-//		jd, t, glm::degrees(l), glm::degrees(b), r);
-//	fmt::fprintf(cout, "XYZ (%lf, %lf, %lf)\n",
-//		sin(b)*cos(l), cos(b), sin(b)*-sin(l));
 
 	// Convert AU to Kilometer
 	r *= KM_PER_AU;
@@ -98,10 +89,66 @@ vec3d_t VSOP87Orbit::calculateVelocity(double jd) const
 
 Orbit *VSOP87Orbit::create(const string &name)
 {
+	if (name == "vsop87-mercury") {
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(mercury_L),
+										VSOP_PARAM(mercury_B),
+										VSOP_PARAM(mercury_R),
+										365.25);
+		return orbit;
+	}
+
+	if (name == "vsop87-venus") {
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(venus_L),
+										VSOP_PARAM(venus_B),
+										VSOP_PARAM(venus_R),
+										365.25);
+		return orbit;
+	}
+
 	if (name == "vsop87-earth") {
-		Orbit *orbit = new VSOP87Orbit( earth_L, 5,
-										earth_B, 5,
-										earth_R, 5,
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(earth_L),
+										VSOP_PARAM(earth_B),
+										VSOP_PARAM(earth_R),
+										365.25);
+		return orbit;
+	}
+
+	if (name == "vsop87-mars") {
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(mars_L),
+										VSOP_PARAM(mars_B),
+										VSOP_PARAM(mars_R),
+										365.25);
+		return orbit;
+	}
+
+	if (name == "vsop87-jupiter") {
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(jupiter_L),
+										VSOP_PARAM(jupiter_B),
+										VSOP_PARAM(jupiter_R),
+										365.25);
+		return orbit;
+	}
+
+	if (name == "vsop87-saturn") {
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(saturn_L),
+										VSOP_PARAM(saturn_B),
+										VSOP_PARAM(saturn_R),
+										365.25);
+		return orbit;
+	}
+
+	if (name == "vsop87-uranus") {
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(uranus_L),
+										VSOP_PARAM(uranus_B),
+										VSOP_PARAM(uranus_R),
+										365.25);
+		return orbit;
+	}
+
+	if (name == "vsop87-neptune") {
+		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(neptune_L),
+										VSOP_PARAM(neptune_B),
+										VSOP_PARAM(neptune_R),
 										365.25);
 		return orbit;
 	}
