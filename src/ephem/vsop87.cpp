@@ -93,7 +93,7 @@ Orbit *VSOP87Orbit::create(const string &name)
 		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(mercury_L),
 										VSOP_PARAM(mercury_B),
 										VSOP_PARAM(mercury_R),
-										365.25);
+										365.25 * 0.2408);
 		return orbit;
 	}
 
@@ -101,7 +101,7 @@ Orbit *VSOP87Orbit::create(const string &name)
 		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(venus_L),
 										VSOP_PARAM(venus_B),
 										VSOP_PARAM(venus_R),
-										365.25);
+										365.25 * 0.6152);
 		return orbit;
 	}
 
@@ -117,7 +117,7 @@ Orbit *VSOP87Orbit::create(const string &name)
 		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(mars_L),
 										VSOP_PARAM(mars_B),
 										VSOP_PARAM(mars_R),
-										365.25);
+										365.25 * 1.8809);
 		return orbit;
 	}
 
@@ -125,7 +125,7 @@ Orbit *VSOP87Orbit::create(const string &name)
 		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(jupiter_L),
 										VSOP_PARAM(jupiter_B),
 										VSOP_PARAM(jupiter_R),
-										365.25);
+										365.25 * 11.86);
 		return orbit;
 	}
 
@@ -133,7 +133,7 @@ Orbit *VSOP87Orbit::create(const string &name)
 		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(saturn_L),
 										VSOP_PARAM(saturn_B),
 										VSOP_PARAM(saturn_R),
-										365.25);
+										365.25 * 29.4577);
 		return orbit;
 	}
 
@@ -141,7 +141,7 @@ Orbit *VSOP87Orbit::create(const string &name)
 		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(uranus_L),
 										VSOP_PARAM(uranus_B),
 										VSOP_PARAM(uranus_R),
-										365.25);
+										365.25 * 84.0139);
 		return orbit;
 	}
 
@@ -149,7 +149,7 @@ Orbit *VSOP87Orbit::create(const string &name)
 		Orbit *orbit = new VSOP87Orbit( VSOP_PARAM(neptune_L),
 										VSOP_PARAM(neptune_B),
 										VSOP_PARAM(neptune_R),
-										365.25);
+										365.25 * 164.793);
 		return orbit;
 	}
 
