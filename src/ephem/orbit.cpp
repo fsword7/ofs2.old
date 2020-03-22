@@ -12,7 +12,7 @@
 using namespace ofs::astro;
 using namespace ofs::ephem;
 
-vec3d_t CachingOrbit::getPosition(double jd)
+vec3d_t CachingOrbit::getPosition(double jd) const
 {
 	if (jd != lastTime) {
 		lastPosition  = calculatePosition(jd);
@@ -27,7 +27,7 @@ vec3d_t CachingOrbit::getPosition(double jd)
 	return lastPosition;
 }
 
-vec3d_t CachingOrbit::getVelocity(double jd)
+vec3d_t CachingOrbit::getVelocity(double jd) const
 {
 	if (jd != lastTime) {
 		lastVelocity  = calculateVelocity(jd);
@@ -104,7 +104,7 @@ EllipticalOrbit::EllipticalOrbit(const vec3d_t &pos, const vec3d_t &vel, double 
 //
 // delta E = f(E)/f'(E) - M
 
-double EllipticalOrbit::solveElliptic(double e, double M)
+double EllipticalOrbit::solveElliptic(double e, double M) const
 {
 	const double accuracy = 1.0 / 1000000.0;
 	double E = M;
@@ -118,7 +118,7 @@ double EllipticalOrbit::solveElliptic(double e, double M)
 	return E;
 }
 
-double EllipticalOrbit::solveParabolic(double e, double M)
+double EllipticalOrbit::solveParabolic(double e, double M) const
 {
 	const double accuracy = 1.0 / 1000000.0;
 	double D = M;
@@ -132,7 +132,7 @@ double EllipticalOrbit::solveParabolic(double e, double M)
 	return D;
 }
 
-double EllipticalOrbit::solveHyperbolic(double e, double M)
+double EllipticalOrbit::solveHyperbolic(double e, double M) const
 {
 	const double accuracy = 1.0 / 1000000.0;
 	double H = M;
@@ -146,7 +146,7 @@ double EllipticalOrbit::solveHyperbolic(double e, double M)
 	return H;
 }
 
-double EllipticalOrbit::solveForEccentricAnomaly(double M)
+double EllipticalOrbit::solveForEccentricAnomaly(double M) const
 {
 	if (e == 0) {
 		// Circular orbit
@@ -179,7 +179,7 @@ vec3d_t EllipticalOrbit::getPositionAtE(double E)
 //	return vec3d_t(0, 0, 0);
 //}
 
-vec3d_t EllipticalOrbit::getPosition(double jd)
+vec3d_t EllipticalOrbit::getPosition(double jd) const
 {
 	double  meanMotion  = (PI * 2.0) / P;
 	double  meanAnomaly = M0 + (jd - epoch) * meanMotion;
@@ -211,7 +211,7 @@ vec3d_t EllipticalOrbit::getPosition(double jd)
 	return vec3d_t(p.x, p.z, -p.y);
 }
 
-vec3d_t EllipticalOrbit::getVelocity(double jd)
+vec3d_t EllipticalOrbit::getVelocity(double jd) const
 {
 	double  meanMotion  = (PI * 2.0) / P;
 	double  meanAnomaly = M0 + (jd - epoch) * meanMotion;

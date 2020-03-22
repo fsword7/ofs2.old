@@ -15,8 +15,10 @@ namespace ofs::ephem
 		Orbit() = default;
 		virtual ~Orbit() = default;
 
-		virtual vec3d_t getPosition(double jd) = 0;
-		virtual vec3d_t getVelocity(double jd) = 0;
+		virtual vec3d_t getPosition(double jd) const = 0;
+		virtual vec3d_t getVelocity(double jd) const = 0;
+
+		virtual double getPeriod() const = 0;
 	};
 
 	class CachingOrbit : public Orbit
@@ -25,19 +27,20 @@ namespace ofs::ephem
 		CachingOrbit() = default;
 		virtual ~CachingOrbit() = default;
 
-		vec3d_t getPosition(double jd) override;
-		vec3d_t getVelocity(double jd) override;
+		vec3d_t getPosition(double jd) const override;
+		vec3d_t getVelocity(double jd) const override;
 
 		virtual vec3d_t calculatePosition(double jd) const = 0;
 		virtual vec3d_t calculateVelocity(double jd) const;
 
 	private:
-		double  lastTime = -numeric_limits<double>::infinity();
-		vec3d_t lastPosition = vec3d_t(0.0, 0.0, 0.0);
-		vec3d_t lastVelocity = vec3d_t(0.0, 0.0, 0.0);
+		// Must use 'mutable' to allow variables modifiable in const objects.
+		mutable double  lastTime = -numeric_limits<double>::infinity();
+		mutable vec3d_t lastPosition = vec3d_t(0.0, 0.0, 0.0);
+		mutable vec3d_t lastVelocity = vec3d_t(0.0, 0.0, 0.0);
 
-		bool positionValid = false;
-		bool velocityValid = false;
+		mutable bool positionValid = false;
+		mutable bool velocityValid = false;
 	};
 
 	class EllipticalOrbit : public Orbit
@@ -52,15 +55,15 @@ namespace ofs::ephem
 		inline double getPeriod() const { return P; }
 
 		// Kepler's equation
-		double solveElliptic(double e, double M);
-		double solveParabolic(double e, double M);
-		double solveHyperbolic(double e, double M);
+		double solveElliptic(double e, double M) const;
+		double solveParabolic(double e, double M) const;
+		double solveHyperbolic(double e, double M) const;
 
-		double solveForEccentricAnomaly(double M);
+		double solveForEccentricAnomaly(double M) const;
 		vec3d_t getPositionAtE(double E);
 
-		vec3d_t getPosition(double jd) override;
-		vec3d_t getVelocity(double jd) override;
+		vec3d_t getPosition(double jd) const override;
+		vec3d_t getVelocity(double jd) const override;
 
 		// Determine new orbit path by using changing position and velocity
 		// for rocket launch, orbit transfer, etc.

@@ -43,6 +43,8 @@ namespace ofs::ephem
 		vec3d_t calculatePosition(double jd) const override;
 		vec3d_t calculateVelocity(double jd) const override;
 
+		double getPeriod() const { return period; }
+
 	protected:
 		double sum(const vsop87s_t &series, double t) const;
 
