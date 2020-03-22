@@ -12,6 +12,7 @@
 class Engine;
 class Player;
 class Scene;
+class View;
 
 #define OFS_KEY_UP		0
 #define OFS_KEY_DOWN	1
@@ -109,6 +110,8 @@ namespace ofs {
 		Engine   *engine;
 		Universe *universe;
 		Scene *scene = nullptr;
+
+		vector<View *> views;
 
 		// keyboard handle parameters
 		bool	stateKey[512];

@@ -18,14 +18,21 @@ public:
 		viewMultiFunction = 2,
 	};
 
-	View() = default;
+	View(viewType type, Player *player, Scene *renderer,
+			float wx, float wy, float width, float height)
+	: type(type), player(player), renderer(renderer),
+	  width(width), height(height), x(wx), y(wy)
+	{ }
+
 	~View() = default;
 
 	inline viewType getType() const { return type; }
 
-	inline bool isRoot() const { return parent == nullptr; }
+	inline bool isRootView() const { return parent == nullptr; }
+	inline Scene *getRenderer() const { return renderer; }
+	inline Player *getPlayer() const { return player; }
 
-//	void map(float mx, float my, float &pickX, float &pickY);
+	void map(float wx, float wy, float &vx, float &vy) const;
 
 private:
 	viewType type;
@@ -40,6 +47,6 @@ protected:
 	Scene *renderer = nullptr;
 
 	// View screen parameter
-	float width, height;
-	float x, y;
+	float width = 1.0f, height = 1.0f;
+	float x = 0.0f, y = 0.0f;
 };

@@ -7,6 +7,7 @@
 
 #include "main/core.h"
 #include "main/date.h"
+#include "main/view.h"
 #include "engine/engine.h"
 #include "engine/player.h"
 //#include "universe/universe.h"
@@ -57,6 +58,9 @@ void CoreApp::initEngine()
 	player = engine->getPlayer();
 	universe = engine->getUniverse();
 	scene = engine->getScene();
+
+	View *view = new View(View::viewMainWindow, player, scene, 0.0f, 0.0f, 1.0f, 1.0f);
+	views.push_back(view);
 }
 
 void CoreApp::keyPress(keyCode code, int modifiers, bool down)
