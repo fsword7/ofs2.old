@@ -40,6 +40,11 @@ public:
     inline void setOrbit(Orbit *orbit)                { this->orbit = orbit; }
     inline void setRotation(RotationModel *rot)       { this->rot = rot; }
 
+//    inline bool checkAnyFlags(uint64_t flags) const
+//    	{ return objFlags & flags; }
+//    inline bool checkAllFlags(uint64_t flags) const
+//    	{ return (objFlags & flags) == flags; }
+
     inline double getRadius() const { return objRadius; }
     inline ObjectType getType() const { return objType; }
 //    inline SystemTree *getSystemTree() const { return sysTree; }
@@ -56,14 +61,15 @@ private:
 protected:
     vector<string> objNames;
 
-	double  objRadius;		// Object radius
-	vec3d_t objSemiAxes;	// Object semi-axes
-	double  objMass;		// Object mass
-	double  objAlbedo;		// Object albedo
+    uint64_t objFlags;		// Object flags
+	double   objRadius;		// Object radius
+	vec3d_t  objSemiAxes;	// Object semi-axes
+	double   objMass;		// Object mass
+	double   objAlbedo;		// Object albedo
 
-	vec3d_t objPosition;	// Object current position
-	vec3d_t objVelocity;    // Object current velocity
-	quatd_t objRotation;	// Object orientation
+	vec3d_t  objPosition;	// Object current position
+	vec3d_t  objVelocity;   // Object current velocity
+	quatd_t  objRotation;	// Object orientation
 
 //	// Planetary system parameters
 //	SystemTree     *sysTree = nullptr;
