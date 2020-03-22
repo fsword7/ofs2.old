@@ -10,6 +10,7 @@ set(ofs_cpp_SRCS
 	ephem/vsop87.cpp
 	main/coreapp.cpp
 	main/date.cpp
+	main/view.cpp
 	render/gl/buffer.cpp
 	render/gl/context.cpp
 	render/gl/font.cpp
@@ -66,6 +67,7 @@ set(ofs_h_SRCS
 	main/coreapp.h
 	main/date.h
 	main/math.h
+	main/view.h
 	render/gl/buffer.h
 	render/gl/context.h
 	render/gl/dds.h
