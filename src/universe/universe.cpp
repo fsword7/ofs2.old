@@ -45,28 +45,37 @@ void Universe::init()
 	neptune = new CelestialBody("Neptune");
 
 	// Earth orbit parameters
-	double T     = 365.256;     // Period (T) [days]
-	double a     = 1.00000011;  // Semimajor Axis (a) [AU]
-	double e     = 0.01671022;  // Eccentricity (e)
-	double i     = 0.00005;     // Inclination (i) [deg]
-	double Omega = -11.26064;   // Longitude of ascending node (Omega) [deg]
-	double n     = 348.7;       // Ascending node (n) [deg]
-	double W     = 102.94719;   // Longitude of perihelion (W) [deg]
-	double L     = 100.46435;   // Mean longitude at Epoch (L0) [deg]
+//	double T     = 365.256;     // Period (T) [days]
+//	double a     = 1.00000011;  // Semimajor Axis (a) [AU]
+//	double e     = 0.01671022;  // Eccentricity (e)
+//	double i     = 0.00005;     // Inclination (i) [deg]
+//	double Omega = -11.26064;   // Longitude of ascending node (Omega) [deg]
+//	double n     = 348.7;       // Ascending node (n) [deg]
+//	double W     = 102.94719;   // Longitude of perihelion (W) [deg]
+//	double L     = 100.46435;   // Mean longitude at Epoch (L0) [deg]
+//
+////	double w     = 288.1;       // Argument of perigee (w)
+//
+//	double w     = W - n;        // Argument of perigee (w)
+//	double M0    = L - (w + n);  // Mean Anomaly at Epoch (M0)
 
-//	double w     = 288.1;       // Argument of perigee (w)
+//	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
+//			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
+//	earth->setOrbit(orbit);
 
-	double w     = W - n;        // Argument of perigee (w)
-	double M0    = L - (w + n);  // Mean Anomaly at Epoch (M0)
-
-	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
-			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
-//	Orbit *orbit = VSOP87Orbit::create("vsop87-earth");
-	RotationModel *erot = new EarthRotationModel();
-
-	earth->setOrbit(orbit);
-	earth->setRotation(erot);
+	earth->setRotation(new EarthRotationModel());
     earth->setRadius(6371.0);
+
+    mercury->setOrbit(VSOP87Orbit::create("vsop87-mercury"));
+    venus->setOrbit(VSOP87Orbit::create("vsop87-venus"));
+    earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
+    mars->setOrbit(VSOP87Orbit::create("vsop87-mars"));
+    jupiter->setOrbit(VSOP87Orbit::create("vsop87-jupiter"));
+    saturn->setOrbit(VSOP87Orbit::create("vsop87-saturn"));
+    uranus->setOrbit(VSOP87Orbit::create("vsop87-uranus"));
+    neptune->setOrbit(VSOP87Orbit::create("vsop87-neptune"));
+
+//    moon->setOrbit(VSOP87Orbit::create("elp82a-lunar"));
 
     solSystem->addObject(earth);
 }
