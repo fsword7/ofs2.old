@@ -129,7 +129,7 @@ void sdlCoreApp::run()
 
 				if (views.size() > 0) {
 					view = views[0];
-					view->map(mx, my, vx, vy);
+					view->map(mx/float(width), my/float(height), vx, vy);
 				}
 
 				title = fmt::sprintf("%s X: %d Y: %d (%f,%f) State: %c%c%c%c%c\n",

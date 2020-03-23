@@ -63,6 +63,13 @@ void CoreApp::initEngine()
 	views.push_back(view);
 }
 
+View *CoreApp::pickView(float x, float y)
+{
+	if (views.size() > 0)
+		return views[0];
+	return nullptr;
+}
+
 void CoreApp::keyPress(keyCode code, int modifiers, bool down)
 {
 	stateKey[code] = down;
@@ -121,10 +128,16 @@ void CoreApp::mousePressButtonDown(float x, float y, int state)
 
 void CoreApp::mousePressButtonUp(float x, float y, int state)
 {
+	View *view = nullptr;
+	float vx = 0.0f, vy = 0.0f;
 
-//	if (state & mouseLeftButton) {
-//
-//	}
+	if (state & mouseLeftButton) {
+		view = pickView(x, y);
+		if (view != nullptr)
+			view->map(x/float(width), y/float(height), vx, vy);
+
+
+	}
 }
 
 void CoreApp::mouseDialWheel(float motion)

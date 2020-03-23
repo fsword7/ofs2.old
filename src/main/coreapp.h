@@ -99,6 +99,8 @@ namespace ofs {
 		// Joystick controls
 		// GameController controls
 
+		View *pickView(float x, float y);
+
 		void start();
 		void tick();
 		void render();
