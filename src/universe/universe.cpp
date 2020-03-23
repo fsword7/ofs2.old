@@ -165,6 +165,10 @@ Object *Universe::findPath(const string &path) const
 	return obj;
 }
 
+Object *Universe::pickObject() const
+{
+	return nullptr;
+}
 
 //class NearStarHandler : public ofsHandler
 //{
