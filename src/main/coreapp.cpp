@@ -136,6 +136,7 @@ void CoreApp::mousePressButtonUp(float x, float y, int state)
 		if (view != nullptr)
 			view->map(x/float(width), y/float(height), vx, vy);
 
+		vec3d_t ray = player->getRay(vx, vy);
 
 	}
 }

@@ -26,6 +26,8 @@ public:
 	inline double getAspect() const { return aspect; }
 	inline double getTanAp() const { return tanap; }
 
+	vec3d_t getRay(float vx, float vy) const;
+
 	void setViewport(uint32_t width, uint32_t height);
 	void setFieldOfView(double fov);
 
@@ -74,6 +76,7 @@ public:
 	inline const Object *getCenter() const { return frame->getCenter(); }
 
     Camera *getCamera(int idx) const;
+	vec3d_t getRay(float vx, float vy) const;
 	
 	void setPosition(vec3d_t pos);
 	void setOrientation(quatd_t rot);

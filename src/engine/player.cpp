@@ -55,6 +55,13 @@ void Camera::focus(Object *obj)
 
 }
 
+vec3d_t Camera::getRay(float vx, float vy) const
+{
+	float s = float(2.0 * tan(fov/2.0));
+
+	return glm::normalize(vec3d_t(vx * s, vy * s, -1.0));
+}
+
 void Camera::update()
 {
 	camPosition = player->getPosition();
@@ -92,6 +99,13 @@ Camera *Player::getCamera(int idx) const
 	if (idx < camera.size())
 		return camera[idx];
 	return nullptr;
+}
+
+vec3d_t Player::getRay(float vx, float vy) const
+{
+	if (camera.size() > 0)
+		return camera[0]->getRay(vx, vy);
+	return vec3d_t(0, 0, 0);
 }
 
 void Player::setPosition(vec3d_t pos)
