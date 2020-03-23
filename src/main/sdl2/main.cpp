@@ -10,6 +10,7 @@
 //#include <SDL2/SDL_ttf.h>
 
 #include "main/core.h"
+#include "main/view.h"
 #include "render/gl/context.h"
 #include "main/sdl2/coreapp.h"
 
@@ -74,6 +75,11 @@ void sdlCoreApp::clean()
 	SDL_Quit();
 }
 
+void sdlCoreApp::display(const string &title) const
+{
+	SDL_SetWindowTitle(dWindow, title.c_str());
+}
+
 void sdlCoreApp::run()
 {
 	bool running = true;
@@ -82,6 +88,8 @@ void sdlCoreApp::run()
 	int  state;
 	string title;
 	uint16_t mod;
+	View *view = nullptr;
+	float vx = 0.0f, vy = 0.0f;
 
 	start();
 	while (running) {
@@ -119,15 +127,19 @@ void sdlCoreApp::run()
 				if (mod & KMOD_SHIFT)
 					state |= mouseShiftKey;
 
-				title = fmt::sprintf("%s X: %d Y: %d State: %c%c%c%c%c\n",
-					APP_FULL_NAME, mx, my,
+				if (views.size() > 0) {
+					view = views[0];
+					view->map(mx, my, vx, vy);
+				}
+
+				title = fmt::sprintf("%s X: %d Y: %d (%f,%f) State: %c%c%c%c%c\n",
+					APP_FULL_NAME, mx, my, vx, vy,
 					(state & mouseLeftButton   ? 'L' : '-'),
 					(state & mouseMiddleButton ? 'M' : '-'),
 					(state & mouseRightButton  ? 'R' : '-'),
 					(state & mouseControlKey   ? 'C' : '-'),
 					(state & mouseShiftKey     ? 'S' : '-'));
-
-				SDL_SetWindowTitle(dWindow, title.c_str());
+				display(title);
 
 				mouseMove(mx, my, state);
 				break;

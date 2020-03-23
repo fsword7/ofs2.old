@@ -79,6 +79,8 @@ namespace ofs {
 		virtual void clean() = 0;
 		virtual void run() = 0;
 
+		virtual void display(const string &title) const = 0;
+
 		void initRenderer();
 		void initEngine();
 
@@ -104,14 +106,13 @@ namespace ofs {
 
 	protected:
 		int width, height;
+		vector<View *> views;
 
 	private:
 		Player   *player;
 		Engine   *engine;
 		Universe *universe;
 		Scene *scene = nullptr;
-
-		vector<View *> views;
 
 		// keyboard handle parameters
 		bool	stateKey[512];

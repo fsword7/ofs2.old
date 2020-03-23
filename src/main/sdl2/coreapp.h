@@ -19,6 +19,8 @@ public:
 	void clean();
 	void run();
 
+	void display(const string &title) const;
+
 	void pressKeyEvent(SDL_KeyboardEvent *key, bool down);
 
 private:
