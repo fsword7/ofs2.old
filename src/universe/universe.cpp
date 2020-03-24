@@ -44,24 +44,8 @@ void Universe::init()
 	uranus  = new CelestialBody("Uranus");
 	neptune = new CelestialBody("Neptune");
 
-	// Earth orbit parameters
-//	double T     = 365.256;     // Period (T) [days]
-//	double a     = 1.00000011;  // Semimajor Axis (a) [AU]
-//	double e     = 0.01671022;  // Eccentricity (e)
-//	double i     = 0.00005;     // Inclination (i) [deg]
-//	double Omega = -11.26064;   // Longitude of ascending node (Omega) [deg]
-//	double n     = 348.7;       // Ascending node (n) [deg]
-//	double W     = 102.94719;   // Longitude of perihelion (W) [deg]
-//	double L     = 100.46435;   // Mean longitude at Epoch (L0) [deg]
-//
-////	double w     = 288.1;       // Argument of perigee (w)
-//
-//	double w     = W - n;        // Argument of perigee (w)
-//	double M0    = L - (w + n);  // Mean Anomaly at Epoch (M0)
-
 //	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 //			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
-//	earth->setOrbit(orbit);
 
 	earth->setRotation(new EarthRotationModel());
     earth->setRadius(6371.0);
@@ -165,8 +149,37 @@ Object *Universe::findPath(const string &path) const
 	return obj;
 }
 
-Object *Universe::pickObject() const
+//Object *Universe::pickStar() const
+//{
+//	return nullptr;
+//}
+
+//Object *Universe::pickPlanet() const
+//{
+//	return nullptr;
+//}
+
+Object *Universe::pickObject()
 {
+//	vec3d_t origin = player->getPosition();
+
+	closeStars.clear();
+//	findNearStars(origin, 1.0, closeStars);
+//	cout << "Closest star list: (" << nearStars.size() << " stars)" << endl;
+//	for(const CelestialStar *star : nearStars) {
+//		if (star->getHIPNumber() == 0)
+//			cout << "HIP " << star->getHIPNumber() << " " << star->getName()
+//			<< " Distance: " << glm::length(star->getPosition(0)) << endl;
+//	}
+
+//	for (int idx = 0; idx < nearStars.size(); idx++) {
+//		const CelestialStar *sun = nearStars[idx];
+//
+//		if (!sun->hasSystem())
+//			continue;
+//		obj = pickPlanet(sun->getSystem());
+//	}
+
 	return nullptr;
 }
 

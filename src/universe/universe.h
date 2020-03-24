@@ -36,7 +36,7 @@ namespace ofs::universe {
         Object *findObject(const Object *obj, const string &name) const;
         Object *findPath(const string &path) const;
 
-        Object *pickObject() const;
+        Object *pickObject();
 
         int findNearStars(const vec3d_t& obs, double mdist,
         		vector<const CelestialStar *>& stars) const;
@@ -44,6 +44,8 @@ namespace ofs::universe {
     private:
         StarCatalogue starlib;
         Constellations asterism;
+
+        vector<CelestialStar *> closeStars;
 
         Engine *engine = nullptr;
     };
