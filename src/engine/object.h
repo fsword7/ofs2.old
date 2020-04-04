@@ -14,6 +14,8 @@
 using namespace ofs::universe;
 using namespace ofs::ephem;
 
+#define OBJ_INVISIBLE  0x8000000000000000L
+
 enum ObjectType {
     objUnknown = 0,
     objCelestialBody,
@@ -31,6 +33,7 @@ public:
 
     inline void setName(const string &name) { objNames[0] = name; }
 
+    inline void setColor(Color color) { objColor = color; }
     inline void setPosition(vec3d_t pos) { objPosition = pos; }
     inline void setVelocity(vec3d_t vel) { objVelocity = vel; }
     inline void setRadius(float rad) { objRadius = rad; }
@@ -45,6 +48,12 @@ public:
 //    inline bool checkAllFlags(uint64_t flags) const
 //    	{ return (objFlags & flags) == flags; }
 
+    inline void setFlag(uint64_t flag)   { objFlags |= flag; }
+    inline void clearFlag(uint64_t flag) { objFlags &= ~flag; }
+    inline void clearAllFlags()          { objFlags = 0; }
+
+    inline uint64_t getFlags() const { return objFlags; }
+    inline Color getColor() const { return objColor; }
     inline double getRadius() const { return objRadius; }
     inline ObjectType getType() const { return objType; }
 //    inline SystemTree *getSystemTree() const { return sysTree; }
@@ -61,11 +70,12 @@ private:
 protected:
     vector<string> objNames;
 
-    uint64_t objFlags;		// Object flags
-	double   objRadius;		// Object radius
-	vec3d_t  objSemiAxes;	// Object semi-axes
-	double   objMass;		// Object mass
-	double   objAlbedo;		// Object albedo
+    Color		objColor;		// Object color (default)
+    uint64_t	objFlags;		// Object flags
+	double		objRadius;		// Object radius
+	vec3d_t		objSemiAxes;	// Object semi-axes
+	double		objMass;		// Object mass
+	double		objAlbedo;		// Object albedo
 
 	vec3d_t  objPosition;	// Object current position
 	vec3d_t  objVelocity;   // Object current velocity
