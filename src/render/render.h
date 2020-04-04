@@ -52,6 +52,7 @@ struct renderParameter
 
 	// Object parameters (reference frame)
 	struct {
+		Color    color;
 		uint32_t maxLOD;
 		uint32_t biasLOD;
 		vec3d_t  opos;

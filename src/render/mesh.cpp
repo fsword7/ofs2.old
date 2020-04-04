@@ -40,13 +40,15 @@ void Mesh::render(const Context *gl, renderParameter &prm)
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
 
+	Color color = prm.obj.color;
     if (texImage != nullptr) {
         if (texImage->isLoaded() == false)
             texImage->load();
         glActiveTexture(GL_TEXTURE0);   
         texImage->bind();
     } else {
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        glColor4f(color.getRed(), color.getGreen(),
+        		  color.getBlue(), color.getAlpha());
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     

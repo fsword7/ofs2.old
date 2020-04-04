@@ -356,6 +356,7 @@ void TerrainManager::render(renderParameter &prm)
 
 	prm.obj.maxLOD = 18;
 	prm.obj.biasLOD = 0;
+	prm.obj.color = body.getColor();
 
 	// Object position and orientation parameters
 	prm.obj.opos  = body.getPosition(prm.now);
