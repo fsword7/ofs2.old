@@ -129,6 +129,22 @@ struct Annotation
 	double	size;
 };
 
+struct ObjectListEntry
+{
+	Object *object;		// Object
+
+	vec3d_t opos;		// Object position
+	vec3d_t spos;		// Sun position
+
+	double  dist;		// Distance
+	double	discSize;	// Disc size (in pixels)
+	double  appMag;		// Apparent magnitude
+
+	double	zNear;		// Near Z clipping
+	double	zCenter;	// Center Z clipping
+	double	zFar;		// Far Z clipping
+};
+
 class Scene
 {
 public:
@@ -187,6 +203,7 @@ private:
 	vector<const CelestialStar *> nearStars;
 	vector<vObject *> vobjList;
 	vector<LightSource> lightSources;
+	vector<ObjectListEntry> objectList;
 
 	StarColors *starColors = nullptr;
 	StarRenderer  *starRenderer = nullptr;

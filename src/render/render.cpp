@@ -101,6 +101,7 @@ void Scene::render(const Player *player, const Universe *universe)
 	this->player = player;
 	this->universe = universe;
 	
+	objectList.clear();
 	nearStars.clear();
 	lightSources.clear();
 
