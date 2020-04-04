@@ -47,16 +47,37 @@ void Universe::init()
 //	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 //			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
 
+    mercury->setFlag(OBJ_INVISIBLE);
+    mercury->setColor(Color(1.0, 0.794, 0.580));
+    mercury->setOrbit(VSOP87Orbit::create("vsop87-mercury"));
+
+    venus->setFlag(OBJ_INVISIBLE);
+    venus->setColor(Color(1, 1, 1));
+    venus->setOrbit(VSOP87Orbit::create("vsop87-venus"));
+
+    earth->setColor(Color(0,856, 0.910, 1.0));
+    earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
 	earth->setRotation(new EarthRotationModel());
     earth->setRadius(6371.0);
 
-    mercury->setOrbit(VSOP87Orbit::create("vsop87-mercury"));
-    venus->setOrbit(VSOP87Orbit::create("vsop87-venus"));
-    earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
+    mars->setFlag(OBJ_INVISIBLE);
+    mars->setColor(Color(1.0, 0.75, 0.7));
     mars->setOrbit(VSOP87Orbit::create("vsop87-mars"));
+
+    jupiter->setFlag(OBJ_INVISIBLE);
+    jupiter->setColor(Color(1.0, 0.908, 0.720));
     jupiter->setOrbit(VSOP87Orbit::create("vsop87-jupiter"));
+
+    saturn->setFlag(OBJ_INVISIBLE);
+    saturn->setColor(Color(1.0, 0.735, 0.486));
     saturn->setOrbit(VSOP87Orbit::create("vsop87-saturn"));
+
+    uranus->setFlag(OBJ_INVISIBLE);
+    uranus->setColor(Color(0.606, 0.948, 1.0));
     uranus->setOrbit(VSOP87Orbit::create("vsop87-uranus"));
+
+    neptune->setFlag(OBJ_INVISIBLE);
+    neptune->setColor(Color(0.523, 0.848, 1.0));
     neptune->setOrbit(VSOP87Orbit::create("vsop87-neptune"));
 
 //    moon->setOrbit(VSOP87Orbit::create("elp82a-lunar"));
