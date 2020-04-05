@@ -34,15 +34,15 @@ void Universe::init()
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = new System(sun);
 
-	mercury = new CelestialBody("Mercury");
-	venus   = new CelestialBody("Venus");
-	earth   = new CelestialBody("Earth");
-	moon    = new CelestialBody("Moon", earth);
-	mars    = new CelestialBody("Mars");
-	jupiter = new CelestialBody("Jupiter");
-	saturn  = new CelestialBody("Saturn");
-	uranus  = new CelestialBody("Uranus");
-	neptune = new CelestialBody("Neptune");
+	mercury = new CelestialBody("Mercury", CelestialBody::ctPlanet);
+	venus   = new CelestialBody("Venus", CelestialBody::ctPlanet);
+	earth   = new CelestialBody("Earth", CelestialBody::ctPlanet);
+	moon    = new CelestialBody("Moon", CelestialBody::ctMoon, earth);
+	mars    = new CelestialBody("Mars", CelestialBody::ctPlanet);
+	jupiter = new CelestialBody("Jupiter", CelestialBody::ctPlanet);
+	saturn  = new CelestialBody("Saturn", CelestialBody::ctPlanet);
+	uranus  = new CelestialBody("Uranus", CelestialBody::ctPlanet);
+	neptune = new CelestialBody("Neptune", CelestialBody::ctPlanet);
 
 //	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 //			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);

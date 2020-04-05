@@ -44,14 +44,28 @@ namespace ofs::universe {
     class CelestialBody : public Object
     {
     public:
+		enum CelestialType
+		{
+			ctUnknown = 0,
+			ctPlanet,
+			ctDwarfPlamet,
+			ctMinorPlanet,
+			ctAsteroid,
+			ctComet,
+			ctMoon,
+			ctSubmoon
+		};
+
         CelestialBody();
-        CelestialBody(const string &name, CelestialBody *body = nullptr);
+        CelestialBody(const string &name, CelestialType type,
+        	CelestialBody *body = nullptr);
         ~CelestialBody() = default;
 
         PlanetarySystem *createPlanetarySystem();
 
         inline void setInSystem(PlanetarySystem *system) { inSystem = system; }
 
+        inline CelestialType getCelestialType() const { return bodyType; }
         inline PlanetarySystem *getOwnSystem() const { return ownSystem; }
         inline PlanetarySystem *getInSystem() const { return inSystem; }
 
@@ -70,6 +84,8 @@ namespace ofs::universe {
 
     private:
         FrameTree frame;
+
+        CelestialType bodyType = ctUnknown;
 
         PlanetarySystem *ownSystem = nullptr;
         PlanetarySystem *inSystem = nullptr;

@@ -58,9 +58,10 @@ CelestialBody::CelestialBody()
 {
 }
 
-CelestialBody::CelestialBody(const string &name, CelestialBody *body)
+CelestialBody::CelestialBody(const string &name, CelestialType type,
+	CelestialBody *body)
 : Object(ObjectType::objCelestialBody, name),
-  frame(this)
+  frame(this), bodyType(type)
 {
 	if (body != nullptr) {
 		inSystem = body->createPlanetarySystem();
