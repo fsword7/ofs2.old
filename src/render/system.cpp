@@ -86,7 +86,64 @@ void Scene::setupObjectLighting(vector<LightSource> &sun,
 	ls.ambientColor = vec3d_t(0, 0, 0);
 }
 
-void Scene::renderPlanet(vObject *vobj)
+void Scene::renderPoint(const vec3d_t &opos, const Color &color, double size)
+{
+//	if (pgm == nullptr) {
+//		ShaderManager &smgr = scene.getShaderManager();
+//
+//		pgm = smgr.createShader("star");
+//
+//	    vbuf = new VertexBuffer(ctx, 1);
+//	   	vbo = vbuf->createBuffer(VertexBuffer::VBO, 1);
+//	}
+//
+//	pgm->use();
+//	vbuf->bind();
+
+//	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//	glBufferData(GL_ARRAY_BUFFER, 120000 * sizeof(starVertex), nullptr, GL_STREAM_DRAW);
+//	vertices = reinterpret_cast<starVertex *>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+//	if (vertices == nullptr) {
+//		cerr << "Can't render stars - aborted (error code: " << glGetError() << ")" << endl;
+//		return;
+//	}
+//
+//	glEnable(GL_PROGRAM_POINT_SIZE);
+//
+//	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
+//
+//	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
+//    glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
+//	if (!glUnmapBuffer(GL_ARRAY_BUFFER)) {
+//		cerr << "Buffer corrupted - aborted (error code: " << glGetError() << ")" << endl;
+//		return;
+//	}
+//	vertices = nullptr;
+//
+//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)0);
+//	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(3 * sizeof(float)));
+//	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(starVertex), (void *)(7 * sizeof(float)));
+//	glEnableVertexAttribArray(0);
+//	glEnableVertexAttribArray(1);
+//	glEnableVertexAttribArray(2);
+//
+//	// Now rendering stars
+//	glDrawArrays(GL_POINTS, 0, 1);
+//
+//	glDisableVertexAttribArray(0);
+//	glDisableVertexAttribArray(1);
+//	glDisableVertexAttribArray(2);
+//	vbuf->unbind();
+//
+//	glUseProgram(0);
+//	glDisable(GL_PROGRAM_POINT_SIZE);
+}
+
+void Scene::renderObjectAsPoint()
+{
+}
+
+void Scene::renderObject(vObject *vobj)
 {
 	// setupObjectLighting
 	vobj->render(prm);
@@ -102,7 +159,7 @@ void Scene::renderPlanetarySystem(const SystemTree *tree)
 		{
 			vObject *vobj = getVisualObject(object, true);
 
-			renderPlanet(vobj);
+			renderObject(vobj);
 		}
 	}
 
@@ -110,4 +167,12 @@ void Scene::renderPlanetarySystem(const SystemTree *tree)
 //	const SystemTree *subtree = body.getSystemTree();
 //	if (subtree != nullptr)
 //		renderPlanetarySystem(subtree);
+}
+
+void Scene::buildObjectList(const SystemTree *tree)
+{
+}
+
+void Scene::buildOrbitList(const SystemTree *tree)
+{
 }

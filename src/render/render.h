@@ -178,10 +178,15 @@ protected:
 	void initStarVertex();
 	void initConstellations(const Universe &universe);
 
+	void buildObjectList(const SystemTree *tree);
+	void buildOrbitList(const SystemTree *tree);
+
 	void renderStars(const StarCatalogue &starlib, const Player& player, double faintestMag);
 	void renderConstellations(const Universe &universe, const Player &player);
 
-	void renderPlanet(vObject *vobj);
+	void renderPoint(const vec3d_t &pos, const Color &color, double size);
+	void renderObjectAsPoint();
+	void renderObject(vObject *vobj);
 	void renderPlanetarySystem(const SystemTree *tree);
 
 	void renderOverlay();
