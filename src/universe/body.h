@@ -47,6 +47,7 @@ namespace ofs::universe {
 		enum CelestialType
 		{
 			ctUnknown = 0,
+			ctBarycenter,
 			ctPlanet,
 			ctDwarfPlamet,
 			ctMinorPlanet,
@@ -71,6 +72,13 @@ namespace ofs::universe {
 
         inline FrameTree *getReferenceFrameTree() { return &frame; }
 
+        inline bool hasSurface() const  { return flagSurface; }
+        inline bool isClickable() const { return flagClickable; }
+        inline bool isVisible() const   { return flagVisible; }
+
+        inline void enableSurface()  { flagSurface = true; }
+        inline void setInvisible()   { flagVisible = false; }
+
 //        inline RotationModel *getRotationModel(double tjd) const { return rot; };
 
         quatd_t getEquatorial(double tjd) const;
@@ -85,7 +93,13 @@ namespace ofs::universe {
     private:
         FrameTree frame;
 
+        // Celestial type parameter
         CelestialType bodyType = ctUnknown;
+
+        // Celestial body flags parameters
+        bool flagVisible = true;
+        bool flagSurface = false;
+        bool flagClickable = false;
 
         PlanetarySystem *ownSystem = nullptr;
         PlanetarySystem *inSystem = nullptr;
