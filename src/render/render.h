@@ -186,7 +186,7 @@ protected:
 
 	void renderPoint(const vec3d_t &pos, const Color &color, double size);
 	void renderObjectAsPoint();
-	void renderObject(vObject *vobj);
+	void renderCelestialBody(vObject *vobj);
 	void renderPlanetarySystem(const SystemTree *tree);
 
 	void renderOverlay();

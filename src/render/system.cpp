@@ -143,10 +143,16 @@ void Scene::renderObjectAsPoint()
 {
 }
 
-void Scene::renderObject(vObject *vobj)
+void Scene::renderCelestialBody(vObject *vobj)
 {
-	// setupObjectLighting
-	vobj->render(prm);
+	const CelestialBody *body = dynamic_cast<const CelestialBody *>(vobj->getObject());
+	double bodySize = 5.0;
+
+	if (bodySize > 1.0 && body->hasSurface()) {
+		// setupObjectLighting
+		vobj->render(prm);
+	} else
+		renderObjectAsPoint();
 }
 
 void Scene::renderPlanetarySystem(const SystemTree *tree)
@@ -159,7 +165,7 @@ void Scene::renderPlanetarySystem(const SystemTree *tree)
 		{
 			vObject *vobj = getVisualObject(object, true);
 
-			renderObject(vobj);
+			renderCelestialBody(vobj);
 		}
 	}
 
