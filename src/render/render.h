@@ -218,6 +218,9 @@ private:
 
 	renderParameter prm;
 
+	ShaderProgram *pgmStar = nullptr;
+	VertexBuffer *vbufStar = nullptr;
+
 	ShaderProgram *pgmAsterism = nullptr;
 	VertexBuffer *vbufAsterism = nullptr;
 	uint32_t asterismLines = 0;

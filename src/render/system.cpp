@@ -95,23 +95,10 @@ void Scene::renderPoint(const vec3d_t &opos, const Color &color, double size)
 		float		size;
 	} *vertices;
 
-	ShaderProgram *pgm = nullptr;
-	VertexBuffer *vbuf;
-	int vbo;
+	pgmStar->use();
+	vbufStar->bind();
 
-	if (pgm == nullptr) {
-		ShaderManager &smgr = getShaderManager();
-
-		pgm = smgr.createShader("star");
-
-	    vbuf = new VertexBuffer(gl, 1);
-	   	vbo = vbuf->createBuffer(VertexBuffer::VBO, 1);
-	}
-
-	pgm->use();
-	vbuf->bind();
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbufStar->getVBO());
 	glBufferData(GL_ARRAY_BUFFER, sizeof(starVertex), nullptr, GL_STREAM_DRAW);
 	vertices = reinterpret_cast<starVertex *>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	if (vertices == nullptr) {
@@ -127,7 +114,7 @@ void Scene::renderPoint(const vec3d_t &opos, const Color &color, double size)
 
 	mat4f_t mvp = mat4f_t (prm.dmProj * prm.dmView * mat4d_t(1.0));
 
-	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
+	uint32_t mvpLoc = glGetUniformLocation(pgmStar->getID(), "mvp");
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(mvp));
 	if (!glUnmapBuffer(GL_ARRAY_BUFFER)) {
 		cerr << "Buffer corrupted - aborted (error code: " << glGetError() << ")" << endl;
@@ -148,7 +135,7 @@ void Scene::renderPoint(const vec3d_t &opos, const Color &color, double size)
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
-	vbuf->unbind();
+	vbufStar->unbind();
 
 	glUseProgram(0);
 	glDisable(GL_PROGRAM_POINT_SIZE);

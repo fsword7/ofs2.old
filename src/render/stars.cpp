@@ -24,7 +24,7 @@ StarVertex::StarVertex(Scene &scene)
   ctx(*scene.getContext()),
   prm(*scene.getParameter()),
   type(useNotUsed),
-  nStars(0), vbo(0),
+  nStars(0),
   flagStarted(false)
 {
 }
@@ -38,17 +38,14 @@ StarVertex::~StarVertex()
 //	txImage = image;
 //}
 
+void StarVertex::init(StarRenderer *render)
+{
+	pgm  = render->pgm;
+	vbuf = render->vbuf;
+}
+
 void StarVertex::start()
 {
-	if (pgm == nullptr) {
-		ShaderManager &smgr = scene.getShaderManager();
-
-		pgm = smgr.createShader("star");
-
-	    vbuf = new VertexBuffer(ctx, 1);
-	   	vbo = vbuf->createBuffer(VertexBuffer::VBO, 1);
-	}
-
 	pgm->use();
 	vbuf->bind();
 
@@ -56,7 +53,7 @@ void StarVertex::start()
 //	cout << "  vec3f_t size:  " << sizeof(vec3f_t) << endl;
 //	cout << "  Color size:    " << sizeof(Color) << endl;
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbuf->getVBO());
 	glBufferData(GL_ARRAY_BUFFER, 120000 * sizeof(starVertex), nullptr, GL_STREAM_DRAW);
 	vertices = reinterpret_cast<starVertex *>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	if (vertices == nullptr) {
@@ -239,6 +236,13 @@ void Scene::initStarVertex()
 //	starTexture = createStarTexture(8);
 //	glareTexture = createGlareTexture(8);
 
+	ShaderManager &smgr = getShaderManager();
+
+	// Initialize GLSL program for star rendering
+	pgmStar  = smgr.createShader("star");
+	vbufStar = new VertexBuffer(gl, 1);
+	vbufStar->createBuffer(VertexBuffer::VBO, 1);
+
 	starBuffer = new StarVertex(*this);
 //	starBuffer->setTexture(starTexture);
 
@@ -247,6 +251,10 @@ void Scene::initStarVertex()
 	starRenderer->context = &gl;
 	starRenderer->starBuffer = starBuffer;
 	starRenderer->starColors = starColors;
+	starRenderer->pgm = pgmStar;
+	starRenderer->vbuf = vbufStar;
+
+	starBuffer->init(starRenderer);
 }
 
 void Scene::initConstellations(const Universe &universe)

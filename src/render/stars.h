@@ -31,6 +31,8 @@ public:
 	StarVertex(Scene &scene);
 	~StarVertex();
 
+	void init(StarRenderer *render);
+
 	// Render routines
 	void start();
 	void render();
@@ -54,7 +56,6 @@ protected:
 //	Texture *txImage = nullptr;
 
     starVertex *vertices = nullptr;
-    GLuint vbo;
 };
 
 class StarRenderer : public ofsHandler
@@ -71,6 +72,9 @@ public:
 
 public:
 	vec3d_t obsPos = { 0, 0, 0 }; // Observer's camera position
+
+	ShaderProgram *pgm = nullptr;
+    VertexBuffer *vbuf = nullptr;
 
 	// Star buffer for rendering
 	StarVertex *starBuffer = nullptr;
