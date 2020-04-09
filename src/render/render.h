@@ -167,7 +167,7 @@ public:
 	
 	void resize(int width, int height);
 
-	double calculatePixelSize(Camera *cam) const;
+	double computePixelSize(Camera *cam) const;
 
 	vObject *addVisualObject(Object *object);
 	vObject *getVisualObject(Object *object, bool createFlag);
@@ -187,7 +187,8 @@ protected:
 	void renderPoint(const vec3d_t &pos, const Color &color, double size);
 	void renderObjectAsPoint();
 	void renderCelestialBody(vObject *vobj);
-	void renderPlanetarySystem(const SystemTree *tree);
+	void renderPlanetarySystem(const SystemTree *tree, vec3d_t frameCenter,
+		const Player *player, vec3d_t apos, double now);
 
 	void renderOverlay();
 	void renderHeadupPanel();
@@ -198,6 +199,9 @@ protected:
 	void setupSecondaryLightSources();
 	void setupObjectLighting(vector<LightSource> &suns, const vec3d_t opos,
 			const quatd_t orot, LightState &ls);
+
+	vec3d_t computeAstrocentricPosition(const CelestialStar *sun,
+			vec3d_t upos, double now);
 
 private:
 	Context gl;
@@ -224,6 +228,8 @@ private:
 	ShaderProgram *pgmAsterism = nullptr;
 	VertexBuffer *vbufAsterism = nullptr;
 	uint32_t asterismLines = 0;
+
+	double pixelSize = 0.0;
 
 	float faintestMag      = 6.0f;
 	float faintestMagNight = faintestMag;

@@ -45,9 +45,17 @@ void Scene::resize(int w, int h)
 	gl.resize(w, h);
 }
 
-double Scene::calculatePixelSize(Camera *cam) const
+double Scene::computePixelSize(Camera *cam) const
 {
 	return (2.0 * tan(cam->getFOV()/2.0)) / double(gl.getHeight());
+}
+
+// Convert a position in universal coordinate system to
+// astrocentric position in star reference frame
+vec3d_t Scene::computeAstrocentricPosition(const CelestialStar *sun,
+	vec3d_t upos, double now)
+{
+	return sun->getPosition(now) - upos;
 }
 
 vObject *Scene::addVisualObject(Object *object)
@@ -98,6 +106,8 @@ void Scene::render(const Player *player, const Universe *universe)
 	prm.crot  = cam->getRotation();
 	prm.tanap = cam->getTanAp();
 	
+	pixelSize = computePixelSize(cam);
+
 	this->player = player;
 	this->universe = universe;
 	
@@ -145,7 +155,9 @@ void Scene::render(const Player *player, const Universe *universe)
 		const System *system = sun->getSystem();
 		const SystemTree *tree = system->getSystemTree();
 
-		renderPlanetarySystem(tree);
+		vec3d_t apos = computeAstrocentricPosition(sun, obs, prm.now);
+
+		renderPlanetarySystem(tree, {0, 0, 0}, player, apos, prm.now);
 	}
 
 	gl.finish();

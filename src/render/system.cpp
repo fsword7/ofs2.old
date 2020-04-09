@@ -157,7 +157,8 @@ void Scene::renderCelestialBody(vObject *vobj)
 		renderObjectAsPoint();
 }
 
-void Scene::renderPlanetarySystem(const SystemTree *tree)
+void Scene::renderPlanetarySystem(const SystemTree *tree, vec3d_t frameCenter,
+	const Player *player, vec3d_t apos, double now)
 {
 	int nObjects = tree->getSystemSize();
 

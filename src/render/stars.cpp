@@ -286,7 +286,7 @@ void Scene::renderStars(const StarCatalogue &starlib, const Player &player,
 	double  aspect = gl.getAspect();
 
 	starRenderer->cpos = cam->getPosition();
-	starRenderer->pxSize = calculatePixelSize(cam);
+	starRenderer->pxSize = pixelSize;
 	starRenderer->baseSize = 5.0; // default base star size
 	starRenderer->faintestMag = faintestMag;
 	starRenderer->faintestMagNight = faintest;
