@@ -38,6 +38,7 @@ set(ofs_cpp_SRCS
 	universe/starlib.cpp
 	universe/system.cpp
 	universe/startree.cpp
+	universe/timeline.cpp
 	universe/universe.cpp
 	util/fix128.cpp
 	util/tree.cpp
@@ -94,6 +95,7 @@ set(ofs_h_SRCS
 	universe/starlib.h
 	universe/startree.h
 	universe/system.h
+	universe/timeline.h
 	universe/universe.h
 	universe/xhipdata.h
 	util/color.h
