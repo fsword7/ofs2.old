@@ -157,8 +157,8 @@ void Scene::renderCelestialBody(vObject *vobj)
 		renderObjectAsPoint();
 }
 
-void Scene::renderPlanetarySystem(const SystemTree *tree, vec3d_t frameCenter,
-	const Player *player, vec3d_t apos, double now)
+void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
+	vec3d_t apos, vec3d_t vpnorm, vec3d_t origin, double now)
 {
 	int nObjects = tree->getSystemSize();
 
@@ -166,9 +166,43 @@ void Scene::renderPlanetarySystem(const SystemTree *tree, vec3d_t frameCenter,
 		Object *object = tree->getObject(idx);
 
 		{
-			vObject *vobj = getVisualObject(object, true);
+			Frame *frame = object->getOrbitFrame();
+//			Orbit *orbit = object->getOrbit();
 
-			renderCelestialBody(vobj);
+			// Determine sun, body and player position in local reference frame
+			vec3d_t opos = object->getPosition(now);
+			vec3d_t spos = origin + glm::conjugate(frame->getOrientation(now)) * opos;
+			vec3d_t vpos = spos - apos;
+
+			double vdist   = glm::length(vpos);
+			double vdnorm  = glm::dot(vpnorm, vpos);
+			double objSize = object->getRadius() / (vdist * pixelSize);
+
+//			cout << fmt::sprintf("Object:          %s\n", object->getName());
+//			cout << fmt::sprintf("Sun Position:    (%lf,%lf,%lf)\n", spos.x, spos.y, spos.z);
+//			cout << fmt::sprintf("Camera Position: (%lf,%lf,%lf)\n", apos.x, apos.y, apos.z);
+//			cout << fmt::sprintf("Object Position: (%lf,%lf,%lf)\n", opos.x, opos.y, opos.z);
+//			cout << fmt::sprintf("View Position:   (%lf,%lf,%lf)\n", vpos.x, vpos.y, vpos.z);
+//			cout << fmt::sprintf("View Distance:   %lf (%lf)\n", vdist, vdnorm);
+//			cout << fmt::sprintf("Object size:     %lf (%lf)\n", objSize, pixelSize);
+//			cout << fmt::sprintf("View Plane Norm: (%lf,%lf,%lf)\n\n",
+//					vpnorm.x, vpnorm.y, vpnorm.z);
+
+			if (objSize > 1)
+			{
+				ObjectListEntry ole;
+
+				ole.object  = object;
+				ole.spos    = spos;
+				ole.opos    = vpos;
+				ole.vdist   = vdist;
+				ole.objSize = objSize;
+//				ole.appMag  = 0.0;
+//				ole.zCenter = glm::dot(vpos, vzmat);
+
+				vObject *vobj = getVisualObject(object, true);
+				renderCelestialBody(vobj);
+			}
 		}
 	}
 

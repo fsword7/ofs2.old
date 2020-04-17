@@ -56,6 +56,9 @@ public:
     inline Color getColor() const { return objColor; }
     inline double getRadius() const { return objRadius; }
     inline ObjectType getType() const { return objType; }
+    inline Frame *getOrbitFrame() const { return orbitFrame; }
+    inline Frame *getObjectFrame() const { return objectFrame; }
+
 //    inline SystemTree *getSystemTree() const { return sysTree; }
 
 //    SystemTree *createSystemTree();

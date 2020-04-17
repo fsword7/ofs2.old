@@ -136,8 +136,8 @@ struct ObjectListEntry
 	vec3d_t opos;		// Object position
 	vec3d_t spos;		// Sun position
 
-	double  dist;		// Distance
-	double	discSize;	// Disc size (in pixels)
+	double  vdist;		// Distance
+	double	objSize;	// Disc size (in pixels)
 	double  appMag;		// Apparent magnitude
 
 	double	zNear;		// Near Z clipping
@@ -187,8 +187,8 @@ protected:
 	void renderPoint(const vec3d_t &pos, const Color &color, double size);
 	void renderObjectAsPoint();
 	void renderCelestialBody(vObject *vobj);
-	void renderPlanetarySystem(const SystemTree *tree, vec3d_t frameCenter,
-		const Player *player, vec3d_t apos, double now);
+	void renderPlanetarySystem(const SystemTree *tree, const Player *player,
+		vec3d_t apos, vec3d_t vpnorm, vec3d_t origin, double now);
 
 	void renderOverlay();
 	void renderHeadupPanel();

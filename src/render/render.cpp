@@ -55,7 +55,7 @@ double Scene::computePixelSize(Camera *cam) const
 vec3d_t Scene::computeAstrocentricPosition(const CelestialStar *sun,
 	vec3d_t upos, double now)
 {
-	return sun->getPosition(now) - upos;
+	return upos - sun->getPosition(now);
 }
 
 vObject *Scene::addVisualObject(Object *object)
@@ -156,8 +156,9 @@ void Scene::render(const Player *player, const Universe *universe)
 		const SystemTree *tree = system->getSystemTree();
 
 		vec3d_t apos = computeAstrocentricPosition(sun, obs, prm.now);
+		vec3d_t vpn  = glm::conjugate(player->getOrientation()) * vec3d_t(0, 0, -1);
 
-		renderPlanetarySystem(tree, {0, 0, 0}, player, apos, prm.now);
+		renderPlanetarySystem(tree, player, apos, vpn, {0, 0, 0}, prm.now);
 	}
 
 	gl.finish();
