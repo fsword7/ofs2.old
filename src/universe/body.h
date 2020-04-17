@@ -86,6 +86,9 @@ namespace ofs::universe {
 
         quatd_t getRotation(double tjd = 0) const override;
 
+        double  getLuminosity(double luminosity, double distance) const;
+        double  getApparentMagnitude(vec3d_t sun, double irradiance, vec3d_t view) const;
+
         vec3d_t getPlanetocentric(const vec3d_t &pos) const;
         vec3d_t getPlanetocentricFromEcliptic(const vec3d_t &pos, double tdb) const;
         vec3d_t getHeliocentric(double jd) const;

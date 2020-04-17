@@ -163,20 +163,28 @@ void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
 	int nObjects = tree->getSystemSize();
 
 	for (int idx = 0; idx < nObjects; idx++) {
-		Object *object = tree->getObject(idx);
+		CelestialBody *body = dynamic_cast<CelestialBody *>(tree->getObject(idx));
 
 		{
-			Frame *frame = object->getOrbitFrame();
-//			Orbit *orbit = object->getOrbit();
+			Frame *frame = body->getOrbitFrame();
+//			Orbit *orbit = body->getOrbit();
 
 			// Determine sun, body and player position in local reference frame
-			vec3d_t opos = object->getPosition(now);
+			vec3d_t opos = body->getPosition(now);
 			vec3d_t spos = origin + glm::conjugate(frame->getOrientation(now)) * opos;
 			vec3d_t vpos = spos - apos;
 
 			double vdist   = glm::length(vpos);
 			double vdnorm  = glm::dot(vpnorm, vpos);
-			double objSize = object->getRadius() / (vdist * pixelSize);
+			double objSize = body->getRadius() / (vdist * pixelSize);
+
+			double appMag = 100.0;
+			for (int idx = 0; idx < lightSources.size(); idx++) {
+				vec3d_t sun  = vpos - lightSources[idx].spos;
+				double  lum  = lightSources[idx].luminosity;
+				double  mag  = body->getApparentMagnitude(sun, lum, vpos);
+				appMag = min(appMag, mag);
+			}
 
 //			cout << fmt::sprintf("Object:          %s\n", object->getName());
 //			cout << fmt::sprintf("Sun Position:    (%lf,%lf,%lf)\n", spos.x, spos.y, spos.z);
@@ -187,29 +195,30 @@ void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
 //			cout << fmt::sprintf("Object size:     %lf (%lf)\n", objSize, pixelSize);
 //			cout << fmt::sprintf("View Plane Norm: (%lf,%lf,%lf)\n\n",
 //					vpnorm.x, vpnorm.y, vpnorm.z);
+//			cout << fmt::sprintf("App Magnitude:   %lf\n", appMag);
 
 			if (objSize > 1)
 			{
 				ObjectListEntry ole;
 
-				ole.object  = object;
+				ole.object  = body;
 				ole.spos    = spos;
 				ole.opos    = vpos;
 				ole.vdist   = vdist;
 				ole.objSize = objSize;
-//				ole.appMag  = 0.0;
+				ole.appMag  = appMag;
 //				ole.zCenter = glm::dot(vpos, vzmat);
 
-				vObject *vobj = getVisualObject(object, true);
+				vObject *vobj = getVisualObject(body, true);
 				renderCelestialBody(vobj);
 			}
+
+			// Rendering satellites orbiting around this celestial body
+//			const SystemTree *subtree = object->getOwnSystem();
+//			if (subtree != nullptr)
+//				renderPlanetarySystem(subtree, player, apos, vpnorm, spos, now);
 		}
 	}
-
-	// Rendering satellites orbiting around this celestial body
-//	const SystemTree *subtree = body.getSystemTree();
-//	if (subtree != nullptr)
-//		renderPlanetarySystem(subtree);
 }
 
 void Scene::buildObjectList(const SystemTree *tree)

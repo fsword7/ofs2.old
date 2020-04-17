@@ -7,8 +7,10 @@
 
 #include "main/core.h"
 #include "ephem/orbit.h"
+#include "universe/astro.h"
 #include "universe/body.h"
 
+using namespace ofs::astro;
 using namespace ofs::universe;
 
 // ******** Planetary System ********
@@ -97,6 +99,21 @@ quatd_t CelestialBody::getRotation(double tjd) const
 		return objRotation;
 	return rot->getRotation(tjd);
 //	return rot->spin(tjd) * rot->getEquatorRotation(tjd);
+}
+
+double CelestialBody::getLuminosity(double lum, double dist) const
+{
+	return 0.0;
+}
+
+double CelestialBody::getApparentMagnitude(vec3d_t sun, double irradiance, vec3d_t view) const
+{
+	double vdist  = glm::length(view);
+	double sdist  = glm::length(sun);
+	double illum  = (1.0 + glm::dot(view / vdist, sun / sdist)) / 2.0;
+	double absMag = getLuminosity(irradiance, sdist) * illum;
+
+	return astro::convertLumToAppMag(absMag, astro::convertKilometerToParsec(vdist));
 }
 
 vec3d_t CelestialBody::getHeliocentric(double jd) const
