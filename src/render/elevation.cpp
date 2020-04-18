@@ -20,9 +20,9 @@ int16_t *TerrainTile::readElevation(int lod, int ilat, int ilng, double eres)
     int         res;
 
 	string elevName = fmt::sprintf("%s/elev/%02d/%06d/%06d.elv",
-		tmgr.surfFolder, lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+4, ilat, ilng);
 	string emodName = fmt::sprintf("%s/elev_mod/%02d/%06d/%06d.elv",
-		tmgr.surfFolder, lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+4, ilat, ilng);
 
 //    if (mgr->tmgr[2] != nullptr) {
 //        res = mgr->tmgr[2]->read(lod+4, ilat, ilng, &elevData);

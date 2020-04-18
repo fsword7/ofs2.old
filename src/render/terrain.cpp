@@ -129,11 +129,11 @@ void TerrainTile::load()
 
 	// Orbiter data files (database system)
 	string surfName = fmt::sprintf("%s/surf/%02d/%06d/%06d.dds",
-		tmgr.surfFolder, lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+4, ilat, ilng);
 	string maskName = fmt::sprintf("%s/mask/%02d/%06d/%06d.dds",
-		tmgr.surfFolder, lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+4, ilat, ilng);
 	string cloudName = fmt::sprintf("%s/cloud/%02d/%06d/%06d.dds",
-		tmgr.surfFolder, lod+3, ilat, ilng);
+		tmgr.surfFolder, lod+4, ilat, ilng);
 
 	texImage = Texture::create(surfName);
 	if (texImage == nullptr) {
