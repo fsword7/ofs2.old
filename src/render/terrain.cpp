@@ -187,7 +187,7 @@ TerrainManager::TerrainManager(Scene &scene, const Object &object)
 		string starName = system->getStar()->getName();
 		string bodyName = body.getName();
 
-		surfFolder = fmt::sprintf("%s/%s/%s/terrain/orbiter",
+		surfFolder = fmt::sprintf("%s/%s/%s/orbiter",
 			sysFolder, starName, bodyName);
 		break;
 	}
