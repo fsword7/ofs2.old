@@ -32,13 +32,17 @@ typedef glm::dmat3 mat3d_t;
 typedef glm::dmat4 mat4d_t;
 
 
-template<class T>
-inline T toRadian(T deg) { return deg * (PI / 180.0); }
+template <typename T> inline constexpr T toRadian(T deg)
+{
+	return deg * (PI / 180.0);
+}
 
-template<class T>
-inline T toDegree(T rad) { return rad * (180.0 / PI); }
+template <typename T> inline constexpr T toDegree(T rad)
+{
+	return rad * (180.0 / PI);
+}
 
-template<class T> inline T clamp(T x)
+template <typename T> inline constexpr T clamp(T x)
 {
 	if (x < 0.0)
 		return 0.0;
@@ -47,37 +51,41 @@ template<class T> inline T clamp(T x)
 	else return x;
 }
 
-#define square(val) ((val) * (val))
-#define cube(val)   ((val) * (val) * (val))
+template <typename T> inline constexpr T square(T x)
+{
+	return x * x;
+}
+
+template <typename T> inline constexpr T cube(T x)
+{
+	return x * x * x;
+}
 
 // Determine area of a circle calculation
 template <typename T> inline constexpr T circleArea(T r)
 {
-	return static_cast<T>(PI) * r * r;
+	return PI * r * r;
 }
 
 // Determine area of a sphere calculation
 template <typename T> inline constexpr T sphereArea(T r)
 {
-	return 4 * static_cast<T>(PI) * r * r;
+	return 4 * PI * r * r;
 }
 
-template <class T>
-glm::tquat<T> xrot(T radians)
+template <typename T> inline glm::tquat<T> xrot(T radians)
 {
 	T ang = radians * T(0.5); // half angle
 	return glm::tquat<T>(cos(ang), sin(ang), 0, 0);
 }
 
-template <class T>
-glm::tquat<T> yrot(T radians)
+template <typename T> inline glm::tquat<T> yrot(T radians)
 {
 	T ang = radians * T(0.5); // half angle
 	return glm::tquat<T>(cos(ang), 0, sin(ang), 0);
 }
 
-template <class T>
-glm::tquat<T> zrot(T radians)
+template <typename T> inline glm::tquat<T> zrot(T radians)
 {
 	T ang = radians * T(0.5); // half angle
 	return glm::tquat<T>(cos(ang), 0, 0, sin(ang));
