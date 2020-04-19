@@ -50,6 +50,18 @@ template<class T> inline T clamp(T x)
 #define square(val) ((val) * (val))
 #define cube(val)   ((val) * (val) * (val))
 
+// Determine area of a circle calculation
+template <typename T> inline constexpr T circleArea(T r)
+{
+	return static_cast<T>(PI) * r * r;
+}
+
+// Determine area of a sphere calculation
+template <typename T> inline constexpr T sphereArea(T r)
+{
+	return 4 * static_cast<T>(PI) * r * r;
+}
+
 template <class T>
 glm::tquat<T> xrot(T radians)
 {
