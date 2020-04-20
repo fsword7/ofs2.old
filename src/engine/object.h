@@ -55,6 +55,7 @@ public:
     inline uint64_t getFlags() const { return objFlags; }
     inline Color getColor() const { return objColor; }
     inline double getRadius() const { return objRadius; }
+    inline double getCullingRadius() const { return objCullingRadius; }
     inline ObjectType getType() const { return objType; }
     inline Frame *getOrbitFrame() const { return orbitFrame; }
     inline Frame *getObjectFrame() const { return objectFrame; }
@@ -67,18 +68,22 @@ public:
     virtual vec3d_t getVelocity(double tjd = 0) const;
 	virtual quatd_t getRotation(double tjd = 0) const;
 
+protected:
+	virtual double computeCullingRadius();
+
 private:
     ObjectType objType = objUnknown;
 
 protected:
     vector<string> objNames;
 
-    Color		objColor;		// Object color (default)
-    uint64_t	objFlags;		// Object flags
-	double		objRadius;		// Object radius
-	vec3d_t		objSemiAxes;	// Object semi-axes
-	double		objMass;		// Object mass
-	double		objAlbedo;		// Object albedo
+    Color		objColor;			// Object color (default)
+    uint64_t	objFlags;			// Object flags
+	double		objRadius = 0.0;		// Object radius
+	double		objCullingRadius = objRadius; // Object culling radius
+	vec3d_t		objSemiAxes = {0, 0, 0};	// Object semi-axes
+	double		objMass = 0.0;		// Object mass
+	double		objAlbedo = 1.0;	// Object albedo
 
 	vec3d_t  objPosition;	// Object current position
 	vec3d_t  objVelocity;   // Object current velocity

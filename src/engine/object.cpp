@@ -37,6 +37,11 @@ Object::~Object()
     objNames.clear();
 }
 
+double Object::computeCullingRadius()
+{
+	return objRadius;
+}
+
 vec3d_t Object::getPosition(double tjd) const
 {
 	if (orbit != nullptr)

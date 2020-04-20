@@ -103,7 +103,12 @@ quatd_t CelestialBody::getRotation(double tjd) const
 
 double CelestialBody::getLuminosity(double lum, double dist) const
 {
-	return 0.0;
+	double power           = lum * SOLAR_POWER;
+	double irradiance      = power / sphereArea(dist * 1000);
+	double incidentEnergy  = irradiance * circleArea(objRadius * 1000);
+	double reflectedEnergy = incidentEnergy * objAlbedo;
+
+	return reflectedEnergy / SOLAR_POWER;
 }
 
 double CelestialBody::getApparentMagnitude(vec3d_t sun, double irradiance, vec3d_t view) const

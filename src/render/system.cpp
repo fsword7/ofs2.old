@@ -186,7 +186,7 @@ void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
 				appMag = min(appMag, mag);
 			}
 
-//			cout << fmt::sprintf("Object:          %s\n", object->getName());
+//			cout << fmt::sprintf("Object:          %s\n", body->getName());
 //			cout << fmt::sprintf("Sun Position:    (%lf,%lf,%lf)\n", spos.x, spos.y, spos.z);
 //			cout << fmt::sprintf("Camera Position: (%lf,%lf,%lf)\n", apos.x, apos.y, apos.z);
 //			cout << fmt::sprintf("Object Position: (%lf,%lf,%lf)\n", opos.x, opos.y, opos.z);
