@@ -12,21 +12,13 @@
 using namespace ofs::ephem;
 
 Object::Object(ObjectType type)
-: objType(type), objNames(1),
-  objRadius(0), objSemiAxes(0, 0, 0),
-  objMass(0),
-  objPosition(0, 0, 0),
-  objVelocity(0, 0, 0)
+: objType(type), objNames(1)
 {
     objNames.clear();
 }
 
 Object::Object(ObjectType type, const string &name)
-: objType(type), objNames(1),
-  objRadius(0), objSemiAxes(0, 0, 0),
-  objMass(0),
-  objPosition(0, 0, 0),
-  objVelocity(0, 0, 0)
+: objType(type), objNames(1)
 {
 	objNames.clear();
     objNames[0] = name;

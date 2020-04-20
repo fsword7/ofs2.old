@@ -52,16 +52,20 @@ void Universe::init()
     mercury->setOrbit(VSOP87Orbit::create("vsop87-mercury"));
 
     venus->setFlag(OBJ_INVISIBLE);
-    venus->setColor(Color(1, 1, 1));
     venus->setOrbit(VSOP87Orbit::create("vsop87-venus"));
 
-    earth->setColor(Color(0,856, 0.910, 1.0));
+    earth->setColor(Color(0.856, 0.910, 1.0));
     earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
 	earth->setRotation(new EarthRotationModel());
     earth->setRadius(6378.140);
     earth->setGeometricAlbedo(0.449576);
     earth->setBondAlbedo(0.306);
     earth->enableSurface();
+
+    moon->setRadius(1738.14);
+    moon->setGeometricAlbedo(0.136);
+    moon->setBondAlbedo(0.11);
+    moon->enableSurface();
 
     mars->setFlag(OBJ_INVISIBLE);
     mars->setColor(Color(1.0, 0.75, 0.7));

@@ -80,8 +80,8 @@ private:
 protected:
     vector<string> objNames;
 
-    Color		objColor;			// Object color (default)
-    uint64_t	objFlags;			// Object flags
+    Color		objColor = {1.0, 1.0, 1.0};	// Object color (default)
+    uint64_t	objFlags = 0;			// Object flags
 	double		objRadius = 0.0;		// Object radius
 	double		objCullingRadius = objRadius; // Object culling radius
 	vec3d_t		objSemiAxes = {0, 0, 0};	// Object semi-axes
@@ -89,9 +89,9 @@ protected:
 	double		geomAlbedo = 1.0;	// Geometric Albedo
 	double		bondAlbedo = 1.0;	// Bond Albedo
 
-	vec3d_t  objPosition;	// Object current position
-	vec3d_t  objVelocity;   // Object current velocity
-	quatd_t  objRotation;	// Object orientation
+	vec3d_t  objPosition = { 0.0, 0.0, 0.0 };	// Object current position
+	vec3d_t  objVelocity = { 0.0, 0.0, 0.0 };   // Object current velocity
+	quatd_t  objRotation = { 1.0, 0.0, 0.0, 0.0 };	// Object orientation
 
 //	// Planetary system parameters
 //	SystemTree     *sysTree = nullptr;
