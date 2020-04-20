@@ -37,7 +37,8 @@ public:
     inline void setPosition(vec3d_t pos) { objPosition = pos; }
     inline void setVelocity(vec3d_t vel) { objVelocity = vel; }
     inline void setRadius(float rad) { objRadius = rad; }
-
+    inline void setGeometricAlbedo(double albedo) { geomAlbedo = albedo; }
+    inline void setBondAlbedo(double albedo) { bondAlbedo = albedo; }
     inline void setOrbitFrame(Frame *frame)  { orbitFrame = frame; }
     inline void setObjectFrame(Frame *frame) { objectFrame = frame; }
     inline void setOrbit(Orbit *orbit)                { this->orbit = orbit; }
@@ -56,6 +57,8 @@ public:
     inline Color getColor() const { return objColor; }
     inline double getRadius() const { return objRadius; }
     inline double getCullingRadius() const { return objCullingRadius; }
+    inline double getGeometricAlbedo() const { return geomAlbedo; }
+    inline double getBondAlbedo() const { return bondAlbedo; }
     inline ObjectType getType() const { return objType; }
     inline Frame *getOrbitFrame() const { return orbitFrame; }
     inline Frame *getObjectFrame() const { return objectFrame; }
@@ -83,7 +86,8 @@ protected:
 	double		objCullingRadius = objRadius; // Object culling radius
 	vec3d_t		objSemiAxes = {0, 0, 0};	// Object semi-axes
 	double		objMass = 0.0;		// Object mass
-	double		objAlbedo = 1.0;	// Object albedo
+	double		geomAlbedo = 1.0;	// Geometric Albedo
+	double		bondAlbedo = 1.0;	// Bond Albedo
 
 	vec3d_t  objPosition;	// Object current position
 	vec3d_t  objVelocity;   // Object current velocity

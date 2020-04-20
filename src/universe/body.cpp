@@ -106,7 +106,7 @@ double CelestialBody::getLuminosity(double lum, double dist) const
 	double power           = lum * SOLAR_POWER;
 	double irradiance      = power / sphereArea(dist * 1000);
 	double incidentEnergy  = irradiance * circleArea(objRadius * 1000);
-	double reflectedEnergy = incidentEnergy * objAlbedo;
+	double reflectedEnergy = incidentEnergy * geomAlbedo;
 
 	return reflectedEnergy / SOLAR_POWER;
 }

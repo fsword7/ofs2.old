@@ -58,7 +58,9 @@ void Universe::init()
     earth->setColor(Color(0,856, 0.910, 1.0));
     earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
 	earth->setRotation(new EarthRotationModel());
-    earth->setRadius(6371.0);
+    earth->setRadius(6378.140);
+    earth->setGeometricAlbedo(0.449576);
+    earth->setBondAlbedo(0.306);
     earth->enableSurface();
 
     mars->setFlag(OBJ_INVISIBLE);
