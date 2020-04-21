@@ -47,12 +47,16 @@ void Universe::init()
 //	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 //			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
 
-    mercury->setFlag(OBJ_INVISIBLE);
     mercury->setColor(Color(1.0, 0.794, 0.580));
     mercury->setOrbit(VSOP87Orbit::create("vsop87-mercury"));
+    mercury->setRadius(2439.7);
+    mercury->setGeometricAlbedo(0.141380);
+    mercury->setBondAlbedo(0.088);
 
-    venus->setFlag(OBJ_INVISIBLE);
     venus->setOrbit(VSOP87Orbit::create("vsop87-venus"));
+    venus->setRadius(6051.8);
+    venus->setGeometricAlbedo(0.672604);
+    venus->setBondAlbedo(0.760);
 
     earth->setColor(Color(0.856, 0.910, 1.0));
     earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
@@ -62,34 +66,52 @@ void Universe::init()
     earth->setBondAlbedo(0.306);
     earth->enableSurface();
 
+//    moon->setOrbit(VSOP87Orbit::create("elp82a-lunar"));
     moon->setRadius(1738.14);
     moon->setGeometricAlbedo(0.136);
     moon->setBondAlbedo(0.11);
     moon->enableSurface();
 
-    mars->setFlag(OBJ_INVISIBLE);
     mars->setColor(Color(1.0, 0.75, 0.7));
     mars->setOrbit(VSOP87Orbit::create("vsop87-mars"));
+    mars->setRadius(3396.2);
+    mars->setGeometricAlbedo(0.174821);
+    mars->setBondAlbedo(0.290);
+    mars->enableSurface();
 
-    jupiter->setFlag(OBJ_INVISIBLE);
     jupiter->setColor(Color(1.0, 0.908, 0.720));
     jupiter->setOrbit(VSOP87Orbit::create("vsop87-jupiter"));
+    jupiter->setRadius(71492.0);
+    jupiter->setGeometricAlbedo(0.510901);
+    jupiter->setBondAlbedo(0.503);
 
-    saturn->setFlag(OBJ_INVISIBLE);
     saturn->setColor(Color(1.0, 0.735, 0.486));
     saturn->setOrbit(VSOP87Orbit::create("vsop87-saturn"));
+    saturn->setRadius(60268.0);
+    saturn->setGeometricAlbedo(0.499740);
+    saturn->setBondAlbedo(0.342);
 
-    uranus->setFlag(OBJ_INVISIBLE);
     uranus->setColor(Color(0.606, 0.948, 1.0));
     uranus->setOrbit(VSOP87Orbit::create("vsop87-uranus"));
+    uranus->setRadius(25559.0);
+    uranus->setGeometricAlbedo(0.437118);
+    uranus->setBondAlbedo(0.300);
 
-    neptune->setFlag(OBJ_INVISIBLE);
     neptune->setColor(Color(0.523, 0.848, 1.0));
     neptune->setOrbit(VSOP87Orbit::create("vsop87-neptune"));
+    neptune->setRadius(24766.0);
+    neptune->setGeometricAlbedo(0.409338);
+    neptune->setBondAlbedo(0.290);
 
-//    moon->setOrbit(VSOP87Orbit::create("elp82a-lunar"));
 
+    solSystem->addObject(mercury);
+    solSystem->addObject(venus);
     solSystem->addObject(earth);
+    solSystem->addObject(mars);
+    solSystem->addObject(jupiter);
+    solSystem->addObject(saturn);
+    solSystem->addObject(uranus);
+    solSystem->addObject(neptune);
 }
 
 //SolarSystem *Universe::createSolarSystem(CelestialStar *star)

@@ -141,20 +141,25 @@ void Scene::renderPoint(const vec3d_t &opos, const Color &color, double size)
 	glDisable(GL_PROGRAM_POINT_SIZE);
 }
 
-void Scene::renderObjectAsPoint()
+void Scene::renderObjectAsPoint(ObjectListEntry &ole)
 {
+	const CelestialBody *body = dynamic_cast<const CelestialBody *>(ole.object);
+
+	renderPoint(ole.opos, body->getColor(), ole.objSize);
 }
 
-void Scene::renderCelestialBody(vObject *vobj)
+void Scene::renderCelestialBody(ObjectListEntry &ole)
 {
-	const CelestialBody *body = dynamic_cast<const CelestialBody *>(vobj->getObject());
+	const CelestialBody *body = dynamic_cast<const CelestialBody *>(ole.object);
 	double bodySize = 5.0;
+
+	vObject *vobj = getVisualObject(ole.object, true);
 
 	if (bodySize > 1.0 && body->hasSurface()) {
 		// setupObjectLighting
 		vobj->render(prm);
 	} else
-		renderObjectAsPoint();
+		renderObjectAsPoint(ole);
 }
 
 void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
@@ -209,8 +214,7 @@ void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
 				ole.appMag  = appMag;
 //				ole.zCenter = glm::dot(vpos, vzmat);
 
-				vObject *vobj = getVisualObject(body, true);
-				renderCelestialBody(vobj);
+				renderCelestialBody(ole);
 			}
 
 			// Rendering satellites orbiting around this celestial body

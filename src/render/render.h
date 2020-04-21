@@ -185,8 +185,8 @@ protected:
 	void renderConstellations(const Universe &universe, const Player &player);
 
 	void renderPoint(const vec3d_t &pos, const Color &color, double size);
-	void renderObjectAsPoint();
-	void renderCelestialBody(vObject *vobj);
+	void renderObjectAsPoint(ObjectListEntry &ole);
+	void renderCelestialBody(ObjectListEntry &ole);
 	void renderPlanetarySystem(const SystemTree *tree, const Player *player,
 		vec3d_t apos, vec3d_t vpnorm, vec3d_t origin, double now);
 

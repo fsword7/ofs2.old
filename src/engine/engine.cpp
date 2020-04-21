@@ -66,12 +66,14 @@ void Engine::start()
 
 	// To removed later
 
-	Object *earth = universe.findPath("Sol/Earth");
-	if (earth != nullptr) {
-		player.go(*earth, earth->getRadius() * 6.0);
-		player.follow(*earth, Player::fwGeosync);
+	Object *planet = universe.findPath("Sol/Earth");
+//	Object *planet = universe.findPath("Sol/Venus");
+//	Object *planet = universe.findPath("Sol/Mars");
+	if (planet != nullptr) {
+		player.go(*planet, planet->getRadius() * 6.0);
+		player.follow(*planet, Player::fwGeosync);
 	} else
-		cout << "Earth is not found in universe!!" << endl;
+		cout << "Planet is not found in universe!!" << endl;
 }
 
 void Engine::update(double dt)
