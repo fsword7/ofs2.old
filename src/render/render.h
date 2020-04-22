@@ -25,6 +25,27 @@ class vPlanet;
 class StarRenderer;
 class TextureFont;
 
+// Rendering object property parameter (in reference frame)
+struct ObjectProperties
+{
+	Color    color;
+	uint32_t maxLOD;
+	uint32_t biasLOD;
+	vec3d_t  opos;
+	quatd_t  oqrot;
+	mat4d_t  orot;
+	double   orad;
+
+	vec3d_t  cpos;
+	quatd_t  cqrot;
+	mat4d_t  crot;
+	vec3d_t  cdir;
+	double   cdist;
+
+	double   viewap;
+	double   tanap;
+};
+
 struct renderParameter
 {
 	double  now;    // Current julian time
@@ -51,25 +72,7 @@ struct renderParameter
 	double  aspect;
 
 	// Object parameters (reference frame)
-	struct {
-		Color    color;
-		uint32_t maxLOD;
-		uint32_t biasLOD;
-		vec3d_t  opos;
-		quatd_t  oqrot;
-		mat4d_t  orot;
-		double   orad;
-
-		vec3d_t  cpos;
-		quatd_t  cqrot;
-		mat4d_t  crot;
-		vec3d_t  cdir;
-		double   cdist;
-
-		double   viewap;
-		double   tanap;
-	} obj;
-
+	ObjectProperties obj;
 };
 
 #define MAX_LIGHTS  8

@@ -38,7 +38,7 @@ void Scene::setupObjectLighting(vector<LightSource> &sun,
 		return;
 	for (int idx = 0; idx < nLights; idx++)
 	{
-		vec3d_t spos  = sun[idx].spos - objPosition;
+		vec3d_t spos  = objPosition - sun[idx].spos;
 		double  dist  = glm::length(spos);
 		double  au    = convertKilometerToAU(dist);
 
@@ -157,7 +157,11 @@ void Scene::renderCelestialBody(ObjectListEntry &ole)
 	vObject *vobj = getVisualObject(ole.object, true);
 
 	if (bodySize > 1.0 && body->hasSurface()) {
-		// setupObjectLighting
+//		LightState lights;
+//
+//		quatd_t orot = body->getRotation(prm.now);
+//		setupObjectLighting(lightSources, ole.opos, orot, lights);
+
 		vobj->render(prm);
 	} else
 		renderObjectAsPoint(ole);
