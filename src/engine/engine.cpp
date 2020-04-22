@@ -66,9 +66,16 @@ void Engine::start()
 
 	// To removed later
 
-	Object *planet = universe.findPath("Sol/Earth");
+
+//	Object *planet = universe.findPath("Sol/Mercury");
 //	Object *planet = universe.findPath("Sol/Venus");
+	Object *planet = universe.findPath("Sol/Earth");
 //	Object *planet = universe.findPath("Sol/Mars");
+//	Object *planet = universe.findPath("Sol/Jupiter");
+//	Object *planet = universe.findPath("Sol/Saturn");
+//	Object *planet = universe.findPath("Sol/Uranus");
+//	Object *planet = universe.findPath("Sol/Neptune");
+
 	if (planet != nullptr) {
 		player.go(*planet, planet->getRadius() * 6.0);
 		player.follow(*planet, Player::fwGeosync);

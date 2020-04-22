@@ -52,11 +52,13 @@ void Universe::init()
     mercury->setRadius(2439.7);
     mercury->setGeometricAlbedo(0.141380);
     mercury->setBondAlbedo(0.088);
+//    mercury->enableSurface();
 
     venus->setOrbit(VSOP87Orbit::create("vsop87-venus"));
     venus->setRadius(6051.8);
     venus->setGeometricAlbedo(0.672604);
     venus->setBondAlbedo(0.760);
+//    venus->enableSurface();
 
     earth->setColor(Color(0.856, 0.910, 1.0));
     earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
@@ -70,39 +72,42 @@ void Universe::init()
     moon->setRadius(1738.14);
     moon->setGeometricAlbedo(0.136);
     moon->setBondAlbedo(0.11);
-    moon->enableSurface();
+//    moon->enableSurface();
 
     mars->setColor(Color(1.0, 0.75, 0.7));
     mars->setOrbit(VSOP87Orbit::create("vsop87-mars"));
     mars->setRadius(3396.2);
     mars->setGeometricAlbedo(0.174821);
     mars->setBondAlbedo(0.290);
-    mars->enableSurface();
+//    mars->enableSurface();
 
     jupiter->setColor(Color(1.0, 0.908, 0.720));
     jupiter->setOrbit(VSOP87Orbit::create("vsop87-jupiter"));
     jupiter->setRadius(71492.0);
     jupiter->setGeometricAlbedo(0.510901);
     jupiter->setBondAlbedo(0.503);
+//    jupiter->enableSurface();
 
     saturn->setColor(Color(1.0, 0.735, 0.486));
     saturn->setOrbit(VSOP87Orbit::create("vsop87-saturn"));
     saturn->setRadius(60268.0);
     saturn->setGeometricAlbedo(0.499740);
     saturn->setBondAlbedo(0.342);
+//    saturn->enableSurface();
 
     uranus->setColor(Color(0.606, 0.948, 1.0));
     uranus->setOrbit(VSOP87Orbit::create("vsop87-uranus"));
     uranus->setRadius(25559.0);
     uranus->setGeometricAlbedo(0.437118);
     uranus->setBondAlbedo(0.300);
+//    uranus->enableSurface();
 
     neptune->setColor(Color(0.523, 0.848, 1.0));
     neptune->setOrbit(VSOP87Orbit::create("vsop87-neptune"));
     neptune->setRadius(24766.0);
     neptune->setGeometricAlbedo(0.409338);
     neptune->setBondAlbedo(0.290);
-
+//    neptune->enableSurface();
 
     solSystem->addObject(mercury);
     solSystem->addObject(venus);
