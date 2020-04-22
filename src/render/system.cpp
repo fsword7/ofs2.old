@@ -144,8 +144,9 @@ void Scene::renderPoint(const vec3d_t &opos, const Color &color, double size)
 void Scene::renderObjectAsPoint(ObjectListEntry &ole)
 {
 	const CelestialBody *body = dynamic_cast<const CelestialBody *>(ole.object);
+	double pointSize = 5.0;
 
-	renderPoint(ole.opos, body->getColor(), ole.objSize);
+	renderPoint(ole.opos, body->getColor(), pointSize);
 }
 
 void Scene::renderCelestialBody(ObjectListEntry &ole)
@@ -202,7 +203,9 @@ void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
 //					vpnorm.x, vpnorm.y, vpnorm.z);
 //			cout << fmt::sprintf("App Magnitude:   %lf\n", appMag);
 
-			if (objSize > 1)
+			bool isVisibleAsPoint = appMag < faintestMag;
+
+			if (objSize > 1 || isVisibleAsPoint)
 			{
 				ObjectListEntry ole;
 
