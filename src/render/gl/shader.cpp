@@ -235,6 +235,7 @@ void ShaderProgram::setLightParameters(LightState *ls,
 ShaderManager::ShaderManager(const Context *gl)
 : gl(gl)
 {
+	programs.clear();
 }
 
 ShaderStatus ShaderManager::createProgram(ostream &out, const string &vsSource, const string &fsSource, ShaderProgram **pgm)
@@ -264,7 +265,7 @@ ShaderStatus ShaderManager::createProgram(ostream &out, const string &vsSource, 
 	return shrSuccessful;
 }
 
-ShaderProgram *ShaderManager::buildPrograms(const string &vsSource, const string &fsSource)
+ShaderProgram *ShaderManager::buildPrograms(const string &name, const string &vsSource, const string &fsSource)
 {
 	ShaderProgram *pgm;
 	ShaderStatus st;
@@ -272,16 +273,23 @@ ShaderProgram *ShaderManager::buildPrograms(const string &vsSource, const string
 	st = createProgram(cout, vsSource, fsSource, &pgm);
 	if (st != ShaderStatus::shrSuccessful || pgm == nullptr)
 		return nullptr;
+
+	pgm->setName(name);
+	programs.push_back(pgm);
+
 	return pgm;
 }
 
 ShaderProgram *ShaderManager::createShader(const string &name)
 {
-	string vsSource, fsSource;
+	for (int idx = 0; idx < programs.size(); idx++)
+		if (programs[idx]->getName() == name)
+			return programs[idx];
 
 	auto vsName = fmt::sprintf("shaders/%s-vs.glsl", name);
 	auto fsName = fmt::sprintf("shaders/%s-fs.glsl", name);
 
+	string vsSource, fsSource;
 	struct stat st;
 
 	if (!stat(vsName.c_str(), &st))
@@ -314,5 +322,5 @@ ShaderProgram *ShaderManager::createShader(const string &name)
 		fsFile.close();
 	}
 
-	return buildPrograms(vsSource, fsSource);
+	return buildPrograms(name, vsSource, fsSource);
 }

@@ -54,9 +54,12 @@ public:
 	ShaderProgram();
 	~ShaderProgram();
 
+	inline const string getName() const { return pgmName; }
 	inline int getID() const { return id; }
 	inline void use() const { glUseProgram(id); }
 	inline void release() const { glUseProgram(0); }
+
+	void setName(const string &name) { pgmName = name; }
 
 	void attach(const ShaderSource &shader);
 
@@ -66,6 +69,7 @@ public:
 	void setLightParameters(LightState *ls, Color diffuse, Color specular, Color emissive);
 
 private:
+	string pgmName;
 	GLuint id = 0;
 
 	vec3f_t ambientColor;
@@ -84,9 +88,11 @@ public:
 	~ShaderManager() = default;
 
 	ShaderStatus createProgram(ostream &out, const string &vsSource, const string &fsSource, ShaderProgram **pgm);
-	ShaderProgram *buildPrograms(const string &vsSource, const string &fsSource);
+	ShaderProgram *buildPrograms(const string &name, const string &vsSource, const string &fsSource);
 	ShaderProgram *createShader(const string &name);
 
 private:
 	const Context *gl;
+
+	vector<ShaderProgram *> programs;
 };
