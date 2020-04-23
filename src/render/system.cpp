@@ -152,7 +152,7 @@ void Scene::renderObjectAsPoint(ObjectListEntry &ole)
 void Scene::renderCelestialBody(ObjectListEntry &ole)
 {
 	const CelestialBody *body = dynamic_cast<const CelestialBody *>(ole.object);
-	double bodySize = 5.0;
+	double bodySize = ole.objSize;
 
 	vObject *vobj = getVisualObject(ole.object, true);
 
