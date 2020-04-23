@@ -28,7 +28,7 @@ struct LightIrradiancePredicate
 	}
 };
 
-void Scene::setupObjectLighting(vector<LightSource> &sun,
+void Scene::setObjectLighting(vector<LightSource> &sun,
 	const vec3d_t objPosition, const quatd_t objRotation,
 	LightState &ls)
 {
@@ -157,12 +157,12 @@ void Scene::renderCelestialBody(ObjectListEntry &ole)
 	vObject *vobj = getVisualObject(ole.object, true);
 
 	if (bodySize > 1.0 && body->hasSurface()) {
-//		LightState lights;
-//
-//		quatd_t orot = body->getRotation(prm.now);
-//		setupObjectLighting(lightSources, ole.opos, orot, lights);
+		LightState lights;
 
-		vobj->render(prm);
+		quatd_t orot = body->getRotation(prm.now);
+		setObjectLighting(lightSources, ole.opos, orot, lights);
+
+		vobj->render(prm, lights);
 	} else
 		renderObjectAsPoint(ole);
 }

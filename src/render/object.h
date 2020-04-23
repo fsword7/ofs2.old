@@ -19,7 +19,7 @@ public:
 
     inline const Object *getObject() const { return &object; }
 
-    virtual void render(renderParameter &prm) = 0;
+    virtual void render(renderParameter &prm, const LightState &lights) = 0;
 
 protected:
     Scene  &scene;

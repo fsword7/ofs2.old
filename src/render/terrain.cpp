@@ -161,7 +161,7 @@ void TerrainTile::load()
 	state = Inactive;
 }
 
-void TerrainTile::render(renderParameter &prm)
+void TerrainTile::render(renderParameter &prm, const LightState &lights)
 {
 	if (mesh != nullptr) {
 		mesh->render(tmgr.scene.getContext(), prm);
@@ -335,22 +335,22 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 
 }
 
-void TerrainManager::render(TerrainTile *tile, renderParameter &prm)
+void TerrainManager::render(TerrainTile *tile, renderParameter &prm, const LightState &lights)
 {
 
 	if (tile->state == TerrainTile::Rendering)
-		tile->render(prm);
+		tile->render(prm, lights);
 	else if (tile->state == TerrainTile::Active)
 	{
 		for (int idx = 0; idx < 4; idx++) {
 			TerrainTile *child = tile->getChild(idx);
 			if (child != nullptr && (child->state & TILE_ACTIVE))
-				render(child, prm);
+				render(child, prm, lights);
 		}
 	}
 }
 
-void TerrainManager::render(renderParameter &prm)
+void TerrainManager::render(renderParameter &prm, const LightState &lights)
 {
 	pgm->use();
 
@@ -481,7 +481,7 @@ void TerrainManager::render(renderParameter &prm)
 	for (int idx = 0; idx < 2; idx++)
 		process(terrain[idx], prm);
 	for (int idx = 0; idx < 2; idx++)
-		render(terrain[idx], prm);
+		render(terrain[idx], prm, lights);
 
 	glUseProgram(0);
 }

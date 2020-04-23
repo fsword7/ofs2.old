@@ -25,56 +25,6 @@ class vPlanet;
 class StarRenderer;
 class TextureFont;
 
-// Rendering object property parameter (in reference frame)
-struct ObjectProperties
-{
-	Color    color;
-	uint32_t maxLOD;
-	uint32_t biasLOD;
-	vec3d_t  opos;
-	quatd_t  oqrot;
-	mat4d_t  orot;
-	double   orad;
-
-	vec3d_t  cpos;
-	quatd_t  cqrot;
-	mat4d_t  crot;
-	vec3d_t  cdir;
-	double   cdist;
-
-	double   viewap;
-	double   tanap;
-};
-
-struct renderParameter
-{
-	double  now;    // Current julian time
-
-	mat4f_t mProj;  // Projection matrix
-	mat4f_t mView;  // View matrix
-	mat4f_t mWorld;  // Model matrix (current object)
-	mat4f_t mPView;
-	mat4f_t mvp;
-
-	mat4d_t dmProj;
-	mat4d_t dmOrtho;
-	mat4d_t dmView;
-	mat4d_t dmModel;
-	mat4d_t dmWorld;
-	mat4d_t dtWorld;
-	mat4d_t dmPView;
-	mat4d_t dmvp;
-
-	// Camera parameters (global)
-	vec3d_t cpos;
-	quatd_t crot;
-	float   tanap;
-	double  aspect;
-
-	// Object parameters (reference frame)
-	ObjectProperties obj;
-};
-
 #define MAX_LIGHTS  8
 
 struct LightSource
@@ -117,6 +67,63 @@ struct LightState
 	uint32_t    nLights;
 	DirectLight lights[MAX_LIGHTS];
 };
+
+// Rendering object property parameter (in reference frame)
+struct ObjectProperties
+{
+	Color    color;
+	uint32_t maxLOD;
+	uint32_t biasLOD;
+	vec3d_t  opos;
+	quatd_t  oqrot;
+	mat4d_t  orot;
+	double   orad;
+
+	vec3d_t  cpos;
+	quatd_t  cqrot;
+	mat4d_t  crot;
+	vec3d_t  cdir;
+	double   cdist;
+
+	double   viewap;
+	double   tanap;
+};
+
+struct renderObject
+{
+
+	LightState *ls; // lighting state package
+};
+
+struct renderParameter
+{
+	double  now;    // Current julian time
+
+	mat4f_t mProj;  // Projection matrix
+	mat4f_t mView;  // View matrix
+	mat4f_t mWorld;  // Model matrix (current object)
+	mat4f_t mPView;
+	mat4f_t mvp;
+
+	mat4d_t dmProj;
+	mat4d_t dmOrtho;
+	mat4d_t dmView;
+	mat4d_t dmModel;
+	mat4d_t dmWorld;
+	mat4d_t dtWorld;
+	mat4d_t dmPView;
+	mat4d_t dmvp;
+
+	// Camera parameters (global)
+	vec3d_t cpos;
+	quatd_t crot;
+	float   tanap;
+	double  aspect;
+
+	// Object parameters (reference frame)
+	ObjectProperties obj;
+};
+
 
 struct VertexLine
 {
@@ -200,7 +207,7 @@ protected:
 	void setupPrimaryLightSources(const vector<const CelestialStar *> &nearStars,
 			const vec3d_t &obs, double now, vector<LightSource> &ls);
 	void setupSecondaryLightSources();
-	void setupObjectLighting(vector<LightSource> &suns, const vec3d_t opos,
+	void setObjectLighting(vector<LightSource> &suns, const vec3d_t opos,
 			const quatd_t orot, LightState &ls);
 
 	vec3d_t computeAstrocentricPosition(const CelestialStar *sun,

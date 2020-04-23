@@ -14,7 +14,7 @@ vPlanet::vPlanet(Scene &scene, const Object &object)
     tmgr = new TerrainManager(scene, object);
 }
 
-void vPlanet::render(renderParameter &prm)
+void vPlanet::render(renderParameter &prm, const LightState &lights)
 {
-    tmgr->render(prm);
+    tmgr->render(prm, lights);
 }

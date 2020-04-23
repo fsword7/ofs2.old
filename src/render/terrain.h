@@ -49,7 +49,7 @@ public:
 
     void split();
     void load();
-    void render(renderParameter &prm);
+    void render(renderParameter &prm, const LightState &lights);
 
     // Elevation function calls
     int16_t *readElevation(int lod, int ilng, int ilat, double eres);
@@ -122,8 +122,8 @@ public:
     void convertDoubleToTwoFloats(vec3d_t val, vec3f_t &high, vec3f_t &low);
 
     void process(TerrainTile *tile, renderParameter &prm);
-    void render(TerrainTile *tile, renderParameter &prm);
-    void render(renderParameter &prm);
+    void render(TerrainTile *tile, renderParameter &prm, const LightState &lights);
+    void render(renderParameter &prm, const LightState &lights);
 
     Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrd_t &tcr);
     
