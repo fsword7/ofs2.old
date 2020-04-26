@@ -27,6 +27,61 @@ quatd_t RotationModel::getRotation(double tjd) const
 	return spin(tjd) * getEquatorRotation(tjd);
 }
 
+// ******** Caching Rotation Model ********
+
+quatd_t CachingRotationModel::spin(double jd) const
+{
+	if (jd != lastTime) {
+		lastSpin      = computeSpin(jd);
+		lastTime      = jd;
+		validSpin     = true;
+		validEquator  = false;
+		validVelocity = false;
+	} else if(validSpin == false) {
+		lastSpin      = computeSpin(jd);
+		validSpin     = true;
+	}
+
+	return lastSpin;
+}
+
+quatd_t CachingRotationModel::getEquatorRotation(double jd) const
+{
+	if (jd != lastTime) {
+		lastEquator   = computeEquatorRotation(jd);
+		lastTime      = jd;
+		validSpin     = false;
+		validEquator  = true;
+		validVelocity = false;
+	} else if(validEquator == false) {
+		lastEquator   = computeEquatorRotation(jd);
+		validEquator  = true;
+	}
+
+	return lastEquator;
+}
+
+vec3d_t CachingRotationModel::getAngularVelocity(double jd) const
+{
+	if (jd != lastTime) {
+		lastVelocity  = computeAngularVelocity(jd);
+		lastTime      = jd;
+		validSpin     = false;
+		validEquator  = false;
+		validVelocity = true;
+	} else if(validVelocity == false) {
+		lastVelocity  = computeAngularVelocity(jd);
+		validVelocity = true;
+	}
+
+	return lastVelocity;
+}
+
+vec3d_t CachingRotationModel::computeAngularVelocity(double tjd) const
+{
+	return vec3d_t(0, 0, 0);
+}
+
 // ******** Earth Rotation Model ********
 
 quatd_t EarthRotationModel::spin(double tjd) const
