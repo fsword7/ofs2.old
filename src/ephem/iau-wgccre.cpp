@@ -1,12 +1,12 @@
 /*
- * iau.cpp - IAU WGCCRE Rotational Elements package
+ * iau-wgccre.cpp - IAU WGCCRE Rotational Elements package
  *
  *  Created on: Apr 26, 2020
  *      Author: Tim Stark
  *
- *  For more information, check URL links below
+ *  WGCCRE provides some papers for IAU rotational elements below.
  *
- *  https://astrogeology.usgs.gov/search/map/Docs/WGCCRE/WGCCRE2015reprint
+ *  https://astrogeology.usgs.gov/groups/IAU-WGCCRE
  *
  */
 
