@@ -204,6 +204,7 @@ void Player::follow(const Object &obj, followMode mode)
 	case fwGeosync:
 		setFrame(PlayerFrame::csBodyFixed, &obj);
 		break;
+	case fwEcliptic:
 	default:
 		setFrame(PlayerFrame::csEcliptical, &obj);
 		break;

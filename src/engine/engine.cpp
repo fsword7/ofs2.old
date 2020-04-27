@@ -79,6 +79,7 @@ void Engine::start()
 	if (planet != nullptr) {
 		player.go(*planet, planet->getRadius() * 6.0);
 		player.follow(*planet, Player::fwGeosync);
+//		player.follow(*planet, Player::fwEcliptic);
 	} else
 		cout << "Planet is not found in universe!!" << endl;
 }

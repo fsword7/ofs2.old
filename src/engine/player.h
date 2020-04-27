@@ -53,7 +53,9 @@ public:
 	};
 
 	enum followMode {
-		fwGeosync
+		fwGeosync,
+		fwEcliptic,
+		fwHeliosync
 	};
 
     Player();
