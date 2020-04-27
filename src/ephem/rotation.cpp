@@ -29,7 +29,7 @@ quatd_t RotationModel::getRotation(double tjd) const
 
 // ******** Caching Rotation Model ********
 
-quatd_t CachingRotationModel::spin(double jd) const
+quatd_t CachingRotationalModel::spin(double jd) const
 {
 	if (jd != lastTime) {
 		lastSpin      = computeSpin(jd);
@@ -45,7 +45,7 @@ quatd_t CachingRotationModel::spin(double jd) const
 	return lastSpin;
 }
 
-quatd_t CachingRotationModel::getEquatorRotation(double jd) const
+quatd_t CachingRotationalModel::getEquatorRotation(double jd) const
 {
 	if (jd != lastTime) {
 		lastEquator   = computeEquatorRotation(jd);
@@ -61,7 +61,7 @@ quatd_t CachingRotationModel::getEquatorRotation(double jd) const
 	return lastEquator;
 }
 
-vec3d_t CachingRotationModel::getAngularVelocity(double jd) const
+vec3d_t CachingRotationalModel::getAngularVelocity(double jd) const
 {
 	if (jd != lastTime) {
 		lastVelocity  = computeAngularVelocity(jd);
@@ -77,14 +77,14 @@ vec3d_t CachingRotationModel::getAngularVelocity(double jd) const
 	return lastVelocity;
 }
 
-vec3d_t CachingRotationModel::computeAngularVelocity(double tjd) const
+vec3d_t CachingRotationalModel::computeAngularVelocity(double tjd) const
 {
 	return vec3d_t(0, 0, 0);
 }
 
 // ******** Earth Rotation Model ********
 
-quatd_t EarthRotationModel::spin(double tjd) const
+quatd_t EarthRotationModel::computeSpin(double tjd) const
 {
 	double t = tjd - ofs::astro::J2000;
 //	double theta = (PI * 2) * (t * 24.0 / 23.9344694 - 259.853 / 360.0);
@@ -93,7 +93,7 @@ quatd_t EarthRotationModel::spin(double tjd) const
 	return yrot(-theta);
 }
 
-quatd_t EarthRotationModel::getEquatorRotation(double tjd) const
+quatd_t EarthRotationModel::computeEquatorRotation(double tjd) const
 {
 	double T = (tjd - astro::J2000) / 36525.0;
 

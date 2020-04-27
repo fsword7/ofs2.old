@@ -22,13 +22,15 @@ namespace ofs::ephem
 
 		virtual double getPeriod() const  { return 0.0; }
 		virtual bool isPeriodic() const   { return false; }
+
+		static RotationModel *create(const string &name);
 	};
 
-	class CachingRotationModel : public RotationModel
+	class CachingRotationalModel : public RotationModel
 	{
 	public:
-		CachingRotationModel() = default;
-		virtual ~CachingRotationModel() = default;
+		CachingRotationalModel() = default;
+		virtual ~CachingRotationalModel() = default;
 
 		quatd_t spin(double tjd) const;
 		quatd_t getEquatorRotation(double tjd) const;
@@ -51,13 +53,11 @@ namespace ofs::ephem
 		mutable bool    validVelocity = false;
 	};
 
-	class IAURotationModel : public CachingRotationModel
+	class IAURotationalModel : public CachingRotationalModel
 	{
 	public:
-		IAURotationModel(double poleRA, double pileRARate,
-						 double poleDec, double poleDecRate,
-						 double meridian, double period);
-		~IAURotationModel() = default;
+		IAURotationalModel(double period) : period(period) {};
+		IAURotationalModel() = default;
 
 		virtual quatd_t computeSpin(double tjd) const override;
 		virtual quatd_t computeEquatorRotation(double tjd) const override;
@@ -66,25 +66,21 @@ namespace ofs::ephem
 		virtual double  getPeriod() const override { return period; }
 		virtual bool    isPeriodic() const override { return true; }
 
-		vec2d_t computePole(double tjd) const;
-		double  computeMeridian(double tjd) const;
+		virtual vec2d_t computePole(double tjd) const = 0;
+		virtual double  computeMeridian(double tjd) const = 0;
 
-	private:
-		double poleRA, poleRARate;
-		double poleDec, poleDecRate;
-		double meridianAtEpoch;
-		double rotationRate;
+	protected:
 		double period = 0.0;
 		bool   reversal = false;
 	};
 
-	class EarthRotationModel : public RotationModel
+	class EarthRotationModel : public CachingRotationalModel
 	{
 	public:
 		EarthRotationModel() = default;
 
-		quatd_t spin(double tjd) const override;
-		quatd_t getEquatorRotation(double tjd) const override;
+		quatd_t computeSpin(double tjd) const override;
+		quatd_t computeEquatorRotation(double tjd) const override;
 
 		double getPeriod() const override { return 23.9344694 / 24.0; }
 		bool isPeriodic() const override { return true; }
