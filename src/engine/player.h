@@ -55,7 +55,8 @@ public:
 	enum followMode {
 		fwGeosync,
 		fwEcliptic,
-		fwHeliosync
+		fwHelioSync,
+		fwObjectSync
 	};
 
     Player();
@@ -86,7 +87,8 @@ public:
 	void setTravelVelocity(vec3d_t tv);
 	void setTravelSpeed(double ts);
 
-    void setFrame(PlayerFrame::coordType cs, const Object *obj);
+    void setFrame(PlayerFrame::coordType cs, const Object *obj,
+    		const Object *target = nullptr);
 
     double computeCoarseness(double maxCoarseness);
 

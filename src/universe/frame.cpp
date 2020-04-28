@@ -162,10 +162,10 @@ PlayerFrame::PlayerFrame()
 	frame = create(csUniversal);
 }
 
-PlayerFrame::PlayerFrame(coordType cs, const Object *obj)
+PlayerFrame::PlayerFrame(coordType cs, const Object *obj, const Object *target)
 : type(cs), frame(nullptr)
 {
-	frame = create(cs, obj);
+	frame = create(cs, obj, target);
 }
 
 PlayerFrame::~PlayerFrame()
@@ -199,7 +199,7 @@ quatd_t PlayerFrame::toUniversal(const quatd_t& rot, double tjd)
 	return frame->toUniversal(rot, tjd);
 }
 
-Frame *PlayerFrame::create(coordType csType, const Object *obj)
+Frame *PlayerFrame::create(coordType csType, const Object *obj, const Object *target)
 {
 	switch (csType) {
 	case csUniversal:
@@ -210,6 +210,8 @@ Frame *PlayerFrame::create(coordType csType, const Object *obj)
 		return new BodyMeanEquatorFrame(obj, obj);
 	case csBodyFixed:
 		return new BodyFixedFrame(obj, obj);
+	case csObjectSync:
+		return new ObjectSyncFrame(obj, target);
 	default:
 		return new J2000EclipticFrame(nullptr);
 	}
@@ -269,9 +271,57 @@ quatd_t BodyMeanEquatorFrame::getOrientation(double tjd) const
 	}
 }
 
-// ******** Heliosynchronous Reference Frame ********
+// ******** Object Synchronous Reference Frame ********
 
-SunSyncFrame::SunSyncFrame(const Object *obj, const Object *tgt)
-: Frame(obj)
+ObjectSyncFrame::ObjectSyncFrame(const Object *obj, const Object *tgt)
+: Frame(obj), targetObject(tgt)
 {
+}
+
+quatd_t ObjectSyncFrame::getOrientation(double tjd) const
+{
+	vec3d_t opos = center->getPosition(tjd);
+	vec3d_t tpos = targetObject->getPosition(tjd);
+
+	return glm::lookAt(opos, tpos, vec3d_t(0, 1, 0));
+}
+
+// ******** Two Vector Reference Frame ********
+
+FrameVector::FrameVector(FrameVectorType type)
+: type(type)
+{
+}
+
+FrameVector *FrameVector::create(const Object *obs, const Object *tgt,
+		FrameVectorType type)
+{
+	FrameVector *fv = new FrameVector(type);
+
+	fv->obsObject = obs;
+	fv->tgtObject = tgt;
+
+	return fv;
+}
+
+vec3d_t FrameVector::direction(double tjd) const
+{
+	vec3d_t v;
+
+	switch (type)
+	{
+	case fvRelativePosition:
+		v = tgtObject->getPosition(tjd) - obsObject->getPosition(tjd);
+		break;
+
+	case fvRelativeVelocity:
+		v = tgtObject->getVelocity(tjd) - obsObject->getVelocity(tjd);
+		break;
+
+	default:
+		v = vec3d_t();
+		break;
+	}
+
+	return v;
 }

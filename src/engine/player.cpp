@@ -7,6 +7,8 @@
 
 #include "main/core.h"
 #include "main/date.h"
+#include "universe/body.h"
+#include "universe/star.h"
 #include "universe/frame.h"
 #include "engine/object.h"
 #include "engine/player.h"
@@ -183,9 +185,9 @@ void Player::updateFrame(PlayerFrame *nframe)
 	lqrot = nframe->fromUniversal(uqrot, jdTime);
 }
 
-void Player::setFrame(PlayerFrame::coordType cs, const Object *obj)
+void Player::setFrame(PlayerFrame::coordType cs, const Object *obj, const Object *target)
 {
-	PlayerFrame *nframe = new PlayerFrame(cs, obj);
+	PlayerFrame *nframe = new PlayerFrame(cs, obj, target);
 	if (nframe == nullptr) {
 		std::cout << "Something wrong..." << std::endl;
 		return;
@@ -200,9 +202,20 @@ void Player::setFrame(PlayerFrame::coordType cs, const Object *obj)
 
 void Player::follow(const Object &obj, followMode mode)
 {
+	PlanetarySystem *system;
+	CelestialStar *sun;
+
 	switch (mode) {
 	case fwGeosync:
 		setFrame(PlayerFrame::csBodyFixed, &obj);
+		break;
+	case fwHelioSync:
+		if (obj.getType() == objCelestialBody) {
+			system = dynamic_cast<const CelestialBody *>(&obj)->getInSystem();
+			if (system != nullptr)
+				sun = system->getStar();
+		}
+		setFrame(PlayerFrame::csObjectSync, &obj, sun);
 		break;
 	case fwEcliptic:
 	default:

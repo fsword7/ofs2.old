@@ -45,6 +45,11 @@ namespace ofs::universe
 		const Object *center;
 	};
 
+	class CachingFrame : public Frame
+	{
+
+	};
+
 //	class ReferenceFrameTree
 //	{
 //	public:
@@ -105,10 +110,12 @@ namespace ofs::universe
 			csEcliptical = 1,
 			csEquatorial = 2,
 			csBodyFixed  = 3,
+			csObjectSync = 4
 		};
 
 		PlayerFrame();
-		PlayerFrame(coordType csType, const Object *center = nullptr);
+		PlayerFrame(coordType csType, const Object *center = nullptr,
+			const Object *target = nullptr);
 		~PlayerFrame();
 
 		string getName() const;
@@ -120,7 +127,8 @@ namespace ofs::universe
 		quatd_t fromUniversal(const quatd_t &urot, double tjd);
 		quatd_t toUniversal(const quatd_t &lrot, double tjd);
 
-		Frame *create(coordType csType, const Object *center = nullptr);
+		Frame *create(coordType csType, const Object *center = nullptr,
+			const Object *target = nullptr);
 
 		const Object *getCenter() const { return frame != nullptr ? frame->getCenter() : nullptr; }
 
@@ -173,13 +181,44 @@ namespace ofs::universe
 		const Object *equatorObject = nullptr;
 	};
 
-	class SunSyncFrame : public Frame
+	class ObjectSyncFrame : public Frame
 	{
 	public:
-		SunSyncFrame(const Object *obj, const Object *tgt);
-		~SunSyncFrame() = default;
+		ObjectSyncFrame(const Object *obj, const Object *tgt);
+		~ObjectSyncFrame() = default;
 
-		quatd_t getOrientation(double tjd) const { return quatd_t(1,0,0,0); }
+		quatd_t getOrientation(double tjd) const;
+
+	private:
+		const Object *targetObject = nullptr;
+	};
+
+	class FrameVector
+	{
+	public:
+		enum FrameVectorType {
+			fvRelativePosition,
+			fvRelativeVelocity
+		};
+
+		static FrameVector *create(const Object *obs, const Object *tgt,
+			FrameVectorType type);
+
+		vec3d_t direction(double tjd) const;
+
+	private:
+		FrameVector(FrameVectorType type);
+
+	private:
+		FrameVectorType type;
+
+		const Object *obsObject = nullptr; // Observer object
+		const Object *tgtObject = nullptr; // Target object
+	};
+
+	class TwoVectorFrame : public Frame
+	{
+
 	};
 
 }
