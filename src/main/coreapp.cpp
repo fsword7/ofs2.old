@@ -165,15 +165,15 @@ void CoreApp::tick()
 
 	// Keyboard rotation and travel control
 	// X-axis rotation control
-	if (stateKey[keyPad8] || stateKey[keyUp])
+	if (stateKey[keyPad8])
 		av += vec3d_t(dt * keyRotationAccel, 0, 0);
-	if (stateKey[keyPad2] || stateKey[keyDown])
+	if (stateKey[keyPad2])
 		av += vec3d_t(dt * -keyRotationAccel, 0, 0);
 
 	// Y-axis rotation control
-	if (stateKey[keyPad4] || stateKey[keyLeft])
+	if (stateKey[keyPad4])
 		av += vec3d_t(0, dt * keyRotationAccel, 0);
-	if (stateKey[keyPad6] || stateKey[keyRight])
+	if (stateKey[keyPad6])
 		av += vec3d_t(0, dt * -keyRotationAccel, 0);
 
 	// Z-axis rotation control
@@ -183,6 +183,19 @@ void CoreApp::tick()
 		av += vec3d_t(0, 0, dt * keyRotationAccel);
 
 	// Travel velocity control
+	// X-axis move control
+	if (stateKey[keyLeft])
+		tv.x += dt * 3000.0;
+	if (stateKey[keyRight])
+		tv.x -= dt * 3000.0;
+
+	// Y-axis move control
+	if (stateKey[keyDown])
+		tv.y += dt * 3000.0;
+	if (stateKey[keyUp])
+		tv.y -= dt * 3000.0;
+
+	// Z-axis move control
 	if (stateKey[keyPad3])
 		tv.z += dt * 3000.0;
 	if (stateKey[keyPad1])
