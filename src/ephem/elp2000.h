@@ -22,11 +22,12 @@ namespace ofs::ephem {
 		vec3d_t calculatePosition(double jd) const override;
 //		vec3d_t calculateVelocity(double jd) const override;
 
-//		double getPeriod() const { return period; }
+		double getPeriod() const { return period; }
+		double getBoundingRadius() const { return boundingRadius; }
 
-//	protected:
-//		double period;
-//		double boundingRadius;
+	protected:
+		double period;
+		double boundingRadius;
 	};
 
 }

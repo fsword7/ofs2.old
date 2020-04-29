@@ -31,7 +31,6 @@ namespace ofs::ephem
 	class VSOP87Orbit : public CachingOrbit
 	{
 	public:
-//		VSOP87Orbit() = default;
 		VSOP87Orbit(vsop87s_t *sL, int nL,
 					vsop87s_t *sB, int nB,
 					vsop87s_t *sR, int nR,
