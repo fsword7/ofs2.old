@@ -53,10 +53,16 @@ public:
 	};
 
 	enum followMode {
-		fwGeosync,
+		fwGeoSync,
 		fwEcliptic,
 		fwHelioSync,
 		fwObjectSync
+	};
+
+	enum goMode {
+		goGeoSync,
+		goHelioSync,
+		goObjectSync
 	};
 
     Player();
@@ -92,9 +98,9 @@ public:
 
     double computeCoarseness(double maxCoarseness);
 
+    void move(const Object &obj, double dist, goMode mode);
     void follow(const Object &obj, followMode mode);
     void look(const Object &obj);
-    void go(const Object &obj, double dist);
 
     void rotate(quatd_t rot);
     void dolly(double dist);

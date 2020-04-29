@@ -206,7 +206,7 @@ void Player::follow(const Object &obj, followMode mode)
 	CelestialStar *sun;
 
 	switch (mode) {
-	case fwGeosync:
+	case fwGeoSync:
 		setFrame(PlayerFrame::csBodyFixed, &obj);
 		break;
 	case fwHelioSync:
@@ -234,15 +234,39 @@ void Player::look(const Object &obj)
 	uqrot = glm::lookAt(opos, upos, up);
 	lqrot = frame->fromUniversal(uqrot, jdTime);
 
+	// Update all cameras
+//	updateUniversal();
+	for (auto cam : camera)
+		cam->update();
+
 //	std::cout << std::fixed << std::setprecision(10);
 //	std::cout << "Universal Rotation: (" << uqrot.w() << "," << uqrot.x() << "," << uqrot.y() << "," << uqrot.z() << ")" << std::endl;
 //	std::cout << "Local Rotation:     (" << lqrot.w() << "," << lqrot.x() << "," << lqrot.y() << "," << lqrot.z() << ")" << std::endl;
 }
 
-void Player::go(const Object &obj, double dist)
+void Player::move(const Object &obj, double dist, goMode mode)
 {
 	vec3d_t opos = obj.getPosition(jdTime);
-	quatd_t orot = obj.getRotation(jdTime);
+	quatd_t orot;
+
+	PlanetarySystem *system;
+	CelestialStar *sun;
+
+	switch (mode) {
+	case goGeoSync:
+		orot = obj.getRotation(jdTime);
+		break;
+	case goHelioSync:
+		if (obj.getType() == objCelestialBody) {
+			system = dynamic_cast<const CelestialBody *>(&obj)->getInSystem();
+			if (system != nullptr)
+				sun = system->getStar();
+		}
+		vec3d_t tpos = sun->getPosition(jdTime);
+		orot = glm::lookAt(opos, tpos, vec3d_t(0, 1, 0));
+		orot *= yrot(glm::radians(180.0));
+		break;
+	}
 
 	upos  = opos + glm::conjugate(orot) * vec3d_t(0, 0, -dist);
 	uqrot = glm::conjugate(orot) * quatd_t(1, 0, 0, 0);;

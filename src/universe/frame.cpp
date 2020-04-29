@@ -271,7 +271,7 @@ quatd_t BodyMeanEquatorFrame::getOrientation(double tjd) const
 	}
 }
 
-// ******** Object Synchronous Reference Frame ********
+// ******** Object/Heliocentric Synchronous Reference Frame ********
 
 ObjectSyncFrame::ObjectSyncFrame(const Object *obj, const Object *tgt)
 : Frame(obj), targetObject(tgt)

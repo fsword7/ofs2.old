@@ -77,9 +77,10 @@ void Engine::start()
 //	Object *planet = universe.findPath("Sol/Neptune");
 
 	if (planet != nullptr) {
-		player.go(*planet, planet->getRadius() * 6.0);
-//		player.follow(*planet, Player::fwGeosync);
+		player.move(*planet, planet->getRadius() * 6.0, Player::goHelioSync);
+//		player.follow(*planet, Player::fwGeoSync);
 		player.follow(*planet, Player::fwHelioSync);
+//		player.look(*planet);
 	} else
 		cout << "Planet is not found in universe!!" << endl;
 }
