@@ -61,7 +61,8 @@ public:
 
 	enum goMode {
 		goGeoSync,
-		goHelioSync,
+		goFrontHelioSync,
+		goBackHelioSync,
 		goObjectSync
 	};
 

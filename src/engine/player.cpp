@@ -247,6 +247,7 @@ void Player::look(const Object &obj)
 void Player::move(const Object &obj, double dist, goMode mode)
 {
 	vec3d_t opos = obj.getPosition(jdTime);
+	vec3d_t tpos;
 	quatd_t orot;
 
 	PlanetarySystem *system;
@@ -256,16 +257,27 @@ void Player::move(const Object &obj, double dist, goMode mode)
 	case goGeoSync:
 		orot = obj.getRotation(jdTime);
 		break;
-	case goHelioSync:
+
+	case goFrontHelioSync:
 		if (obj.getType() == objCelestialBody) {
 			system = dynamic_cast<const CelestialBody *>(&obj)->getInSystem();
 			if (system != nullptr)
 				sun = system->getStar();
 		}
-		vec3d_t tpos = sun->getPosition(jdTime);
-		orot = glm::lookAt(opos, tpos, vec3d_t(0, 1, 0));
-		orot *= yrot(glm::radians(180.0));
+		tpos = sun->getPosition(jdTime);
+		orot = glm::lookAt(tpos, opos, vec3d_t(0, 1, 0));
 		break;
+
+	case goBackHelioSync:
+		if (obj.getType() == objCelestialBody) {
+			system = dynamic_cast<const CelestialBody *>(&obj)->getInSystem();
+			if (system != nullptr)
+				sun = system->getStar();
+		}
+		tpos = sun->getPosition(jdTime);
+		orot = glm::lookAt(opos, tpos, vec3d_t(0, 1, 0));
+		break;
+
 	}
 
 	upos  = opos + glm::conjugate(orot) * vec3d_t(0, 0, -dist);

@@ -77,7 +77,8 @@ void Engine::start()
 //	Object *planet = universe.findPath("Sol/Neptune");
 
 	if (planet != nullptr) {
-		player.move(*planet, planet->getRadius() * 6.0, Player::goHelioSync);
+//		player.move(*planet, planet->getRadius() * 6.0, Player::goFrontHelioSync);
+		player.move(*planet, planet->getRadius() * 6.0, Player::goBackHelioSync);
 //		player.follow(*planet, Player::fwGeoSync);
 		player.follow(*planet, Player::fwHelioSync);
 //		player.look(*planet);
