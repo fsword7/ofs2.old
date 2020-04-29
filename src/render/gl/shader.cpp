@@ -211,14 +211,14 @@ ShaderStatus ShaderProgram::link(ostream &out)
 	return ShaderStatus::shrSuccessful;
 }
 
-void ShaderProgram::setLightParameters(LightState *ls,
+void ShaderProgram::setLightParameters(const LightState *ls,
 	Color diffuse, Color specular, Color emissive)
 {
 
 	int nLights = ls->nLights;
 
 	for (int idx = 0; idx < nLights; idx++) {
-		DirectLight &light = ls->lights[idx];
+		const DirectLight &light = ls->lights[idx];
 
 		vec3f_t color = vec3f_t(light.color.getRed(),
 								light.color.getGreen(),

@@ -161,7 +161,7 @@ void TerrainTile::load()
 	state = Inactive;
 }
 
-void TerrainTile::render(renderParameter &prm, const LightState &lights)
+void TerrainTile::render(renderParameter &prm)
 {
 	if (mesh != nullptr) {
 		mesh->render(tmgr.scene.getContext(), prm);
@@ -335,17 +335,17 @@ void TerrainManager::process(TerrainTile *tile, renderParameter &prm)
 
 }
 
-void TerrainManager::render(TerrainTile *tile, renderParameter &prm, const LightState &lights)
+void TerrainManager::render(TerrainTile *tile, renderParameter &prm)
 {
 
 	if (tile->state == TerrainTile::Rendering)
-		tile->render(prm, lights);
+		tile->render(prm);
 	else if (tile->state == TerrainTile::Active)
 	{
 		for (int idx = 0; idx < 4; idx++) {
 			TerrainTile *child = tile->getChild(idx);
 			if (child != nullptr && (child->state & TILE_ACTIVE))
-				render(child, prm, lights);
+				render(child, prm);
 		}
 	}
 }
@@ -477,11 +477,13 @@ void TerrainManager::render(renderParameter &prm, const LightState &lights)
 //	uint32_t clLoc = glGetUniformLocation(pgm->getID(), "eCamera");
 //    glUniform3fv(clLoc, 1, glm::value_ptr(eCamera));
 
+    pgm->setLightParameters(&lights, Color(1, 1, 1), Color(0, 0, 0), Color(0, 0, 0));
+
 	// Rendering terrain area
 	for (int idx = 0; idx < 2; idx++)
 		process(terrain[idx], prm);
 	for (int idx = 0; idx < 2; idx++)
-		render(terrain[idx], prm, lights);
+		render(terrain[idx], prm);
 
 	glUseProgram(0);
 }

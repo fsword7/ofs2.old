@@ -7,6 +7,14 @@ layout (location = 2) in vec3 vNormal;
 //layout (location = 2) in vec3 vColor;
 layout (location = 3) in vec2 vTexCoord;
 
+uniform struct {
+	vec3  direction;
+	vec3  diffuse;
+	vec3  specular;
+	vec3  halfVector;
+	float brightness;
+} lights[8];
+
 uniform mat4 mvp;
 
 uniform vec3 gCamera;

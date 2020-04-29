@@ -66,7 +66,7 @@ public:
 	const string getLogInfo();
 	ShaderStatus link(ostream &out);
 
-	void setLightParameters(LightState *ls, Color diffuse, Color specular, Color emissive);
+	void setLightParameters(const LightState *ls, Color diffuse, Color specular, Color emissive);
 
 private:
 	string pgmName;
