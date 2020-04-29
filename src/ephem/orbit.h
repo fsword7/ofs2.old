@@ -18,7 +18,9 @@ namespace ofs::ephem
 		virtual vec3d_t getPosition(double jd) const = 0;
 		virtual vec3d_t getVelocity(double jd) const = 0;
 
+		virtual bool   isPeriodic() const { return true; }
 		virtual double getPeriod() const = 0;
+		virtual double getBoundingRadius() const = 0;
 	};
 
 	class CachingOrbit : public Orbit
@@ -53,6 +55,7 @@ namespace ofs::ephem
 		virtual ~EllipticalOrbit() = default;
 
 		inline double getPeriod() const { return P; }
+		inline double getBoundingRadius() const { return 0.0; }
 
 		// Kepler's equation
 		double solveElliptic(double e, double M) const;

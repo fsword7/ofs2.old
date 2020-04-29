@@ -31,7 +31,7 @@ namespace ofs::ephem
 	class VSOP87Orbit : public CachingOrbit
 	{
 	public:
-		VSOP87Orbit() = default;
+//		VSOP87Orbit() = default;
 		VSOP87Orbit(vsop87s_t *sL, int nL,
 					vsop87s_t *sB, int nB,
 					vsop87s_t *sR, int nR,
@@ -44,6 +44,7 @@ namespace ofs::ephem
 		vec3d_t calculateVelocity(double jd) const override;
 
 		double getPeriod() const { return period; }
+		double getBoundingRadius() const { return boundingRadius; }
 
 	protected:
 		double sum(const vsop87s_t &series, double t) const;
