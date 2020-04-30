@@ -1,5 +1,5 @@
 /*
- * elp2000.h - ELP 2000/82 - Lunar Ephemeris orbital data
+ * elp-mpp02.h - ELP/MPP02 - Lunar Ephemeral data
  *
  *  Created on: Mar 23, 2020
  *      Author: Tim Stark
@@ -14,7 +14,12 @@ namespace ofs::ephem {
 	class ELP2000Orbit : public CachingOrbit
 	{
 	public:
-		ELP2000Orbit() = default;
+		enum dataMode {
+			elpUseLLR,
+			elpUseDE406
+		};
+
+		ELP2000Orbit(dataMode mode);
 		virtual ~ELP2000Orbit() = default;
 
 //		static Orbit *create(const string &name);
@@ -24,6 +29,9 @@ namespace ofs::ephem {
 
 		double getPeriod() const { return period; }
 		double getBoundingRadius() const { return boundingRadius; }
+
+	private:
+		void setupParameters(dataMode mode);
 
 	protected:
 		double period;

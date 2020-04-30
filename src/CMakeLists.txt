@@ -4,7 +4,7 @@ set(ofs_cpp_SRCS
 	engine/headup.cpp
 	engine/player.cpp
 	engine/ucs.cpp
-	ephem/elp2000.cpp
+	ephem/elp-mpp02.cpp
 	ephem/iau-wgccre.cpp
 	ephem/precession.cpp
 	ephem/rotation.cpp
@@ -62,7 +62,7 @@ set(ofs_h_SRCS
 	engine/object.h
 	engine/headup.h
 	engine/player.h
-	ephem/elp2000.h
+	ephem/elp-mpp02.h
 	ephem/precession.h
 	ephem/rotation.h
 	ephem/orbit.h

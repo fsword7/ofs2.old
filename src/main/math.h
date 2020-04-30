@@ -33,6 +33,13 @@ typedef glm::tquat<double> quatd_t;
 typedef glm::dmat3 mat3d_t;
 typedef glm::dmat4 mat4d_t;
 
+// Restrict x to [-pi, pi) range
+template <typename T> inline constexpr T mod2pi(T x)
+{
+	constexpr T tpi = PI * 2.0;
+
+	return x - tpi * floor((x + PI)/tpi);
+}
 
 template <typename T> inline constexpr T toRadian(T deg)
 {
