@@ -10,6 +10,7 @@
 #include "universe/system.h"
 #include "universe/universe.h"
 #include "ephem/vsop87.h"
+#include "ephem/elp-mpp02.h"
 
 using namespace ofs::astro;
 using namespace ofs::universe;
@@ -71,6 +72,7 @@ void Universe::init()
     earth->setBondAlbedo(0.306);
     earth->enableSurface();
 
+    Orbit *moonOrbit = new ELP2000Orbit(ELP2000Orbit::elpUseDE406);
 //    moon->setOrbit(VSOP87Orbit::create("elp82a-lunar"));
     moon->setRotation(RotationModel::create("iau-lunar"));
     moon->setRadius(1738.14);
