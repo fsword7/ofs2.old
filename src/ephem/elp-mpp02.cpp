@@ -249,12 +249,186 @@ void ELP2000Orbit::setupCoefficients()
 
 }
 
+void ELP2000Orbit::computeArguments(double T, elpArgs &args) const
+{
+    const double deg = PI/180.0; // degrees -> radians
+    const double sec = PI/648000.0; // arcsecs -> radians
+    double T2 = T*T;
+    double T3 = T*T2;
+    double T4 = T2*T2;
+    double w10 = (-142.0 + 18.0/60.0 +(59.95571 + params.Dw1_0)/3600.0)*deg;
+    double w11 = mod2pi((1732559343.73604 + params.Dw1_1)*T*sec);
+    double w12 = mod2pi((-6.8084 + params.Dw1_2)*T2*sec);
+    double w13 = mod2pi((0.006604 + params.Dw1_3)*T3*sec);
+    double w14 = mod2pi((-3.169e-5 + params.Dw1_4)*T4*sec);
+    double w20 = (83.0 + 21.0/60.0 + (11.67475 + params.Dw2_0)/3600.0)*deg;
+    double w21 = mod2pi((14643420.3171 + params.Dw2_1 + params.Cw2_1)*T*sec);
+    double w22 = mod2pi((-38.2631 + params.Dw2_2)*T2*sec);
+    double w23 = mod2pi((-0.045047+ params.Dw2_3)*T3*sec);
+    double w24 = mod2pi(0.00021301*T4*sec);
+    double w30 = (125.0 + 2.0/60.0 + (40.39816 + params.Dw3_0)/3600.0)*deg;
+    double w31 = mod2pi((-6967919.5383 + params.Dw3_1 + params.Cw3_1)*T*sec);
+    double w32 = mod2pi((6.359 + params.Dw3_2)*T2*sec);
+    double w33 = mod2pi((0.007625 + params.Dw3_3)*T3*sec);
+    double w34 = mod2pi(-3.586e-5*T4*sec);
+    double Ea0 = (100.0 + 27.0/60.0 + (59.13885 + params.Deart_0)/3600.0)*deg;
+    double Ea1 = mod2pi((129597742.293 + params.Deart_1)*T*sec);
+    double Ea2 = mod2pi(-0.0202*T2*sec);
+    double Ea3 = mod2pi(9e-6*T3*sec);
+    double Ea4 = mod2pi(1.5e-7*T4*sec);
+    double p0 = (102.0 + 56.0/60.0 + (14.45766 + params.Dperi)/3600.0)*deg;
+    double p1 = mod2pi(1161.24342*T*sec);
+    double p2 = mod2pi(0.529265*T2*sec);
+    double p3 = mod2pi(-1.1814e-4*T3*sec);
+    double p4 = mod2pi(1.1379e-5*T4*sec);
+
+    double Me = (-108.0 + 15.0/60.0 + 3.216919/3600.0)*deg;
+    Me += mod2pi(538101628.66888*T*sec);
+    double Ve = (-179.0 + 58.0/60.0 + 44.758419/3600.0)*deg;
+    Ve += mod2pi(210664136.45777*T*sec);
+    double EM = (100.0 + 27.0/60.0 + 59.13885/3600.0)*deg;
+    EM += mod2pi(129597742.293*T*sec);
+    double Ma = (-5.0 + 26.0/60.0 + 3.642778/3600.0)*deg;
+    Ma += mod2pi(68905077.65936*T*sec);
+    double Ju = (34.0 + 21.0/60.0 + 5.379392/3600.0)*deg;
+    Ju += mod2pi(10925660.57335*T*sec);
+    double Sa = (50.0 + 4.0/60.0 + 38.902495/3600.0)*deg;
+    Sa += mod2pi(4399609.33632*T*sec);
+    double Ur = (-46.0 + 3.0/60.0 + 4.354234/3600.0)*deg;
+    Ur += mod2pi(1542482.57845*T*sec);
+    double Ne = (-56.0 + 20.0/60.0 + 56.808371/3600.0)*deg;
+    Ne += mod2pi(786547.897*T*sec);
+
+    double W1 = w10+w11+w12+w13+w14;
+    double W2 = w20+w21+w22+w23+w24;
+    double W3 = w30+w31+w32+w33+w34;
+    double Ea = Ea0+Ea1+Ea2+Ea3+Ea4;
+    double pomp = p0+p1+p2+p3+p4;
+
+    // Mean longitude of the Moon
+    args.W1 = mod2pi(W1);
+    // Arguments of Delaunay
+    args.D = mod2pi(W1-Ea + PI);
+    args.F = mod2pi(W1-W3);
+    args.L = mod2pi(W1-W2);
+    args.Lp = mod2pi(Ea-pomp);
+
+    // zeta
+    args.zeta = mod2pi(W1 + 0.02438029560881907*T);
+
+    // Planetary arguments (mean longitudes and mean motions)
+    args.Me = mod2pi(Me);
+    args.Ve = mod2pi(Ve);
+    args.EM = mod2pi(EM);
+    args.Ma = mod2pi(Ma);
+    args.Ju = mod2pi(Ju);
+    args.Sa = mod2pi(Sa);
+    args.Ur = mod2pi(Ur);
+    args.Ne = mod2pi(Ne);
+}
+
+double ELP2000Orbit::computeMainSum(int n, int **iMain, double *aMain,
+		elpArgs &args, int dist) const
+{
+    double sum = 0.0;
+    double phase;
+
+    if (dist==0) {
+       // sine series
+       for (int idx = 0; idx < n; idx++) {
+          phase = iMain[idx][0]*args.D + iMain[idx][1]*args.F + iMain[idx][2]*args.L +
+                  iMain[idx][3]*args.Lp;
+          sum += aMain[idx]*sin(phase);
+       }
+    } else {
+       // cosine series
+       for (int idx = 0; idx < n; idx++) {
+          phase = iMain[idx][0]*args.D + iMain[idx][1]*args.F + iMain[idx][2]*args.L +
+                  iMain[idx][3]*args.Lp;
+          sum += aMain[idx]*cos(phase);
+       }
+    }
+
+    return sum;
+
+}
+
+double ELP2000Orbit::computePerturbationSum(int n, int **iPert, double *aPert,
+		double *phPert, elpArgs &args) const
+{
+    double sum = 0.0;
+    double phase;
+
+    for (int idx = 0; idx < n; idx++) {
+       phase = phPert[idx] + iPert[idx][0]*args.D + iPert[idx][1]*args.F +
+               iPert[idx][2]*args.L + iPert[idx][3]*args.Lp + iPert[idx][4]*args.Me +
+               iPert[idx][5]*args.Ve + iPert[idx][6]*args.EM + iPert[idx][7]*args.Ma +
+               iPert[idx][8]*args.Ju + iPert[idx][9]*args.Sa + iPert[idx][10]*args.Ur +
+               iPert[idx][11]*args.Ne + iPert[idx][12]*args.zeta;
+       sum += aPert[idx]*sin(phase);
+    }
+
+    return sum;
+}
+
 vec3d_t ELP2000Orbit::calculatePosition(double jd) const
 {
 	// Julian time since EPOCH J2000.0
-	double t = (jd - 2451545.0) / 36525.0;
+	double T  = (jd - 2451545.0) / 36525.0;
+	double T2 = T * T;
+	double T3 = T2 * T;
+	double T4 = T3 * T;
+	double T5 = T4 * T;
 
-	return vec3d_t(0, 0, 0);
+	elpArgs args;
+
+	computeArguments(T, args);
+
+	// Sum the ELP/MPP02 series
+	// main problem series
+	double main_long = computeMainSum(coefs.n_main_long, coefs.i_main_long,
+								  coefs.A_main_long, args, 0);
+	double main_lat = computeMainSum(coefs.n_main_lat, coefs.i_main_lat,
+								  coefs.A_main_lat, args, 0);
+	double main_dist = computeMainSum(coefs.n_main_dist, coefs.i_main_dist,
+								  coefs.A_main_dist, args, 1);
+	// perturbation, longitude
+	double pert_longT0 = computePerturbationSum(coefs.n_pert_longT0, coefs.i_pert_longT0,
+											coefs.A_pert_longT0, coefs.ph_pert_longT0, args);
+	double pert_longT1 = computePerturbationSum(coefs.n_pert_longT1, coefs.i_pert_longT1,
+											coefs.A_pert_longT1, coefs.ph_pert_longT1, args);
+	double pert_longT2 = computePerturbationSum(coefs.n_pert_longT2, coefs.i_pert_longT2,
+											coefs.A_pert_longT2, coefs.ph_pert_longT2, args);
+	double pert_longT3 = computePerturbationSum(coefs.n_pert_longT3, coefs.i_pert_longT3,
+											coefs.A_pert_longT3, coefs.ph_pert_longT3, args);
+	// perturbation, latitude
+	double pert_latT0 = computePerturbationSum(coefs.n_pert_latT0, coefs.i_pert_latT0,
+											coefs.A_pert_latT0, coefs.ph_pert_latT0, args);
+	double pert_latT1 = computePerturbationSum(coefs.n_pert_latT1, coefs.i_pert_latT1,
+											coefs.A_pert_latT1, coefs.ph_pert_latT1, args);
+	double pert_latT2 = computePerturbationSum(coefs.n_pert_latT2, coefs.i_pert_latT2,
+											coefs.A_pert_latT2, coefs.ph_pert_latT2, args);
+	// perturbation, distance
+	double pert_distT0 = computePerturbationSum(coefs.n_pert_distT0, coefs.i_pert_distT0,
+											coefs.A_pert_distT0, coefs.ph_pert_distT0, args);
+	double pert_distT1 = computePerturbationSum(coefs.n_pert_distT1, coefs.i_pert_distT1,
+											coefs.A_pert_distT1, coefs.ph_pert_distT1, args);
+	double pert_distT2 = computePerturbationSum(coefs.n_pert_distT2, coefs.i_pert_distT2,
+											coefs.A_pert_distT2, coefs.ph_pert_distT2, args);
+	double pert_distT3 = computePerturbationSum(coefs.n_pert_distT3, coefs.i_pert_distT3,
+											coefs.A_pert_distT3, coefs.ph_pert_distT3, args);
+
+
+	// Moon's longitude, latitude and distance
+	double longM = args.W1 + main_long + pert_longT0 + mod2pi(pert_longT1*T) +
+				 mod2pi(pert_longT2*T2) + mod2pi(pert_longT3*T3);
+	double latM  = main_lat + pert_latT0 + mod2pi(pert_latT1*T) + mod2pi(pert_latT2*T2);
+	const double ra0 = 384747.961370173/384747.980674318;
+	double r = ra0*(main_dist +  pert_distT0 + pert_distT1*T + pert_distT2*T2 + pert_distT3*T3);
+
+	return vec3d_t( r * cos(longM) * cos(latM),
+					r * sin(longM) * cos(latM),
+					r * sin(latM));
 }
 
 

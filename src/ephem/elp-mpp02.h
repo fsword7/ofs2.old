@@ -84,6 +84,12 @@ namespace ofs::ephem {
 		void loadPerturbationFile(const char *fname,
 			int &n, int **&iPert, double *&aPert, double *&phase);
 
+		void computeArguments(double T, elpArgs &args) const;
+		double computeMainSum(int n, int **iMain, double *aMain,
+			elpArgs &args, int dist) const;
+		double computePerturbationSum(int n, int **iPert, double *aPert,
+			double *phPert, elpArgs &args) const;
+
 	protected:
 		double period;
 		double boundingRadius;

@@ -8,6 +8,7 @@
 #include "main/core.h"
 #include "universe/astro.h"
 #include "ephem/vsop87.h"
+#include "ephem/elp-mpp02.h"
 
 using namespace ofs::ephem;
 
@@ -151,6 +152,16 @@ Orbit *VSOP87Orbit::create(const string &name)
 										VSOP_PARAM(neptune_R),
 										365.25 * 164.793);
 		return orbit;
+	}
+
+	if (name == "elp-mpp02-llr-lunar") {
+	    Orbit *orbit = new ELP2000Orbit(ELP2000Orbit::elpUseLLR);
+	    return orbit;
+	}
+
+	if (name == "elp-mpp02-de406-lunar") {
+	    Orbit *orbit = new ELP2000Orbit(ELP2000Orbit::elpUseDE406);
+	    return orbit;
 	}
 
 	return nullptr;

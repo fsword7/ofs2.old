@@ -72,8 +72,7 @@ void Universe::init()
     earth->setBondAlbedo(0.306);
     earth->enableSurface();
 
-    Orbit *moonOrbit = new ELP2000Orbit(ELP2000Orbit::elpUseDE406);
-//    moon->setOrbit(VSOP87Orbit::create("elp82a-lunar"));
+    moon->setOrbit(VSOP87Orbit::create("elp-mpp02-de406-lunar"));
     moon->setRotation(RotationModel::create("iau-lunar"));
     moon->setRadius(1738.14);
     moon->setGeometricAlbedo(0.136);
