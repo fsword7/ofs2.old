@@ -14,6 +14,7 @@ using namespace ofs::ephem;
 ELP2000Orbit::ELP2000Orbit(dataMode mode)
 {
 	setupParameters(mode);
+	setupCoefficients();
 }
 
 void ELP2000Orbit::setupParameters(dataMode mode)
@@ -119,6 +120,132 @@ void ELP2000Orbit::setupParameters(dataMode mode)
 	facs.fB5 = -xa*delnu_nu + dtsm*delnp_nu;
 	// factor multiplie A_i for distance
 	facs.fA = 1.0 - 2.0/3.0*delnu_nu;
+
+}
+
+void ELP2000Orbit::loadMainProblemFile(const char *fname,
+	int &n, int **&iMain, double *&aMain, double fA, elpFACS &facs)
+{
+	double A, B1, B2, B3, B4, B5, B6;
+	ifstream file(fname, ios::in);
+
+	if (!file) {
+		cerr << fmt::sprintf("ELP2000Orbit: File '%s': %s\n",
+				fname, strerror(errno));
+		return;
+	}
+
+	file >> n;
+
+	iMain = new int *[n];
+	aMain = new double[n];
+	for (int idx = 0; idx < n; idx++)
+		iMain[idx] = new int[4];
+
+	for (int idx = 0; idx < n; idx++) {
+		if (file.eof()) {
+			cerr << fmt::sprintf("ELP2000Orbit: File '%s': reached EOF before reading all data!\n",
+					fname);
+			return;
+		}
+
+		file >> iMain[idx][0] >> iMain[idx][1] >> iMain[idx][2] >> iMain[idx][3]
+			 >> A >> B1 >> B2 >> B3 >> B4 >> B5 >> B6;
+		aMain[idx] = (fA * A) + (facs.fB1 * B1) + (facs.fB2 * B2) + (facs.fB3 * B3) +
+			(facs.fB4 * B4) + (facs.fB5 * B5);
+	}
+
+	file.close();
+}
+
+void ELP2000Orbit::loadPerturbationFile(const char *fname,
+	int &n, int **&iPert, double *&aPert, double *&phase)
+{
+	ifstream file(fname, ios::in);
+
+	if (!file) {
+		cerr << fmt::sprintf("ELP2000Orbit: File '%s': %s\n",
+				fname, strerror(errno));
+		return;
+	}
+
+	file >> n;
+
+	iPert = new int *[n];
+	aPert = new double[n];
+	phase = new double[n];
+	for (int idx = 0; idx < n; idx++)
+		iPert[idx] = new int[13];
+
+	for (int idx = 0; idx < n; idx++) {
+		if (file.eof()) {
+			cerr << fmt::sprintf("ELP2000Orbit: File '%s': reached EOF before reading all data!\n",
+					fname);
+			return;
+		}
+
+		file >> iPert[idx][0]  >> iPert[idx][1] >> iPert[idx][2] >> iPert[idx][3]
+			 >> iPert[idx][4]  >> iPert[idx][5] >> iPert[idx][6] >> iPert[idx][7]
+			 >> iPert[idx][8]  >> iPert[idx][9] >> iPert[idx][10] >> iPert[idx][11]
+			 >> iPert[idx][12] >> aPert[idx] >> phase[idx];
+	}
+
+	file.close();
+}
+
+void ELP2000Orbit::setupCoefficients()
+{
+	  string infile;
+
+	  // Main problem
+	  infile = "data/ephem/elp_main.long";
+	  loadMainProblemFile(infile.c_str(), coefs.n_main_long, coefs.i_main_long,
+	                         coefs.A_main_long, 1.0, facs);
+	  infile = "data/ephem/elp_main.lat";
+	  loadMainProblemFile(infile.c_str(), coefs.n_main_lat, coefs.i_main_lat,
+	                         coefs.A_main_lat, 1.0, facs);
+	  infile = "data/ephem/elp_main.dist";
+	  loadMainProblemFile(infile.c_str(), coefs.n_main_dist, coefs.i_main_dist,
+	                         coefs.A_main_dist, facs.fA, facs);
+
+	  // perturbation, longitude
+	  infile = "data/ephem/elp_pert.longT0";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_longT0, coefs.i_pert_longT0,
+	                         coefs.A_pert_longT0, coefs.ph_pert_longT0);
+	  infile = "data/ephem/elp_pert.longT1";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_longT1, coefs.i_pert_longT1,
+	                         coefs.A_pert_longT1, coefs.ph_pert_longT1);
+	  infile = "data/ephem/elp_pert.longT2";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_longT2, coefs.i_pert_longT2,
+	                         coefs.A_pert_longT2, coefs.ph_pert_longT2);
+	  infile = "data/ephem/elp_pert.longT3";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_longT3, coefs.i_pert_longT3,
+	                         coefs.A_pert_longT3, coefs.ph_pert_longT3);
+
+	  // perturbation, latitude
+	  infile = "data/ephem/elp_pert.latT0";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_latT0, coefs.i_pert_latT0,
+	                         coefs.A_pert_latT0, coefs.ph_pert_latT0);
+	  infile = "data/ephem/elp_pert.latT1";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_latT1, coefs.i_pert_latT1,
+	                         coefs.A_pert_latT1, coefs.ph_pert_latT1);
+	  infile = "data/ephem/elp_pert.latT2";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_latT2, coefs.i_pert_latT2,
+	                         coefs.A_pert_latT2, coefs.ph_pert_latT2);
+
+	  // perturbation, distance
+	  infile = "data/ephem/elp_pert.distT0";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_distT0, coefs.i_pert_distT0,
+	                         coefs.A_pert_distT0, coefs.ph_pert_distT0);
+	  infile = "data/ephem/elp_pert.distT1";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_distT1, coefs.i_pert_distT1,
+	                         coefs.A_pert_distT1, coefs.ph_pert_distT1);
+	  infile = "data/ephem/elp_pert.distT2";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_distT2, coefs.i_pert_distT2,
+	                         coefs.A_pert_distT2, coefs.ph_pert_distT2);
+	  infile = "data/ephem/elp_pert.distT3";
+	  loadPerturbationFile(infile.c_str(), coefs.n_pert_distT3, coefs.i_pert_distT3,
+	                         coefs.A_pert_distT3, coefs.ph_pert_distT3);
 
 }
 
