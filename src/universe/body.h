@@ -48,6 +48,7 @@ namespace ofs::universe {
 		{
 			ctUnknown = 0,
 			ctBarycenter,
+			ctStar,
 			ctPlanet,
 			ctDwarfPlamet,
 			ctMinorPlanet,

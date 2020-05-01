@@ -13,7 +13,7 @@
 using namespace ofs::astro;
 using namespace ofs::universe;
 
-// ******** Planetary System ********
+// ******** Hierarchical Planetary System ********
 
 //PlanetarySystem::PlanetarySystem()
 //{
