@@ -9,6 +9,7 @@
 
 #include "universe/asterisms.h"
 #include "universe/starlib.h"
+#include "universe/system.h"
 #include "universe/body.h"
 
 using namespace ofs::universe;
@@ -31,6 +32,9 @@ namespace ofs::universe {
 
         inline void setEngine(Engine *engine) { this->engine = engine; }
 
+        System *getSolarSystem(CelestialStar *star) const;
+        System *createSolarSystem(CelestialStar *star);
+
         Object *find(const string& name) const;
         CelestialStar *findStar(const std::string& name) const;
         Object *findObject(const Object *obj, const string &name) const;
@@ -44,6 +48,7 @@ namespace ofs::universe {
     private:
         StarCatalogue starlib;
         Constellations asterism;
+        SystemCatalog  systems;
 
         vector<CelestialStar *> closeStars;
 

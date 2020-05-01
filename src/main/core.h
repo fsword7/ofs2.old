@@ -17,6 +17,7 @@
 #include <mutex>
 #include <filesystem>
 #include <climits>
+#include <map>
 
 #include <fmt/printf.h>
 

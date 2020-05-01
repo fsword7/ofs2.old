@@ -33,7 +33,7 @@ void Universe::init()
 	CelestialBody *moon;
 
 	CelestialStar *sun = findStar("Sol");
-	System *solSystem = new System(sun);
+	System *solSystem = createSolarSystem(sun);
 
 	mercury = new CelestialBody("Mercury", CelestialBody::ctPlanet);
 	venus   = new CelestialBody("Venus", CelestialBody::ctPlanet);
@@ -149,6 +149,31 @@ void Universe::init()
 //
 //	return star->getSolarSystem();
 //}
+
+System *Universe::getSolarSystem(CelestialStar *star) const
+{
+	if (star == nullptr)
+		return nullptr;
+
+	auto idxStar = star->getHIPNumber();
+	auto iter = systems.find(idxStar);
+	if (iter != systems.end())
+		return iter->second;
+	return nullptr;
+}
+
+System *Universe::createSolarSystem(CelestialStar *star)
+{
+	System *system = getSolarSystem(star);
+	if (system != nullptr)
+		return system;
+
+	auto idxStar = star->getHIPNumber();
+	system = new System(star);
+	systems.insert({idxStar, system});
+
+	return system;
+}
 
 CelestialStar *Universe::findStar(const std::string& name) const
 {

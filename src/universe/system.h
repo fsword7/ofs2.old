@@ -59,4 +59,6 @@ namespace ofs::universe
 
 		vector<CelestialStar *> stars;
 	};
+
+	typedef map<uint32_t, System *> SystemCatalog;
 }
