@@ -13,6 +13,8 @@
 
 namespace ofs::universe
 {
+	class Universe;
+
 	class SystemTree
 	{
 	public:
@@ -53,9 +55,12 @@ namespace ofs::universe
 
 		void addObject(Object *object);
 
+		static CelestialBody *createBody(const string &nane, PlanetarySystem *system,
+			Universe &universe);
+
 	private:
-		SystemTree systemTree;
 		PlanetarySystem objects;
+		SystemTree systemTree;
 
 		vector<CelestialStar *> stars;
 	};

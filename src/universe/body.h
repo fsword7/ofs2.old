@@ -58,10 +58,11 @@ namespace ofs::universe {
 			ctSubmoon
 		};
 
-        CelestialBody();
+		CelestialBody(PlanetarySystem *system, const string &name,
+        	CelestialType type);
         CelestialBody(const string &name, CelestialType type,
         	CelestialBody *body = nullptr);
-        ~CelestialBody() = default;
+        virtual ~CelestialBody();
 
         PlanetarySystem *createPlanetarySystem();
 

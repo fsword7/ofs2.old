@@ -7,6 +7,7 @@
 
 #include "main/core.h"
 #include "engine/object.h"
+#include "universe/universe.h"
 #include "universe/frame.h"
 #include "universe/system.h"
 
@@ -85,4 +86,10 @@ void System::addObject(Object *object)
 	}
 }
 
+CelestialBody *System::createBody(const string &name, PlanetarySystem *system,
+	Universe &universe)
+{
+	CelestialBody *body = new CelestialBody(system, name, CelestialBody::ctPlanet);
 
+	return body;
+}

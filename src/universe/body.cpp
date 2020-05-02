@@ -54,11 +54,21 @@ CelestialBody *PlanetarySystem::find(const string &name) const
 
 // ********** Celestial Body ************
 
-CelestialBody::CelestialBody()
-: Object(ObjectType::objCelestialBody),
-  frame(this)
+//CelestialBody::CelestialBody()
+//: Object(ObjectType::objCelestialBody),
+//  frame(this)
+//{
+//}
+
+CelestialBody::CelestialBody(PlanetarySystem *system, const string &name,
+	CelestialType type)
+: Object(ObjectType::objCelestialBody, name),
+  frame(this), bodyType(type)
 {
+	inSystem = system;
+	system->addBody(this);
 }
+
 
 CelestialBody::CelestialBody(const string &name, CelestialType type,
 	CelestialBody *body)
@@ -69,6 +79,12 @@ CelestialBody::CelestialBody(const string &name, CelestialType type,
 		inSystem = body->createPlanetarySystem();
 		inSystem->addBody(this);
 	}
+}
+
+CelestialBody::~CelestialBody()
+{
+	if (inSystem != nullptr)
+		inSystem->removeBody(this);
 }
 
 PlanetarySystem *CelestialBody::createPlanetarySystem()
