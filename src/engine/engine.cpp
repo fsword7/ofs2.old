@@ -70,6 +70,7 @@ void Engine::start()
 //	Object *planet = universe.findPath("Sol/Mercury");
 //	Object *planet = universe.findPath("Sol/Venus");
 	Object *planet = universe.findPath("Sol/Earth");
+//	Object *planet = universe.findPath("Sol/Earth/Moon");
 //	Object *planet = universe.findPath("Sol/Mars");
 //	Object *planet = universe.findPath("Sol/Jupiter");
 //	Object *planet = universe.findPath("Sol/Saturn");

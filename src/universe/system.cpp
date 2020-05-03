@@ -87,9 +87,23 @@ void System::addObject(Object *object)
 }
 
 CelestialBody *System::createBody(const string &name, PlanetarySystem *system,
-	Universe &universe)
+	CelestialType type)
 {
-	CelestialBody *body = new CelestialBody(system, name, CelestialBody::ctPlanet);
+	CelestialBody *body = new CelestialBody(system, name, type);
+
+	Object *parentObject = system->getPrimaryBody();
+	if (parentObject == nullptr) {
+		parentObject = system->getStar();
+	}
+
+	FrameTree *parentFrame = system->getSystemTree();
+	Frame *defaultOrbitFrame = parentFrame->getDefaultReferenceFrame();
+	Frame *defaultBodyFrame = parentFrame->getDefaultReferenceFrame();
+
+	parentFrame->addObject(body);
+
+	body->setOrbitFrame(defaultOrbitFrame);
+	body->setObjectFrame(defaultBodyFrame);
 
 	return body;
 }

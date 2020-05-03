@@ -153,7 +153,8 @@ void Scene::render(const Player *player, const Universe *universe)
 			continue;
 
 		const System *system = sun->getSystem();
-		const SystemTree *tree = system->getSystemTree();
+		const PlanetarySystem *objects = system->getPlanetarySystem();
+		const FrameTree *tree = objects->getSystemTree();
 
 		vec3d_t apos = computeAstrocentricPosition(sun, obs, prm.now);
 		vec3d_t vpn  = glm::conjugate(player->getOrientation()) * vec3d_t(0, 0, -1);

@@ -88,6 +88,7 @@ namespace ofs::universe
 		inline int getSystemSize() const { return objects.size(); }
 
 		bool isRoot() const { return bodyParent == nullptr; }
+		inline Frame *getDefaultReferenceFrame() const { return defaultFrame; }
 
 		void addObject(Object *object);
 

@@ -17,6 +17,20 @@ namespace ofs::universe {
 	class CelestialBody;
 	class CelestialStar;
 
+	enum CelestialType
+	{
+		ctUnknown = 0,
+		ctBarycenter,
+		ctStar,
+		ctPlanet,
+		ctDwarfPlamet,
+		ctMinorPlanet,
+		ctAsteroid,
+		ctComet,
+		ctMoon,
+		ctSubmoon
+	};
+
 	class PlanetarySystem
 	{
 	public:
@@ -27,6 +41,10 @@ namespace ofs::universe {
 		inline CelestialBody *getPrimaryBody() { return body; }
 		inline CelestialStar *getStar() const { return star; }
 		inline int getSystemSize() { return bodies.size(); }
+		inline const FrameTree *getSystemTree() const { return &tree; }
+		inline FrameTree *getSystemTree() { return &tree; }
+
+		inline void setStar(CelestialStar *nstar) { star = nstar; }
 
 		void addBody(CelestialBody *body);
 		void removeBody(CelestialBody *body);
@@ -35,6 +53,7 @@ namespace ofs::universe {
 
 	private:
 		// Planetary system parameters
+		FrameTree tree;
 		System *solarSystem = nullptr;
 		CelestialBody *body = nullptr;
 		CelestialStar *star = nullptr;
@@ -44,19 +63,6 @@ namespace ofs::universe {
     class CelestialBody : public Object
     {
     public:
-		enum CelestialType
-		{
-			ctUnknown = 0,
-			ctBarycenter,
-			ctStar,
-			ctPlanet,
-			ctDwarfPlamet,
-			ctMinorPlanet,
-			ctAsteroid,
-			ctComet,
-			ctMoon,
-			ctSubmoon
-		};
 
 		CelestialBody(PlanetarySystem *system, const string &name,
         	CelestialType type);
@@ -72,7 +78,7 @@ namespace ofs::universe {
         inline PlanetarySystem *getOwnSystem() const { return ownSystem; }
         inline PlanetarySystem *getInSystem() const { return inSystem; }
 
-        inline FrameTree *getReferenceFrameTree() { return &frame; }
+//        inline FrameTree *getReferenceFrameTree() { return &frame; }
 
         inline bool hasSurface() const  { return flagSurface; }
         inline bool isClickable() const { return flagClickable; }
@@ -96,8 +102,6 @@ namespace ofs::universe {
         vec3d_t getHeliocentric(double jd) const;
 
     private:
-        FrameTree frame;
-
         // Celestial type parameter
         CelestialType bodyType = ctUnknown;
 

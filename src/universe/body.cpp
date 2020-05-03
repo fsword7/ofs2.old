@@ -21,13 +21,13 @@ using namespace ofs::universe;
 //}
 
 PlanetarySystem::PlanetarySystem(CelestialBody *body)
-: body(body)
+: body(body), tree(body)
 {
 	bodies.clear();
 }
 
 PlanetarySystem::PlanetarySystem(CelestialStar *star)
-: star(star)
+: star(star), tree(star)
 {
 	bodies.clear();
 }
@@ -63,7 +63,7 @@ CelestialBody *PlanetarySystem::find(const string &name) const
 CelestialBody::CelestialBody(PlanetarySystem *system, const string &name,
 	CelestialType type)
 : Object(ObjectType::objCelestialBody, name),
-  frame(this), bodyType(type)
+  bodyType(type)
 {
 	inSystem = system;
 	system->addBody(this);
@@ -73,7 +73,7 @@ CelestialBody::CelestialBody(PlanetarySystem *system, const string &name,
 CelestialBody::CelestialBody(const string &name, CelestialType type,
 	CelestialBody *body)
 : Object(ObjectType::objCelestialBody, name),
-  frame(this), bodyType(type)
+  bodyType(type)
 {
 	if (body != nullptr) {
 		inSystem = body->createPlanetarySystem();
@@ -92,6 +92,7 @@ PlanetarySystem *CelestialBody::createPlanetarySystem()
 	if (ownSystem != nullptr)
 		return ownSystem;
 	ownSystem = new PlanetarySystem(this);
+	ownSystem->setStar(inSystem->getStar());
 	return ownSystem;
 }
 

@@ -167,7 +167,7 @@ void Scene::renderCelestialBody(ObjectListEntry &ole)
 		renderObjectAsPoint(ole);
 }
 
-void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
+void Scene::renderPlanetarySystem(const FrameTree *tree, const Player *player,
 	vec3d_t apos, vec3d_t vpnorm, vec3d_t origin, double now)
 {
 	int nObjects = tree->getSystemSize();
@@ -225,9 +225,10 @@ void Scene::renderPlanetarySystem(const SystemTree *tree, const Player *player,
 			}
 
 			// Rendering satellites orbiting around this celestial body
-//			const SystemTree *subtree = object->getOwnSystem();
-//			if (subtree != nullptr)
-//				renderPlanetarySystem(subtree, player, apos, vpnorm, spos, now);
+			const PlanetarySystem *system = dynamic_cast<CelestialBody *>(body)->getOwnSystem();
+			const FrameTree *subtree = system->getSystemTree();
+			if (subtree != nullptr)
+				renderPlanetarySystem(subtree, player, apos, vpnorm, spos, now);
 		}
 	}
 }

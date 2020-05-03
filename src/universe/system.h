@@ -28,6 +28,7 @@ namespace ofs::universe
 		inline int getSystemSize() const { return objects.size(); }
 
 		inline bool isRoot() const { return bodyParent == nullptr; }
+		inline Frame *getDefaultReferenceFrame() const { return defaultFrame; }
 
 		void addObject(Object *object);
 
@@ -51,12 +52,13 @@ namespace ofs::universe
 		inline CelestialStar *getStar(int idx)
 			{ return (idx < stars.size()) ? stars[idx] : nullptr; }
 		inline const SystemTree *getSystemTree() const { return &systemTree; }
-		inline const PlanetarySystem *getCelestialBodies() const { return &objects; }
+		inline const PlanetarySystem *getPlanetarySystem() const { return &objects; }
+		inline PlanetarySystem *getPlanetarySystem() { return &objects; }
 
 		void addObject(Object *object);
 
 		static CelestialBody *createBody(const string &nane, PlanetarySystem *system,
-			Universe &universe);
+			CelestialType type);
 
 	private:
 		PlanetarySystem objects;

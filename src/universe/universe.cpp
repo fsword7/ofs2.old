@@ -34,16 +34,29 @@ void Universe::init()
 
 	CelestialStar *sun = findStar("Sol");
 	System *solSystem = createSolarSystem(sun);
+	PlanetarySystem *system = solSystem->getPlanetarySystem();
 
-	mercury = new CelestialBody("Mercury", CelestialBody::ctPlanet);
-	venus   = new CelestialBody("Venus", CelestialBody::ctPlanet);
-	earth   = new CelestialBody("Earth", CelestialBody::ctPlanet);
-	moon    = new CelestialBody("Moon", CelestialBody::ctMoon, earth);
-	mars    = new CelestialBody("Mars", CelestialBody::ctPlanet);
-	jupiter = new CelestialBody("Jupiter", CelestialBody::ctPlanet);
-	saturn  = new CelestialBody("Saturn", CelestialBody::ctPlanet);
-	uranus  = new CelestialBody("Uranus", CelestialBody::ctPlanet);
-	neptune = new CelestialBody("Neptune", CelestialBody::ctPlanet);
+//	mercury = new CelestialBody("Mercury", CelestialBody::ctPlanet);
+//	venus   = new CelestialBody("Venus", CelestialBody::ctPlanet);
+//	earth   = new CelestialBody("Earth", CelestialBody::ctPlanet);
+//	moon    = new CelestialBody("Moon", CelestialBody::ctMoon, earth);
+//	mars    = new CelestialBody("Mars", CelestialBody::ctPlanet);
+//	jupiter = new CelestialBody("Jupiter", CelestialBody::ctPlanet);
+//	saturn  = new CelestialBody("Saturn", CelestialBody::ctPlanet);
+//	uranus  = new CelestialBody("Uranus", CelestialBody::ctPlanet);
+//	neptune = new CelestialBody("Neptune", CelestialBody::ctPlanet);
+
+	mercury = System::createBody("Mercury", system, CelestialType::ctPlanet);
+	venus   = System::createBody("Venus", system, CelestialType::ctPlanet);
+	earth   = System::createBody("Earth", system, CelestialType::ctPlanet);
+	mars    = System::createBody("Mars", system, CelestialType::ctPlanet);
+	jupiter = System::createBody("Jupiter", system, CelestialType::ctPlanet);
+	saturn  = System::createBody("Saturn", system, CelestialType::ctPlanet);
+	uranus  = System::createBody("Uranus", system, CelestialType::ctPlanet);
+	neptune = System::createBody("Neptune", system, CelestialType::ctPlanet);
+
+	system = earth->createPlanetarySystem();
+	moon = System::createBody("Moon", system, CelestialType::ctMoon);
 
 //	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 //			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
@@ -119,14 +132,14 @@ void Universe::init()
     neptune->setBondAlbedo(0.290);
     neptune->enableSurface();
 
-    solSystem->addObject(mercury);
-    solSystem->addObject(venus);
-    solSystem->addObject(earth);
-    solSystem->addObject(mars);
-    solSystem->addObject(jupiter);
-    solSystem->addObject(saturn);
-    solSystem->addObject(uranus);
-    solSystem->addObject(neptune);
+//    solSystem->addObject(mercury);
+//    solSystem->addObject(venus);
+//    solSystem->addObject(earth);
+//    solSystem->addObject(mars);
+//    solSystem->addObject(jupiter);
+//    solSystem->addObject(saturn);
+//    solSystem->addObject(uranus);
+//    solSystem->addObject(neptune);
 }
 
 //SolarSystem *Universe::createSolarSystem(CelestialStar *star)
@@ -200,7 +213,7 @@ Object *Universe::findObject(const Object *obj, const string &name) const
 		sun = dynamic_cast<const CelestialStar *>(obj);
 		if ((sys = sun->getSystem()) == nullptr)
 			break;
-		objects = sys->getCelestialBodies();
+		objects = sys->getPlanetarySystem();
 		return objects->find(name);
 
 	case objCelestialBody:
