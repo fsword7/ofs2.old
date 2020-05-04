@@ -36,16 +36,6 @@ void Universe::init()
 	System *solSystem = createSolarSystem(sun);
 	PlanetarySystem *system = solSystem->getPlanetarySystem();
 
-//	mercury = new CelestialBody("Mercury", CelestialBody::ctPlanet);
-//	venus   = new CelestialBody("Venus", CelestialBody::ctPlanet);
-//	earth   = new CelestialBody("Earth", CelestialBody::ctPlanet);
-//	moon    = new CelestialBody("Moon", CelestialBody::ctMoon, earth);
-//	mars    = new CelestialBody("Mars", CelestialBody::ctPlanet);
-//	jupiter = new CelestialBody("Jupiter", CelestialBody::ctPlanet);
-//	saturn  = new CelestialBody("Saturn", CelestialBody::ctPlanet);
-//	uranus  = new CelestialBody("Uranus", CelestialBody::ctPlanet);
-//	neptune = new CelestialBody("Neptune", CelestialBody::ctPlanet);
-
 	mercury = System::createBody("Mercury", system, CelestialType::ctPlanet);
 	venus   = System::createBody("Venus", system, CelestialType::ctPlanet);
 	earth   = System::createBody("Earth", system, CelestialType::ctPlanet);
@@ -132,14 +122,6 @@ void Universe::init()
     neptune->setBondAlbedo(0.290);
     neptune->enableSurface();
 
-//    solSystem->addObject(mercury);
-//    solSystem->addObject(venus);
-//    solSystem->addObject(earth);
-//    solSystem->addObject(mars);
-//    solSystem->addObject(jupiter);
-//    solSystem->addObject(saturn);
-//    solSystem->addObject(uranus);
-//    solSystem->addObject(neptune);
 }
 
 //SolarSystem *Universe::createSolarSystem(CelestialStar *star)
