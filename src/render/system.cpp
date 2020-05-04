@@ -154,15 +154,22 @@ void Scene::renderCelestialBody(ObjectListEntry &ole)
 	const CelestialBody *body = dynamic_cast<const CelestialBody *>(ole.object);
 	double bodySize = ole.objSize;
 
+
 	vObject *vobj = getVisualObject(ole.object, true);
 
 	if (bodySize > 1.0 && body->hasSurface()) {
+		ObjectProperties op;
 		LightState lights;
 
 		quatd_t orot = body->getRotation(prm.now);
 		setObjectLighting(lightSources, ole.opos, orot, lights);
 
-		vobj->render(prm, lights);
+		op.color = ole.object->getColor();
+		op.orad  = ole.object->getRadius();
+		op.opos  = ole.opos;
+		op.oqrot = orot;
+
+		vobj->render(prm, op, lights);
 	} else
 		renderObjectAsPoint(ole);
 }

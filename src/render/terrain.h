@@ -123,7 +123,7 @@ public:
 
     void process(TerrainTile *tile, renderParameter &prm);
     void render(TerrainTile *tile, renderParameter &prm);
-    void render(renderParameter &prm, const LightState &lights);
+    void render(renderParameter &prm, const ObjectProperties &op, const LightState &lights);
 
     Mesh *createSphere(int lod, int ilat, int ilng, int grids, tcrd_t &tcr);
     

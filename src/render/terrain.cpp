@@ -350,23 +350,28 @@ void TerrainManager::render(TerrainTile *tile, renderParameter &prm)
 	}
 }
 
-void TerrainManager::render(renderParameter &prm, const LightState &lights)
+void TerrainManager::render(renderParameter &prm, const ObjectProperties &op, const LightState &lights)
 {
 	pgm->use();
 
 	prm.obj.maxLOD = 18;
 	prm.obj.biasLOD = 0;
-	prm.obj.color = body.getColor();
+//	prm.obj.color = body.getColor();
 
 	// Object position and orientation parameters
-	prm.obj.opos  = body.getPosition(prm.now);
-	prm.obj.oqrot = body.getRotation(prm.now);
-//	prm.obj.oqrot = quatd_t(1, 0, 0, 0);
+//	prm.obj.opos  = body.getPosition(prm.now);
+//	prm.obj.oqrot = body.getRotation(prm.now);
+//	prm.obj.orot  = glm::toMat4(prm.obj.oqrot);
+//	prm.obj.orad  = body.getRadius();
+
+	prm.obj.color = op.color;
+	prm.obj.opos  = op.opos;
+	prm.obj.oqrot = op.oqrot;
 	prm.obj.orot  = glm::toMat4(prm.obj.oqrot);
-	prm.obj.orad  = body.getRadius();
+	prm.obj.orad  = op.orad;
 
 	// Camera position and orientation parameters in object reference frame.
-	prm.obj.cpos   = prm.obj.opos - prm.cpos;
+	prm.obj.cpos   = prm.obj.opos; // - prm.cpos;
 	prm.obj.cdir   = prm.obj.orot * vec4f_t(prm.obj.cpos, 1.0f);
 	prm.obj.cdist  = glm::length(prm.obj.cdir) / prm.obj.orad;
 	prm.obj.viewap = (prm.obj.cdist >= 1.0f) ? acos(1.0f / prm.obj.cdist) : 0.0f;

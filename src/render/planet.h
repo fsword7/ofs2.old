@@ -16,7 +16,7 @@ class vPlanet : public vObject
         vPlanet(Scene &scene, const Object &object);
         ~vPlanet() = default;
 
-        void render(renderParameter &prm, const LightState &lights);
+        void render(renderParameter &prm, const ObjectProperties &op, const LightState &lights);
         
     protected:
         TerrainManager *tmgr;
