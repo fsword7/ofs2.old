@@ -7,6 +7,9 @@
 
 #pragma once
 
+#include "main/math.h"
+#include "universe/astro.h"
+
 class Object;
 
 namespace ofs::universe
@@ -17,10 +20,12 @@ namespace ofs::universe
 	class Frame
 	{
 	public:
-		Frame(const Object *object = nullptr);
+		Frame(const Object *object = nullptr, Frame *parent = nullptr);
 		virtual ~Frame() = default;
 
 		inline const Object *getCenter() const { return center; }
+		inline Frame *getParentFrame() const { return parentFrame; }
+		inline bool isRoot() const { return parentFrame == nullptr; }
 
 		virtual quatd_t getOrientation(double tjd) const = 0;
 
@@ -37,8 +42,11 @@ namespace ofs::universe
 		quatd_t fromUniversal(const quatd_t &urot, double tjd);
 		quatd_t toUniversal(const quatd_t &lrot, double tjd);
 
+		static Frame *create(const string &frameName,
+			const Object *bodyObject, const Object *parentObject = nullptr);
 
 	private:
+		Frame *parentFrame = nullptr;
 		mutable int refCount = 0;
 
 	protected:
@@ -146,7 +154,10 @@ namespace ofs::universe
 		J2000EclipticFrame(const Object *obj);
 		~J2000EclipticFrame() = default;
 
-		quatd_t getOrientation(double tjd) const { return quatd_t(1,0,0,0); }
+		quatd_t getOrientation(double) const override
+		{
+			return quatd_t(1,0,0,0);
+		}
 	};
 
 	class J2000EquatorFrame : public Frame
@@ -155,7 +166,10 @@ namespace ofs::universe
 		J2000EquatorFrame(const Object *obj, const Object *tgt);
 		~J2000EquatorFrame() = default;
 
-		quatd_t getOrientation(double tjd) const { return quatd_t(1,0,0,0); }
+		quatd_t getOrientation(double) const override
+		{
+			return xrot(J2000Obliquity);
+		}
 	};
 
 	class BodyFixedFrame : public Frame

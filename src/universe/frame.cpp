@@ -50,9 +50,10 @@ Object *FrameTree::getObject(int idx) const
 
 // ******** Reference Frame ********
 
-Frame::Frame(const Object *object)
-: center(object)
+Frame::Frame(const Object *object, Frame *parent)
+: center(object), parentFrame(parent)
 {
+	lock();
 }
 
 int Frame::lock() const
@@ -74,7 +75,7 @@ vec3d_t Frame::fromAstrocentric(const vec3d_t &upos, double tjd)
 	if (center == nullptr)
 		return upos;
 
-	vec3d_t opos = center->getPosition(tjd);
+	vec3d_t opos = center->getGlobalPosition(tjd);
 	quatd_t orot = glm::conjugate(getOrientation(tjd));
 	vec3d_t rpos = (opos - upos) * orot;
 
@@ -91,7 +92,7 @@ vec3d_t Frame::toAstrocentric(const vec3d_t &lpos, double tjd)
 	if (center == nullptr)
 		return lpos;
 
-	vec3d_t opos = center->getPosition(tjd);
+	vec3d_t opos = center->getGlobalPosition(tjd);
 	quatd_t orot = getOrientation(tjd);
 	vec3d_t rpos = opos + (lpos * orot);
 
@@ -109,7 +110,7 @@ vec3d_t Frame::fromUniversal(const vec3d_t &upos, double tjd)
 	if (center == nullptr)
 		return upos;
 
-	vec3d_t opos = center->getPosition(tjd);
+	vec3d_t opos = center->getGlobalPosition(tjd);
 	quatd_t orot = glm::conjugate(getOrientation(tjd));
 	vec3d_t rpos = (opos - upos) * orot;
 
@@ -126,7 +127,7 @@ vec3d_t Frame::toUniversal(const vec3d_t &lpos, double tjd)
 	if (center == nullptr)
 		return lpos;
 
-	vec3d_t opos = center->getPosition(tjd);
+	vec3d_t opos = center->getGlobalPosition(tjd);
 	quatd_t orot = getOrientation(tjd);
 	vec3d_t rpos = opos + (lpos * orot);
 
@@ -153,6 +154,15 @@ quatd_t Frame::toUniversal(const quatd_t &lrot, double tjd)
 	return glm::conjugate(getOrientation(tjd)) * lrot;
 }
 
+
+Frame *Frame::create(const string &frameName,
+	const Object *bodyObject, const Object *parentObject)
+{
+
+	if (frameName == "J2000Equator")
+		return new J2000EquatorFrame(bodyObject, parentObject);
+	return nullptr;
+}
 
 // ******** Player Reference Frame ********
 
