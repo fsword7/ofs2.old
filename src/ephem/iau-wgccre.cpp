@@ -113,6 +113,87 @@ public:
 	}
 };
 
+// ******** Lunar Rotational Model ********
+
+class IAULunarRotationalModel : public IAURotationalModel
+{
+public:
+	IAULunarRotationalModel()
+	: IAURotationalModel(360.0 / 536.3128492)
+	{}
+
+	void computeArguments(double d) const
+	{
+		eArgs[1]  = 125.045 - ( 0.0529921 * d);
+		eArgs[2]  = 250.089 - ( 0.1059842 * d);
+		eArgs[3]  = 260.008 + (13.0120009 * d);
+		eArgs[4]  = 176.625 + (13.3407154 * d);
+		eArgs[5]  = 357.529 + ( 0.9856003 * d);
+		eArgs[6]  = 311.589 + (26.4057084 * d);
+		eArgs[7]  = 134.963 + (13.0649930 * d);
+		eArgs[8]  = 276.617 + ( 0.3287146 * d);
+		eArgs[9]  =  34.226 + ( 1.7484877 * d);
+		eArgs[10] =  15.134 - ( 0.1589763 * d);
+		eArgs[11] = 119.743 + ( 0.0036096 * d);
+		eArgs[12] = 239.961 + ( 0.1643573 * d);
+		eArgs[13] =  25.053 + (12.9590088 * d);
+	}
+
+	vec2d_t computePole(double d) const
+	{
+		vec2d_t pole;
+		double  T = d / 36525.0;
+
+		computeArguments(T);
+
+		pole.x = 269.9949 + (0.0031 * T) +
+				 -3.8787 * sin(eArgs[1]) +
+				 -0.1204 * sin(eArgs[2]) +
+				  0.0700 * sin(eArgs[3]) +
+				 -0.0172 * sin(eArgs[4]) +
+				  0.0072 * sin(eArgs[6]) +
+				 -0.0052 * sin(eArgs[10]) +
+				  0.0043 * sin(eArgs[13]);
+
+		pole.y =  66.5392 + (0.0130 * T) +
+				  1.5419 * cos(eArgs[1]) +
+				  0.0239 * cos(eArgs[2]) +
+				 -0.0278 * cos(eArgs[3]) +
+				  0.0068 * cos(eArgs[4]) +
+				 -0.0029 * cos(eArgs[6]) +
+				  0.0009 * cos(eArgs[7]) +
+				  0.0008 * cos(eArgs[10]) +
+				 -0.0009 * cos(eArgs[13]);
+
+		return pole;
+	}
+
+	double computeMeridian(double d) const
+	{
+		double  T = d / 36525.0;
+
+		computeArguments(T);
+
+		return 38.3213 + (13.17635815 * d) + (-1.4e-12 * d*d) +
+			 3.5610 * sin(eArgs[1]) +
+			 0.1208 * sin(eArgs[2]) +
+			-0.0642 * sin(eArgs[3]) +
+			 0.0158 * sin(eArgs[4]) +
+			 0.0252 * sin(eArgs[5]) +
+			-0.0066 * sin(eArgs[6]) +
+			-0.0047 * sin(eArgs[7]) +
+			-0.0046 * sin(eArgs[8]) +
+			 0.0028 * sin(eArgs[9]) +
+			 0.0052 * sin(eArgs[10]) +
+			 0.0040 * sin(eArgs[11]) +
+			 0.0019 * sin(eArgs[12]) +
+			-0.0044 * sin(eArgs[13]);
+	}
+
+private:
+	mutable double eArgs[14];
+};
+
 // ********************************************************
 
 RotationModel *RotationModel::create(const string &name)
@@ -164,6 +245,9 @@ RotationModel *RotationModel::create(const string &name)
 
 	if (name == "iau-neptune")
 		return new IAUNeptuneRotationalModel();
+
+	if (name == "iau-lunar")
+		return new IAULunarRotationalModel();
 
 	return nullptr;
 }
