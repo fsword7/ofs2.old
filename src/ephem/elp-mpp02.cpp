@@ -429,9 +429,12 @@ vec3d_t ELP2000Orbit::calculatePosition(double jd) const
 //	cout << fmt::sprintf("Longtitude: %lf  Latitude: %lf  Distance: %lf\n",
 //		glm::degrees(longM), glm::degrees(latM), r);
 
-	return vec3d_t( r * cos(longM) * cos(latM),
-					r * sin(longM) * cos(latM),
-					r * sin(latM));
+	longM = longM + PI;
+	latM  = latM - (PI/2.0);
+
+	return vec3d_t( sin(latM) * cos(longM) * r,
+					cos(latM) * r,
+					sin(latM) * -sin(longM) * r);
 }
 
 
