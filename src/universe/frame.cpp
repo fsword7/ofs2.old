@@ -18,13 +18,13 @@ using namespace ofs::universe;
 FrameTree::FrameTree(CelestialStar *star)
 : starParent(star), bodyParent(nullptr)
 {
-	defaultFrame = new J2000EclipticFrame(star);
+	defaultFrame = new J2000EclipticFrame(star, nullptr);
 }
 
 FrameTree::FrameTree(CelestialBody *body)
 : starParent(nullptr), bodyParent(body)
 {
-	defaultFrame = new BodyMeanEquatorFrame(body, body);
+	defaultFrame = new BodyMeanEquatorFrame(body, body, nullptr);
 }
 
 FrameTree::~FrameTree()
@@ -159,8 +159,10 @@ Frame *Frame::create(const string &frameName,
 	const Object *bodyObject, const Object *parentObject)
 {
 
-	if (frameName == "J2000Equator")
-		return new J2000EquatorFrame(bodyObject, parentObject);
+	if (frameName == "EquatorJ2000")
+		return new J2000EquatorFrame(bodyObject, parentObject, nullptr);
+	if (frameName == "EclipticJ2000")
+		return new J2000EclipticFrame(bodyObject, nullptr);
 	return nullptr;
 }
 
@@ -213,41 +215,44 @@ Frame *PlayerFrame::create(coordType csType, const Object *obj, const Object *ta
 {
 	switch (csType) {
 	case csUniversal:
-		return new J2000EclipticFrame(nullptr);
+		return new J2000EclipticFrame(nullptr, nullptr);
 	case csEcliptical:
-		return new J2000EclipticFrame(obj);
+		return new J2000EclipticFrame(obj, nullptr);
 	case csEquatorial:
-		return new BodyMeanEquatorFrame(obj, obj);
+		return new BodyMeanEquatorFrame(obj, obj, nullptr);
 	case csBodyFixed:
-		return new BodyFixedFrame(obj, obj);
+		return new BodyFixedFrame(obj, obj, nullptr);
 	case csObjectSync:
-		return new ObjectSyncFrame(obj, target);
+		return new ObjectSyncFrame(obj, target, nullptr);
 	default:
-		return new J2000EclipticFrame(nullptr);
+		return new J2000EclipticFrame(nullptr, nullptr);
 	}
 	return nullptr;
 }
 
 
-// ******** J2000 Earth Elliptic Reference Frame ********
+// ******** J2000 Earth Ecliptic Reference Frame ********
 
-J2000EclipticFrame::J2000EclipticFrame(const Object *obj)
-: Frame(obj)
+J2000EclipticFrame::J2000EclipticFrame(const Object *obj, Frame *parent)
+: Frame(obj, parent)
 {
+	frameName = "J2000 Ecliptic Reference Frame";
 }
 
 // ******** J2000 Earth Equator Reference Frame ********
 
-J2000EquatorFrame::J2000EquatorFrame(const Object *obj, const Object *tgt)
-: Frame(obj)
+J2000EquatorFrame::J2000EquatorFrame(const Object *obj, const Object *tgt, Frame *parent)
+: Frame(obj, parent)
 {
+	frameName = "J2000 Equator Reference Frame";
 }
 
 // ******** Body Fixed Reference Frame ********
 
-BodyFixedFrame::BodyFixedFrame(const Object *obj, const Object *tgt)
-: Frame(obj), fixedObject(tgt)
+BodyFixedFrame::BodyFixedFrame(const Object *obj, const Object *tgt, Frame *parent)
+: Frame(obj, parent), fixedObject(tgt)
 {
+	frameName = "Body Fixed Reference Frame";
 }
 
 quatd_t BodyFixedFrame::getOrientation(double tjd) const
@@ -264,9 +269,10 @@ quatd_t BodyFixedFrame::getOrientation(double tjd) const
 
 // ******** Body Mean Equator Reference Frame ********
 
-BodyMeanEquatorFrame::BodyMeanEquatorFrame(const Object *obj, const Object *tgt)
-: Frame(obj), equatorObject(tgt)
+BodyMeanEquatorFrame::BodyMeanEquatorFrame(const Object *obj, const Object *tgt, Frame *parent)
+: Frame(obj, parent), equatorObject(tgt)
 {
+	frameName = "Body Mean Equator Reference Frame";
 }
 
 quatd_t BodyMeanEquatorFrame::getOrientation(double tjd) const
@@ -283,14 +289,15 @@ quatd_t BodyMeanEquatorFrame::getOrientation(double tjd) const
 
 // ******** Object/Heliocentric Synchronous Reference Frame ********
 
-ObjectSyncFrame::ObjectSyncFrame(const Object *obj, const Object *tgt)
-: Frame(obj), targetObject(tgt)
+ObjectSyncFrame::ObjectSyncFrame(const Object *obj, const Object *tgt, Frame *parent)
+: Frame(obj, parent), targetObject(tgt)
 {
+	frameName = "Object/Heliocentric Synchronous Reference Frame";
 }
 
 quatd_t ObjectSyncFrame::getOrientation(double tjd) const
 {
-	vec3d_t opos = center->getPosition(tjd);
+	vec3d_t opos = center->getGlobalPosition(tjd);
 	vec3d_t tpos = targetObject->getPosition(tjd);
 
 	return glm::lookAt(opos, tpos, vec3d_t(0, 1, 0));

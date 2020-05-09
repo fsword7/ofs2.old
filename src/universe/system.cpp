@@ -20,11 +20,11 @@ SystemTree::SystemTree(Object *object)
 	switch (object->getType()) {
 	case ObjectType::objCelestialStar:
 		starParent   = dynamic_cast<CelestialStar *>(object);
-		defaultFrame = new J2000EclipticFrame(object);
+		defaultFrame = new J2000EclipticFrame(object, nullptr);
 		break;
 	case ObjectType::objCelestialBody:
 		bodyParent   = dynamic_cast<CelestialBody *>(object);
-		defaultFrame = new BodyMeanEquatorFrame(object, object);
+		defaultFrame = new BodyMeanEquatorFrame(object, object, nullptr);
 		break;
 	}
 }
@@ -32,13 +32,13 @@ SystemTree::SystemTree(Object *object)
 SystemTree::SystemTree(CelestialStar *star)
 {
 	starParent = star;
-	defaultFrame = new J2000EclipticFrame(star);
+	defaultFrame = new J2000EclipticFrame(star, nullptr);
 }
 
 SystemTree::SystemTree(CelestialBody *body)
 {
 	bodyParent = body;
-	defaultFrame = new BodyMeanEquatorFrame(body, body);
+	defaultFrame = new BodyMeanEquatorFrame(body, body, nullptr);
 }
 
 SystemTree::~SystemTree()
@@ -87,7 +87,7 @@ void System::addObject(Object *object)
 }
 
 CelestialBody *System::createBody(const string &name, PlanetarySystem *system,
-	CelestialType type)
+	CelestialType type, const string &orbitFrameName, const string &bodyFrameName)
 {
 	CelestialBody *body = new CelestialBody(system, name, type);
 
@@ -96,14 +96,33 @@ CelestialBody *System::createBody(const string &name, PlanetarySystem *system,
 		parentObject = system->getStar();
 	}
 
+	cout << fmt::sprintf("Body %s -> %s\n", name, parentObject->getName()) << flush;
+
 	FrameTree *parentFrame = system->getSystemTree();
 	Frame *defaultOrbitFrame = parentFrame->getDefaultReferenceFrame();
 	Frame *defaultBodyFrame = parentFrame->getDefaultReferenceFrame();
 
 	parentFrame->addObject(body);
 
-	body->setOrbitFrame(defaultOrbitFrame);
-	body->setObjectFrame(defaultBodyFrame);
+	Frame *orbitFrame, *bodyFrame;
+
+	if (!orbitFrameName.empty())
+		orbitFrame = Frame::create(orbitFrameName, parentObject, parentObject);
+	else
+		orbitFrame = defaultOrbitFrame;
+
+	if (!bodyFrameName.empty())
+		bodyFrame = Frame::create(bodyFrameName, body);
+	else
+		bodyFrame = defaultBodyFrame;
+
+	cout << fmt::sprintf("Orbit Frame: %s (Center: %s)\n",
+		orbitFrame->getName(), orbitFrame->getCenter()->getName());
+	cout << fmt::sprintf("Body Frame: %s (Center: %s)\n",
+		bodyFrame->getName(), bodyFrame->getCenter()->getName());
+
+	body->setOrbitFrame(orbitFrame);
+	body->setObjectFrame(bodyFrame);
 
 	return body;
 }

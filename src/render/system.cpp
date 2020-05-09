@@ -161,7 +161,7 @@ void Scene::renderCelestialBody(ObjectListEntry &ole)
 		ObjectProperties op;
 		LightState lights;
 
-		quatd_t orot = body->getRotation(prm.now);
+		quatd_t orot = body->getOrientation(prm.now);
 		setObjectLighting(lightSources, ole.opos, orot, lights);
 
 		op.color = ole.object->getColor();

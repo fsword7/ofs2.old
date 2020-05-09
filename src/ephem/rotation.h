@@ -9,10 +9,10 @@
 
 namespace ofs::ephem
 {
-	class RotationModel
+	class RotationalModel
 	{
 	public:
-		virtual ~RotationModel() = default;
+		virtual ~RotationalModel() = default;
 
 		quatd_t getRotation(double tjd) const;
 
@@ -23,10 +23,36 @@ namespace ofs::ephem
 		virtual double getPeriod() const  { return 0.0; }
 		virtual bool isPeriodic() const   { return false; }
 
-		static RotationModel *create(const string &name);
+		static RotationalModel *create(const string &name);
 	};
 
-	class CachingRotationalModel : public RotationModel
+	class UniformRotationalModel : public RotationalModel
+	{
+	public:
+		UniformRotationalModel(double epoch, double offset,
+			double inclination, double ascendingNode,
+			double period)
+		: epoch(epoch), offset(offset),
+		  inclination(inclination),
+		  ascendingNode(ascendingNode),
+		  period(period) {};
+
+		quatd_t spin(double tjd) const;
+		quatd_t getEquatorOrientation(double tjd) const;
+		vec3d_t getAngularVelocity(double tjd) const;
+
+		virtual double  getPeriod() const override { return period; }
+		virtual bool    isPeriodic() const override { return true; }
+
+	protected:
+		double epoch = 0;
+		double offset = 0.0;		// rotation at epoch
+		double inclination = 0.0;	// rotational axis tilt
+		double ascendingNode = 0.0; // Longitude of ascending node of equator
+		double period = 0.0;
+	};
+
+	class CachingRotationalModel : public RotationalModel
 	{
 	public:
 		CachingRotationalModel() = default;
@@ -57,7 +83,7 @@ namespace ofs::ephem
 	{
 	public:
 		IAURotationalModel(double period) : period(period) {};
-		IAURotationalModel() = default;
+		~IAURotationalModel() = default;
 
 		virtual quatd_t computeSpin(double tjd) const override;
 		virtual quatd_t computeEquatorRotation(double tjd) const override;

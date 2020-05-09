@@ -36,31 +36,40 @@ void Universe::init()
 	System *solSystem = createSolarSystem(sun);
 	PlanetarySystem *system = solSystem->getPlanetarySystem();
 
-	mercury = System::createBody("Mercury", system, CelestialType::ctPlanet);
-	venus   = System::createBody("Venus", system, CelestialType::ctPlanet);
-	earth   = System::createBody("Earth", system, CelestialType::ctPlanet);
-	mars    = System::createBody("Mars", system, CelestialType::ctPlanet);
-	jupiter = System::createBody("Jupiter", system, CelestialType::ctPlanet);
-	saturn  = System::createBody("Saturn", system, CelestialType::ctPlanet);
-	uranus  = System::createBody("Uranus", system, CelestialType::ctPlanet);
-	neptune = System::createBody("Neptune", system, CelestialType::ctPlanet);
+	mercury = System::createBody("Mercury", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EquatorJ2000");
+	venus   = System::createBody("Venus", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EclipticJ2000");
+	earth   = System::createBody("Earth", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EclipticJ2000");
+	mars    = System::createBody("Mars", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EquatorJ2000");
+	jupiter = System::createBody("Jupiter", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EquatorJ2000");
+	saturn  = System::createBody("Saturn", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EclipticJ2000");
+	uranus  = System::createBody("Uranus", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EquatorJ2000");
+	neptune = System::createBody("Neptune", system, CelestialType::ctPlanet,
+		"EquatorJ2000", "EquatorJ2000");
 
 	system = earth->createPlanetarySystem();
-	moon = System::createBody("Moon", system, CelestialType::ctMoon);
+	moon = System::createBody("Moon", system, CelestialType::ctMoon,
+		"EclipticJ2000", "EquatorJ2000");
 
 //	Orbit *orbit = new EllipticalOrbit(a, e, glm::radians(i),
 //			glm::radians(Omega), glm::radians(w), glm::radians(M0), T, SOLAR_MASS);
 
     mercury->setColor(Color(1.0, 0.794, 0.580));
     mercury->setOrbit(VSOP87Orbit::create("vsop87-mercury"));
-    mercury->setRotation(RotationModel::create("iau-mercury"));
+    mercury->setRotation(RotationalModel::create("iau-mercury"));
     mercury->setRadius(2439.7);
     mercury->setGeometricAlbedo(0.141380);
     mercury->setBondAlbedo(0.088);
     mercury->enableSurface();
 
     venus->setOrbit(VSOP87Orbit::create("vsop87-venus"));
-    venus->setRotation(RotationModel::create("iau-venus"));
+    venus->setRotation(RotationalModel::create("iau-venus"));
     venus->setRadius(6051.8);
     venus->setGeometricAlbedo(0.672604);
     venus->setBondAlbedo(0.760);
@@ -68,15 +77,15 @@ void Universe::init()
 
     earth->setColor(Color(0.856, 0.910, 1.0));
     earth->setOrbit(VSOP87Orbit::create("vsop87-earth"));
-//	earth->setRotation(RotationModel::create("iau-earth"));
-	earth->setRotation(RotationModel::create("p03lp-earth"));
+//	earth->setRotation(RotationalModel::create("iau-earth"));
+	earth->setRotation(RotationalModel::create("p03lp-earth"));
     earth->setRadius(6378.140);
     earth->setGeometricAlbedo(0.449576);
     earth->setBondAlbedo(0.306);
     earth->enableSurface();
 
-    moon->setOrbit(VSOP87Orbit::create("elp-mpp02-de406-lunar"));
-    moon->setRotation(RotationModel::create("iau-lunar"));
+    moon->setOrbit(VSOP87Orbit::create("elp-mpp02-llr-lunar"));
+    moon->setRotation(RotationalModel::create("iau-lunar"));
     moon->setRadius(1738.14);
     moon->setGeometricAlbedo(0.136);
     moon->setBondAlbedo(0.11);
@@ -84,7 +93,7 @@ void Universe::init()
 
     mars->setColor(Color(1.0, 0.75, 0.7));
     mars->setOrbit(VSOP87Orbit::create("vsop87-mars"));
-    mars->setRotation(RotationModel::create("iau-mars"));
+    mars->setRotation(RotationalModel::create("iau-mars"));
     mars->setRadius(3396.2);
     mars->setGeometricAlbedo(0.174821);
     mars->setBondAlbedo(0.290);
@@ -92,7 +101,7 @@ void Universe::init()
 
     jupiter->setColor(Color(1.0, 0.908, 0.720));
     jupiter->setOrbit(VSOP87Orbit::create("vsop87-jupiter"));
-    jupiter->setRotation(RotationModel::create("iau-jupiter"));
+    jupiter->setRotation(RotationalModel::create("iau-jupiter"));
     jupiter->setRadius(71492.0);
     jupiter->setGeometricAlbedo(0.510901);
     jupiter->setBondAlbedo(0.503);
@@ -100,7 +109,7 @@ void Universe::init()
 
     saturn->setColor(Color(1.0, 0.735, 0.486));
     saturn->setOrbit(VSOP87Orbit::create("vsop87-saturn"));
-    saturn->setRotation(RotationModel::create("iau-saturn"));
+    saturn->setRotation(RotationalModel::create("iau-saturn"));
     saturn->setRadius(60268.0);
     saturn->setGeometricAlbedo(0.499740);
     saturn->setBondAlbedo(0.342);
@@ -108,7 +117,7 @@ void Universe::init()
 
     uranus->setColor(Color(0.606, 0.948, 1.0));
     uranus->setOrbit(VSOP87Orbit::create("vsop87-uranus"));
-    uranus->setRotation(RotationModel::create("iau-uranus"));
+    uranus->setRotation(RotationalModel::create("iau-uranus"));
     uranus->setRadius(25559.0);
     uranus->setGeometricAlbedo(0.437118);
     uranus->setBondAlbedo(0.300);
@@ -116,7 +125,7 @@ void Universe::init()
 
     neptune->setColor(Color(0.523, 0.848, 1.0));
     neptune->setOrbit(VSOP87Orbit::create("vsop87-neptune"));
-    neptune->setRotation(RotationModel::create("iau-neptune"));
+    neptune->setRotation(RotationalModel::create("iau-neptune"));
     neptune->setRadius(24766.0);
     neptune->setGeometricAlbedo(0.409338);
     neptune->setBondAlbedo(0.290);

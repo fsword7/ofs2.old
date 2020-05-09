@@ -429,12 +429,33 @@ vec3d_t ELP2000Orbit::calculatePosition(double jd) const
 //	cout << fmt::sprintf("Longtitude: %lf  Latitude: %lf  Distance: %lf\n",
 //		glm::degrees(longM), glm::degrees(latM), r);
 
-	longM = longM + PI;
+//	longM = longM + PI;
 	latM  = latM - (PI/2.0);
 
 	return vec3d_t( sin(latM) * cos(longM) * r,
 					cos(latM) * r,
 					sin(latM) * -sin(longM) * r);
+
+//	// Precession matrix
+//	double P = 0.10180391e-4*T + 0.47020439e-6*T2 - 0.5417367e-9*T3
+//			 - 0.2507948e-11*T4 + 0.463486e-14*T5;
+//	double Q = -0.113469002e-3*T + 0.12372674e-6*T2 + 0.12654170e-8*T3
+//			 - 0.1371808e-11*T4 - 0.320334e-14*T5;
+//	double sq = sqrt(1 - P*P - Q*Q);
+//	double p11 = 1 - 2*P*P;
+//	double p12 = 2*P*Q;
+//	double p13 = 2*P*sq;
+//	double p21 = 2*P*Q;
+//	double p22 = 1-2*Q*Q;
+//	double p23 = -2*Q*sq;
+//	double p31 = -2*P*sq;
+//	double p32 = 2*Q*sq;
+//	double p33 = 1 - 2*P*P - 2*Q*Q;
+//
+//	// Finally, components of position vector wrt J2000.0 mean ecliptic and equinox
+//	return vec3d_t( p11*pos.x + p12*pos.y + p13*pos.z,
+//					p21*pos.x + p22*pos.y + p23*pos.z,
+//					p31*pos.x + p32*pos.y + p33*pos.z);
 }
 
 

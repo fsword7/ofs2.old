@@ -58,7 +58,8 @@ namespace ofs::universe
 		void addObject(Object *object);
 
 		static CelestialBody *createBody(const string &nane, PlanetarySystem *system,
-			CelestialType type);
+			CelestialType type, const string &orbitFrameName,
+			const string &bodyFrameName);
 
 	private:
 		PlanetarySystem objects;

@@ -92,7 +92,9 @@ namespace ofs::universe {
         quatd_t getEquatorial(double tjd) const;
         quatd_t getBodyFixed(double tjd) const;
 
+//        vec3d_t getGlobalPosition(double tjd = 0) const override;
         quatd_t getRotation(double tjd = 0) const override;
+        quatd_t getOrientation(double tjd = 0) const override;
 
         double  getLuminosity(double luminosity, double distance) const;
         double  getApparentMagnitude(vec3d_t sun, double irradiance, vec3d_t view) const;

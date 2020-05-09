@@ -12,19 +12,39 @@
 
 using namespace ofs::ephem;
 
-quatd_t RotationModel::getEquatorRotation(double tjd) const
+quatd_t RotationalModel::getEquatorRotation(double tjd) const
 {
 	return quatd_t(1, 0, 0, 0);
 }
 
-vec3d_t RotationModel::getAngularVelocity(double tjd) const
+vec3d_t RotationalModel::getAngularVelocity(double tjd) const
 {
 	return vec3d_t(0, 0, 0);
 }
 
-quatd_t RotationModel::getRotation(double tjd) const
+quatd_t RotationalModel::getRotation(double tjd) const
 {
 	return spin(tjd) * getEquatorRotation(tjd);
+}
+
+// ******** Uniform Rotational Model ********
+
+quatd_t UniformRotationalModel::spin(double tjd) const
+{
+	double offsetSpin = (tjd - epoch) / period;
+	double spin = offsetSpin - floor(offsetSpin);
+
+	return yrot(-spin * PI*2.0 - offset);
+}
+
+quatd_t UniformRotationalModel::getEquatorOrientation(double) const
+{
+	return xrot(-inclination) * yrot(-ascendingNode);
+}
+
+vec3d_t UniformRotationalModel::getAngularVelocity(double tjd) const
+{
+	return vec3d_t(0, 0, 0);
 }
 
 // ******** Caching Rotation Model ********

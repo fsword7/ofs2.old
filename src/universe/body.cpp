@@ -110,12 +110,35 @@ quatd_t CelestialBody::getEquatorial(double tjd) const
 	return rot->getRotation(tjd);
 }
 
+//vec3d_t CelestialBody::getGlobalPosition(double tjd) const
+//{
+//	vec3d_t upos = {0, 0, 0};
+//	Frame *frame = orbitFrame;
+//	vec3d_t lpos = orbit->getPosition(tjd);
+//
+//	while (frame->getCenter()->getType() == objCelestialBody) {
+//		upos  += glm::conjugate(frame->getOrientation(tjd)) * lpos;
+//		cout << fmt::sprintf("Object %s: %lf, %lf, %lf\n",
+//			frame->getCenter()->getName(),
+//			upos.x, upos.y, upos.z);
+//		lpos = frame->getCenter()->getPosition(tjd);
+//		frame  = frame->getCenter()->getOrbitFrame();
+//	}
+//
+//	return frame->getCenter()->getPosition(tjd) + upos;
+//}
+
 quatd_t CelestialBody::getRotation(double tjd) const
 {
 	if (rot == nullptr)
 		return objRotation;
 	return rot->getRotation(tjd);
 //	return rot->spin(tjd) * rot->getEquatorRotation(tjd);
+}
+
+quatd_t CelestialBody::getOrientation(double tjd) const
+{
+	return rot->getRotation(tjd) * objectFrame->getOrientation(tjd);
 }
 
 double CelestialBody::getLuminosity(double lum, double dist) const

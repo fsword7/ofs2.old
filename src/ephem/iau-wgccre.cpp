@@ -23,7 +23,7 @@ quatd_t IAURotationalModel::computeSpin(double tjd) const
 {
 	tjd -= astro::J2000;
 
-	double spin = ((reversal == true) ? -1 : 1) *
+	double spin = ((reversal == true) ? 1 : -1) *
 		glm::radians(180.0 + computeMeridian(tjd));
 	return yrot(spin);
 }
@@ -37,7 +37,9 @@ quatd_t IAURotationalModel::computeEquatorRotation(double tjd) const
 	double node        = pole.x + 90.0; // Right Ascension [RA]
 	double inclination = 90.0 - pole.y; // Declination
 
-	if (reversal == false)
+//	cout << fmt::sprintf("ascending node: %lf  inclination: %lf\n", node % 360.0, inclination % 180.0);
+
+	if (reversal != true)
 		return xrot(PI) * xrot(glm::radians(-inclination)) * yrot(glm::radians(-node));
 	else
 		return xrot(glm::radians(-inclination)) * yrot(glm::radians(-node));
@@ -199,7 +201,7 @@ public:
 
 // ********************************************************
 
-RotationModel *RotationModel::create(const string &name)
+RotationalModel *RotationalModel::create(const string &name)
 {
 	if (name == "p03lp-earth")
 		return new EarthRotationModel();

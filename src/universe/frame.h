@@ -23,6 +23,7 @@ namespace ofs::universe
 		Frame(const Object *object = nullptr, Frame *parent = nullptr);
 		virtual ~Frame() = default;
 
+		inline string getName() const { return frameName; }
 		inline const Object *getCenter() const { return center; }
 		inline Frame *getParentFrame() const { return parentFrame; }
 		inline bool isRoot() const { return parentFrame == nullptr; }
@@ -50,6 +51,7 @@ namespace ofs::universe
 		mutable int refCount = 0;
 
 	protected:
+		string frameName;
 		const Object *center;
 	};
 
@@ -151,7 +153,7 @@ namespace ofs::universe
 	class J2000EclipticFrame : public Frame
 	{
 	public:
-		J2000EclipticFrame(const Object *obj);
+		J2000EclipticFrame(const Object *obj, Frame *parent);
 		~J2000EclipticFrame() = default;
 
 		quatd_t getOrientation(double) const override
@@ -163,19 +165,19 @@ namespace ofs::universe
 	class J2000EquatorFrame : public Frame
 	{
 	public:
-		J2000EquatorFrame(const Object *obj, const Object *tgt);
+		J2000EquatorFrame(const Object *obj, const Object *tgt, Frame *parent);
 		~J2000EquatorFrame() = default;
 
 		quatd_t getOrientation(double) const override
 		{
-			return xrot(J2000Obliquity);
+			return quatd_t(vec3d_t(-J2000Obliquity, 0, 0));
 		}
 	};
 
 	class BodyFixedFrame : public Frame
 	{
 	public:
-		BodyFixedFrame(const Object *obj, const Object *tgt);
+		BodyFixedFrame(const Object *obj, const Object *tgt, Frame *parent);
 		~BodyFixedFrame() = default;
 
 		quatd_t getOrientation(double tjd) const;
@@ -187,7 +189,7 @@ namespace ofs::universe
 	class BodyMeanEquatorFrame : public Frame
 	{
 	public:
-		BodyMeanEquatorFrame(const Object *obj, const Object *tgt);
+		BodyMeanEquatorFrame(const Object *obj, const Object *tgt, Frame *parent);
 		~BodyMeanEquatorFrame() = default;
 
 		quatd_t getOrientation(double tjd) const;
@@ -199,7 +201,7 @@ namespace ofs::universe
 	class ObjectSyncFrame : public Frame
 	{
 	public:
-		ObjectSyncFrame(const Object *obj, const Object *tgt);
+		ObjectSyncFrame(const Object *obj, const Object *tgt, Frame *parent);
 		~ObjectSyncFrame() = default;
 
 		quatd_t getOrientation(double tjd) const;

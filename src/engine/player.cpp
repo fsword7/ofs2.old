@@ -228,7 +228,7 @@ void Player::follow(const Object &obj, followMode mode)
 
 void Player::look(const Object &obj)
 {
-	vec3d_t opos = obj.getPosition(jdTime);
+	vec3d_t opos = obj.getGlobalPosition(jdTime);
 	vec3d_t up   = vec3d_t(0, 1, 0);
 
 	uqrot = glm::lookAt(opos, upos, up);
@@ -246,7 +246,7 @@ void Player::look(const Object &obj)
 
 void Player::move(const Object &obj, double dist, goMode mode)
 {
-	vec3d_t opos = obj.getPosition(jdTime);
+	vec3d_t opos = obj.getGlobalPosition(jdTime);
 	vec3d_t tpos;
 	quatd_t orot;
 

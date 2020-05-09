@@ -25,6 +25,7 @@ vec3d_t ofs::astro::convertEquatorialToEcliptic(double ra, double dec, double pc
 	opos = vec3d_t(sin(phi)*cos(theta), cos(phi), sin(phi)*-sin(theta));
 
 	return opos * glm::dquat(rot) * pc;
+//	return opos * pc;
 }
 
 //void convertDecimalToDegMinSec(double angle, int &deg, int &min, double &sec)

@@ -42,7 +42,7 @@ public:
     inline void setOrbitFrame(Frame *frame)  { orbitFrame = frame; }
     inline void setObjectFrame(Frame *frame) { objectFrame = frame; }
     inline void setOrbit(Orbit *orbit)                { this->orbit = orbit; }
-    inline void setRotation(RotationModel *rot)       { this->rot = rot; }
+    inline void setRotation(RotationalModel *rot)     { this->rot = rot; }
 
 //    inline bool checkAnyFlags(uint64_t flags) const
 //    	{ return objFlags & flags; }
@@ -67,9 +67,11 @@ public:
 
 //    SystemTree *createSystemTree();
 
+    virtual vec3d_t getGlobalPosition(double tjd = 0) const;
     virtual vec3d_t getPosition(double tjd = 0) const;
     virtual vec3d_t getVelocity(double tjd = 0) const;
 	virtual quatd_t getRotation(double tjd = 0) const;
+	virtual quatd_t getOrientation(double tjd = 0) const;
 
 protected:
 	virtual double computeCullingRadius();
@@ -97,10 +99,10 @@ protected:
 //	SystemTree     *sysTree = nullptr;
 
 	// Orbital parameters
-	Frame          *orbitFrame = nullptr;
-	Orbit          *orbit = nullptr;
+	Frame           *orbitFrame = nullptr;
+	Orbit           *orbit = nullptr;
 
 	// Orientation parameters
-	Frame          *objectFrame = nullptr;
-	RotationModel  *rot = nullptr;
+	Frame           *objectFrame = nullptr;
+	RotationalModel *rot = nullptr;
 };
