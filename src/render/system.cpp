@@ -162,6 +162,7 @@ void Scene::renderCelestialBody(ObjectListEntry &ole)
 		LightState lights;
 
 		quatd_t orot = body->getOrientation(prm.now);
+//		quatd_t orot = body->getRotation(prm.now);
 		setObjectLighting(lightSources, ole.opos, orot, lights);
 
 		op.color = ole.object->getColor();
@@ -203,12 +204,12 @@ void Scene::renderPlanetarySystem(const FrameTree *tree, const Player *player,
 				appMag = min(appMag, mag);
 			}
 
-//			cout << fmt::sprintf("Object:          %s\n", body->getName());
-//			cout << fmt::sprintf("Sun Position:    (%lf,%lf,%lf)\n", spos.x, spos.y, spos.z);
+			cout << fmt::sprintf("Object:          %s\n", body->getName());
+			cout << fmt::sprintf("Sun Position:    (%lf,%lf,%lf)\n", spos.x, spos.y, spos.z);
 //			cout << fmt::sprintf("Camera Position: (%lf,%lf,%lf)\n", apos.x, apos.y, apos.z);
 //			cout << fmt::sprintf("Object Position: (%lf,%lf,%lf)\n", opos.x, opos.y, opos.z);
-//			cout << fmt::sprintf("View Position:   (%lf,%lf,%lf)\n", vpos.x, vpos.y, vpos.z);
-//			cout << fmt::sprintf("View Distance:   %lf (%lf)\n", vdist, vdnorm);
+			cout << fmt::sprintf("View Position:   (%lf,%lf,%lf)\n", vpos.x, vpos.y, vpos.z);
+			cout << fmt::sprintf("View Distance:   %lf (%lf)\n", vdist, vdnorm);
 //			cout << fmt::sprintf("Object size:     %lf (%lf)\n", objSize, pixelSize);
 //			cout << fmt::sprintf("View Plane Norm: (%lf,%lf,%lf)\n\n",
 //					vpnorm.x, vpnorm.y, vpnorm.z);

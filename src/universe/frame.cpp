@@ -114,10 +114,10 @@ vec3d_t Frame::fromUniversal(const vec3d_t &upos, double tjd)
 	quatd_t orot = glm::conjugate(getOrientation(tjd));
 	vec3d_t rpos = (opos - upos) * orot;
 
-//	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
-//		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
-//	cout << fmt::sprintf(" Frame: U(%lf,%lf,%lf) => L(%lf,%lf,%lf)\n",
-//		upos.x, upos.y, upos.z, rpos.x, rpos.y, rpos.z);
+	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
+		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
+	cout << fmt::sprintf(" Frame: U(%lf,%lf,%lf) => L(%lf,%lf,%lf)\n",
+		upos.x, upos.y, upos.z, rpos.x, rpos.y, rpos.z);
 
 	return rpos;
 }
@@ -131,10 +131,10 @@ vec3d_t Frame::toUniversal(const vec3d_t &lpos, double tjd)
 	quatd_t orot = getOrientation(tjd);
 	vec3d_t rpos = opos + (lpos * orot);
 
-//	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
-//		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
-//	cout << fmt::sprintf(" Frame: L(%lf,%lf,%lf) => U(%lf,%lf,%lf)\n",
-//		lpos.x, lpos.y, lpos.z, rpos.x, rpos.y, rpos.z);
+	cout << fmt::sprintf("Center: P(%lf,%lf,%lf) Q(%lf,%lf,%lf,%lf)\n",
+		opos.x, opos.y, opos.z, orot.w, orot.x, orot.y, orot.z);
+	cout << fmt::sprintf(" Frame: L(%lf,%lf,%lf) => U(%lf,%lf,%lf)\n",
+		lpos.x, lpos.y, lpos.z, rpos.x, rpos.y, rpos.z);
 
 	return rpos;
 }

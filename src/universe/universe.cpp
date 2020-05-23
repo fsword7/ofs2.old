@@ -41,7 +41,7 @@ void Universe::init()
 	venus   = System::createBody("Venus", system, CelestialType::ctPlanet,
 		"EquatorJ2000", "EclipticJ2000");
 	earth   = System::createBody("Earth", system, CelestialType::ctPlanet,
-		"EquatorJ2000", "EclipticJ2000");
+		"EclipticJ2000", "EclipticJ2000");
 	mars    = System::createBody("Mars", system, CelestialType::ctPlanet,
 		"EquatorJ2000", "EquatorJ2000");
 	jupiter = System::createBody("Jupiter", system, CelestialType::ctPlanet,

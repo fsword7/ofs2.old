@@ -36,6 +36,32 @@ double Object::computeCullingRadius()
 
 vec3d_t Object::getGlobalPosition(double tjd) const
 {
+//	Frame *frame = orbitFrame;
+//	vec3d_t lpos = orbit->getPosition(tjd);
+//	quatd_t lrot = glm::conjugate(frame->getOrientation(tjd));
+//	vec3d_t upos = lrot * lpos;
+//
+//	cout << fmt::sprintf("Object: %s => (%lf, %lf, %lf)\n",
+//		getName(), lpos.x, lpos.y, lpos.z) << flush;
+
+//	for (Frame *frame = orbitFrame; !frame->isRoot(); frame = frame->getParentFrame()) {
+//		lpos = orbit->getPosition(tjd);
+//		cout << fmt::sprintf("Object: %s => (%lf, %lf, %lf)\n",
+//			frame->getCenter()->getName(), lpos.x, lpos.y, lpos.z) << flush;
+//		upos += glm::conjugate(frame->getOrientation(tjd)) * lpos;
+//	}
+
+//	while (frame->getCenter()->getType() == objCelestialBody) {
+//		frame  = frame->getCenter()->getOrbitFrame();
+//		lpos   = frame->getCenter()->getPosition(tjd);
+//		lrot   = glm::conjugate(frame->getOrientation(tjd));
+//		upos  += lrot * lpos;
+//		cout << fmt::sprintf("Object: %s => (%lf, %lf, %lf) now (%lf, %lf, %lf)\n",
+//			frame->getCenter()->getName(),
+//			lpos.x, lpos.y, lpos.z, upos.x, upos.y, upos.z);;
+//	}
+//	cout << fmt::sprintf("Final (%lf, %lf, %lf)\n", upos.x, upos.y, upos.z);
+
 	vec3d_t upos = {0, 0, 0};
 	Frame *frame = orbitFrame;
 	vec3d_t lpos = orbit->getPosition(tjd);
@@ -43,17 +69,12 @@ vec3d_t Object::getGlobalPosition(double tjd) const
 //	cout << fmt::sprintf("Object: %s => (%lf, %lf, %lf)\n",
 //		getName(), lpos.x, lpos.y, lpos.z) << flush;
 
-//	for (Frame *frame = orbitFrame; !frame->isRoot(); frame = frame->getParentFrame()) {
-//		lpos = orbit->getPosition(tjd);
-//		upos += glm::conjugate(frame->getOrientation(tjd)) * lpos;
-//	}
-
 	while (frame->getCenter()->getType() == objCelestialBody) {
 		upos  += glm::conjugate(frame->getOrientation(tjd)) * lpos;
 		lpos = frame->getCenter()->getPosition(tjd);
-//		cout << fmt::sprintf("Object: %s => (%lf, %lf, %lf) now (%lf, %lf, %lf)\n",
+//		cout << fmt::sprintf("Object %s: %lf, %lf, %lf\n",
 //			frame->getCenter()->getName(),
-//			lpos.x, lpos.y, lpos.z, upos.x, upos.y, upos.z);
+//			upos.x, upos.y, upos.z);
 		frame  = frame->getCenter()->getOrbitFrame();
 	}
 	upos  += glm::conjugate(frame->getOrientation(tjd)) * lpos;

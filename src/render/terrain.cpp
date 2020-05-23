@@ -377,20 +377,20 @@ void TerrainManager::render(renderParameter &prm, const ObjectProperties &op, co
 	prm.obj.viewap = (prm.obj.cdist >= 1.0f) ? acos(1.0f / prm.obj.cdist) : 0.0f;
 	prm.obj.cdir   = glm::normalize(prm.obj.cdir);
 
-//	cout << fmt::sprintf("Terrain Manager - Render Parameter\n");
-//	cout << fmt::sprintf("Planet Radius:      %lf\n", prm.obj.orad);
-//	cout << fmt::sprintf("Planet Position:    (%lf,%lf,%lf)\n",
-//		prm.obj.opos.x, prm.obj.opos.y, prm.obj.opos.z);
-//	cout << fmt::sprintf("Planet Orientation: (%lf,%lf,%lf,%lf)\n",
-//		prm.obj.oqrot.w, prm.obj.oqrot.x, prm.obj.oqrot.y, prm.obj.oqrot.z);
-//	cout << fmt::sprintf("Camera Position:    (%lf,%lf,%lf)\n",
-//		prm.obj.cpos.x, prm.obj.cpos.y, prm.obj.cpos.z);
-//	cout << fmt::sprintf("Camera Direction:   (%lf,%lf,%lf)\n",
-//		prm.obj.cdir.x, prm.obj.cdir.y, prm.obj.cdir.z);
-//	cout << fmt::sprintf("Camera Distance:    %lf\n", prm.obj.cdist);
-//	cout << fmt::sprintf("Horizon View:       %lf\n", toDegree(prm.obj.viewap));
-//	cout << fmt::sprintf("Camera Position:    (%lf,%lf,%lf) in Universe frame\n",
-//		prm.cpos.x, prm.cpos.y, prm.cpos.z);
+	cout << fmt::sprintf("Terrain Manager - Render Parameter\n");
+	cout << fmt::sprintf("Planet Radius:      %lf\n", prm.obj.orad);
+	cout << fmt::sprintf("Planet Position:    (%lf,%lf,%lf)\n",
+		prm.obj.opos.x, prm.obj.opos.y, prm.obj.opos.z);
+	cout << fmt::sprintf("Planet Orientation: (%lf,%lf,%lf,%lf)\n",
+		prm.obj.oqrot.w, prm.obj.oqrot.x, prm.obj.oqrot.y, prm.obj.oqrot.z);
+	cout << fmt::sprintf("Camera Position:    (%lf,%lf,%lf)\n",
+		prm.obj.cpos.x, prm.obj.cpos.y, prm.obj.cpos.z);
+	cout << fmt::sprintf("Camera Direction:   (%lf,%lf,%lf)\n",
+		prm.obj.cdir.x, prm.obj.cdir.y, prm.obj.cdir.z);
+	cout << fmt::sprintf("Camera Distance:    %lf\n", prm.obj.cdist);
+	cout << fmt::sprintf("Horizon View:       %lf\n", toDegree(prm.obj.viewap));
+	cout << fmt::sprintf("Camera Position:    (%lf,%lf,%lf) in Universe frame\n",
+		prm.cpos.x, prm.cpos.y, prm.cpos.z);
 
 //    obj->getCoordinates(prm.cpos, &lat, &lng);
 //    cout << "Planet Position:  (" << toDegrees(lat) << "," << toDegrees(lng) << ")" << endl;
@@ -477,10 +477,10 @@ void TerrainManager::render(renderParameter &prm, const ObjectProperties &op, co
 	uint32_t mvpLoc = glGetUniformLocation(pgm->getID(), "mvp");
     glUniformMatrix4fv(mvpLoc, 1, GL_FALSE, glm::value_ptr(prm.mvp));
 
-//	uint32_t chLoc = glGetUniformLocation(pgm->getID(), "gCamera");
-//    glUniform3fv(chLoc, 1, glm::value_ptr(gCamera));
-//	uint32_t clLoc = glGetUniformLocation(pgm->getID(), "eCamera");
-//    glUniform3fv(clLoc, 1, glm::value_ptr(eCamera));
+	uint32_t chLoc = glGetUniformLocation(pgm->getID(), "gCamera");
+    glUniform3fv(chLoc, 1, glm::value_ptr(gCamera));
+	uint32_t clLoc = glGetUniformLocation(pgm->getID(), "eCamera");
+    glUniform3fv(clLoc, 1, glm::value_ptr(eCamera));
 
     pgm->setLightParameters(&lights, Color(1, 1, 1), Color(0, 0, 0), Color(0, 0, 0));
 
